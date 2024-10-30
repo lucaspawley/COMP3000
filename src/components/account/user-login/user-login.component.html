@@ -1,0 +1,23 @@
+<p-card class="card border-round surface-overlay">
+  <p-inputGroup class="mb-2">
+    <p-inputGroupAddon>
+      <i class="fa-solid fa-user"></i>
+    </p-inputGroupAddon>
+    <input pInputText placeholder="Username" />
+  </p-inputGroup>
+  <p-inputGroup class="mb-2">
+    <p-inputGroupAddon>
+      <i class="fa-solid fa-lock"></i>
+    </p-inputGroupAddon>
+    <input pInputText placeholder="Password" />
+  </p-inputGroup>
+
+  <div class="flex justify-content-center">
+    <button type="button" class="p-button" (click)="navigateLogin()">
+      <span class="p-button-label">Login</span>
+    </button>
+    <button type="button" class="p-button ml-2">
+      <span class="p-button-label">Sign Up</span>
+    </button>
+  </div>
+</p-card>
