@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { CardModule } from 'primeng/card';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
@@ -21,6 +21,6 @@ export class UserLoginComponent {
   constructor(private router: Router) {}
 
   navigateLogin() {
-    this.router.navigate(['main-page']);
+    this.router.navigate(['home']);
   }
 }
