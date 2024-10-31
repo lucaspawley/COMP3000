@@ -28,7 +28,7 @@ export class AppComponent implements OnInit {
       },
       {
         label: 'Favourite Recipes',
-        icon: 'fa-regular fa-star',
+        icon: 'fa-solid fa-star',
         routerLink: 'favourite-recipes',
       },
       {
@@ -41,11 +41,11 @@ export class AppComponent implements OnInit {
         icon: 'fa-solid fa-robot',
         routerLink: 'assistant',
       },
-      { label: 'Account', icon: 'fa-regular fa-user', routerLink: 'account' },
+      { label: 'Account', icon: 'fa-solid fa-user', routerLink: 'account' },
     ];
   }
 
-  test(event: any) {
+  isLoggedIn(event: any) {
     if (event?.router?.url == '/login') {
       this.loggedIn = false;
     } else this.loggedIn = true;
