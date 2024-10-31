@@ -6,6 +6,8 @@ import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { InputTextModule } from 'primeng/inputtext';
 import { ImageModule } from 'primeng/image';
 import { ButtonModule } from 'primeng/button';
+import { Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-find-recipe-page',
@@ -17,6 +19,7 @@ import { ButtonModule } from 'primeng/button';
     InputTextModule,
     ImageModule,
     ButtonModule,
+    CommonModule,
   ],
   templateUrl: './find-recipe-page.component.html',
   styleUrl: './find-recipe-page.component.scss',
@@ -24,7 +27,8 @@ import { ButtonModule } from 'primeng/button';
 export class FindRecipePageComponent {
   recipe1: Recipe = {
     recipeName: 'Spahetti Bolognese',
-    recipeImage: 'https://images.immediate.co.uk/production/volatile/sites/30/2020/08/classic-bolognese-65a0ab3.jpg',
+    recipeImage:
+      'https://images.immediate.co.uk/production/volatile/sites/30/2020/08/classic-bolognese-65a0ab3.jpg',
     recipeAllergy: ['Gluten'],
     recipeIngredients: [
       {
@@ -76,12 +80,14 @@ export class FindRecipePageComponent {
       'Cook the spaghetti following pack instructions, then stir half the parmesan into the Bolognese. Put a spoonful of the pasta water into the sauce to loosen it if it looks too thick, then drain the spaghetti. For a better flavour, tip the pasta onto the sauce, toss everything together to coat, and season well (or serve with the sauce on top). Add the remaining parmesan and a few basil leaves.',
     ],
     recipeRating: 0,
-    recipeServes: "Serves 4",
+    recipeServes: 'Serves 4',
+    favourite: false,
   };
 
   recipe2: Recipe = {
     recipeName: 'Sweet potato & peanut curry',
-    recipeImage: 'https://images.immediate.co.uk/production/volatile/sites/30/2020/08/satay-sweet-potato-curry-17cc62d.jpg?quality=90&webp=true&resize=300,272',
+    recipeImage:
+      'https://images.immediate.co.uk/production/volatile/sites/30/2020/08/satay-sweet-potato-curry-17cc62d.jpg?quality=90&webp=true&resize=300,272',
     recipeAllergy: ['Gluten'],
     recipeIngredients: [
       {
@@ -133,8 +139,19 @@ export class FindRecipePageComponent {
       'Cook the spaghetti following pack instructions, then stir half the parmesan into the Bolognese. Put a spoonful of the pasta water into the sauce to loosen it if it looks too thick, then drain the spaghetti. For a better flavour, tip the pasta onto the sauce, toss everything together to coat, and season well (or serve with the sauce on top). Add the remaining parmesan and a few basil leaves.',
     ],
     recipeRating: 0,
-    recipeServes: "Serves 4",
+    recipeServes: 'Serves 4',
+    favourite: false,
   };
 
   recipes: Array<Recipe> = [this.recipe1, this.recipe2];
+
+  constructor(private router: Router) {}
+
+  goToRecipe(recipeName: string) {
+    this.router.navigate([recipeName]);
+  }
+
+  favouriteRecipe(recipe: Recipe) {
+    recipe.favourite = !recipe.favourite;
+  }
 }

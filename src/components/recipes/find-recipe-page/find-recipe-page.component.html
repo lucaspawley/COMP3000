@@ -16,7 +16,14 @@
     class="pr-2"
   >
     <ng-template pTemplate="header">
-      <p-image width="150" [src]="recipe.recipeImage" />
+      <div class="container">
+        <a
+          [ngClass]="recipe.favourite ? 'fa-solid fa-star' : 'fa-regular fa-star'"
+          class="fa-regular fa-star"
+          (click)="favouriteRecipe(recipe)"
+        ></a>
+        <p-image width="150" [src]="recipe.recipeImage" />
+      </div>
     </ng-template>
     <ng-template pTemplate="footer">
       <div class="flex justify-content-end">
@@ -25,6 +32,7 @@
             [rounded]="true"
             icon="fa-solid fa-arrow-right"
             size="small"
+            (onClick)="goToRecipe(recipe.recipeName)"
           />
         </div>
       </div>

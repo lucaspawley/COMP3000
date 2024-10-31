@@ -9,4 +9,5 @@ export type Recipe = {
   recipeMethod: Array<string>;
   recipeRating: number;
   recipeServes: string;
+  favourite: boolean;
 };

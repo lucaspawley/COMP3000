@@ -27,9 +27,9 @@ export class AppComponent implements OnInit {
         routerLink: 'find-recipes',
       },
       {
-        label: 'Favourite Recipes',
+        label: 'My Recipes',
         icon: 'fa-solid fa-star',
-        routerLink: 'favourite-recipes',
+        routerLink: 'my-recipes',
       },
       {
         label: 'Shopping Lists',

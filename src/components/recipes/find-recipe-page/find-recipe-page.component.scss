@@ -1,3 +1,18 @@
 .recipe-card {
   width: 250px !important;
 }
+
+.container {
+  position: relative !important;
+}
+.container .p-image {
+  display: block !important;
+}
+.container .fa-star {
+  padding: 5px;
+  cursor: pointer;
+  color: #52b788;
+  position: absolute !important;
+  top: 0 !important;
+  right: 0 !important;
+}
