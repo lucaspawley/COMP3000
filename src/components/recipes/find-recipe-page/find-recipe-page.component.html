@@ -1,1 +1,34 @@
-<p>find-recipe-page works!</p>
+<div class="flex w-6">
+  <p-inputGroup class="mb-2">
+    <p-inputGroupAddon>
+      <i class="fa-solid fa-magnifying-glass"></i>
+    </p-inputGroupAddon>
+    <input pInputText placeholder="Search..." />
+  </p-inputGroup>
+</div>
+
+<div class="flex">
+  @for (recipe of recipes; track $index) {
+  <p-card
+    [header]="recipe.recipeName"
+    [subheader]="recipe.recipeServes"
+    [style]="{ width: '250px' }"
+    class="pr-2"
+  >
+    <ng-template pTemplate="header">
+      <p-image width="150" [src]="recipe.recipeImage" />
+    </ng-template>
+    <ng-template pTemplate="footer">
+      <div class="flex justify-content-end">
+        <div class="flex align-items-center">
+          <p-button
+            [rounded]="true"
+            icon="fa-solid fa-arrow-right"
+            size="small"
+          />
+        </div>
+      </div>
+    </ng-template>
+  </p-card>
+  }
+</div>
