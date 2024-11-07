@@ -1,0 +1,11 @@
+<div class="title p-2 text-white">Sous Chef</div>
+
+@if(loggedIn){
+<div class="card flex justify-content-start m-2">
+  <p-menubar [model]="items" />
+</div>
+}
+
+<div class="m-2">
+  <router-outlet (activate)="isLoggedIn($event)"></router-outlet>
+</div>

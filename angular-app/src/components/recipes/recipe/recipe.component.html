@@ -1,0 +1,27 @@
+<div>
+  <p-card [header]="selectedRecipe?.recipeName" [subheader]="selectedRecipe?.recipeServes">
+    <div class="flex justify-content-between">
+      <div>
+        <h3>Ingredients</h3>
+        <ul>
+          @for (ingredient of selectedRecipe?.recipeIngredients; track $index) {
+          <li>
+            {{ ingredient.ingredientAmount
+            }}{{ ingredient.ingredientMeasurement }}
+            {{ ingredient.ingredientName }}
+          </li>
+          }
+        </ul>
+        @for (step of selectedRecipe?.recipeMethod; track $index) {<u>
+          Step {{ $index + 1 }}</u
+        >
+        <br />
+        {{ step }}
+        <br />
+        <hr />
+        }
+      </div>
+      <div><p-image class="p-2" width="400" [src]="selectedRecipe?.recipeImage" /></div>
+    </div>
+  </p-card>
+</div>
