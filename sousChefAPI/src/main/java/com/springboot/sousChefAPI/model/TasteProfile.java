@@ -2,6 +2,7 @@ package com.springboot.sousChefAPI.model;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -9,26 +10,25 @@ import java.util.List;
 public class TasteProfile {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @PrimaryKeyJoinColumn
-    @Column
-    private Integer tasteProfile_id;
+    private Integer tasteProfileId;
 
-    @OneToMany(mappedBy = "allergy_id")
-    private List<Allergy> allergies;
+    @ManyToMany
+    @JoinTable(name = "taste_profile_allergy", joinColumns = @JoinColumn(name = "taste_profile_id"), inverseJoinColumns = @JoinColumn(name = "allergy_id"))
+    private List<Allergy> allergies = new ArrayList<>();
 
-    public Integer getTasteProfile_id() {
-        return tasteProfile_id;
+    public Integer getTasteProfileId() {
+        return tasteProfileId;
     }
 
-    public void setTasteProfile_id(Integer tasteProfile_id) {
-        this.tasteProfile_id = tasteProfile_id;
+    public void setTasteProfileId(Integer tasteProfileId) {
+        this.tasteProfileId = tasteProfileId;
     }
 
     public List<Allergy> getAllergies() {
         return allergies;
     }
 
-    public void setAllergy_id(List<Allergy> allergy) {
-        this.allergies = allergy;
+    public void setAllergies(List<Allergy> allergies) {
+        this.allergies = allergies;
     }
 }

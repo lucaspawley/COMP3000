@@ -7,19 +7,18 @@ import jakarta.persistence.*;
 public class Allergy {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @PrimaryKeyJoinColumn
     @Column
-    private Integer allergy_id;
+    private Integer allergyId;
 
     @Column
     private String allergy_name;
 
-    public Integer getAllergy_id() {
-        return allergy_id;
+    public Integer getAllergyId() {
+        return allergyId;
     }
 
-    public void setAllergy_id(Integer allergy_id) {
-        this.allergy_id = allergy_id;
+    public void setAllergyId(Integer allergyId) {
+        this.allergyId = allergyId;
     }
 
     public String getAllergy_name() {
