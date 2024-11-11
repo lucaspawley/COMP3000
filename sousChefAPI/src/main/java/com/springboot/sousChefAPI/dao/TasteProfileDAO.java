@@ -7,6 +7,6 @@ import java.util.List;
 public interface TasteProfileDAO {
     List<TasteProfile> get();
     TasteProfile get(int id);
-    void save(TasteProfile account);
+    void save(TasteProfile tasteProfile);
     void delete(int id);
 }

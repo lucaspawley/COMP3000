@@ -80,8 +80,10 @@
 					<jsonLibrary>jackson2</jsonLibrary>
 					<classes>
 						<class>com.springboot.sousChefAPI.model.Account</class>
+						<class>com.springboot.sousChefAPI.model.Allergy</class>
+						<class>com.springboot.sousChefAPI.model.TasteProfile</class>
 					</classes>
-					<outputFile>target/account.ts</outputFile>
+					<outputFile>target/types.ts</outputFile>
 					<outputKind>module</outputKind>
 					<outputFileType>implementationFile</outputFileType>
 					<mapClasses>asClasses</mapClasses>
