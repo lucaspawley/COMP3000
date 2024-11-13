@@ -1,7 +1,6 @@
 package com.springboot.sousChefAPI.controller;
 
 import com.springboot.sousChefAPI.model.*;
-import com.springboot.sousChefAPI.repository.TPAllergyLinkRepository;
 import com.springboot.sousChefAPI.service.AccountService;
 import com.springboot.sousChefAPI.service.TPAllergyLinkService;
 import com.springboot.sousChefAPI.service.TasteProfileService;
@@ -30,7 +29,7 @@ public class AccountController {
         return accountService.getAllAccounts();
     }
 
-    @PostMapping("/account")
+    @PostMapping("/account/create")
     public Account save(@RequestBody Account accountObj) {
         TasteProfile tasteProfile = accountObj.getTasteProfile();
 
@@ -64,5 +63,10 @@ public class AccountController {
         account.setAccountId(id);
         Account updatedAccount = accountService.saveAccount(account);
         return new ResponseEntity<>(updatedAccount, HttpStatus.OK).getBody();
+    }
+
+    @PostMapping("/account/login")
+    public Account login(@RequestParam String username, @RequestParam String password) throws Exception {
+        return accountService.checkLogin(username, password);
     }
 }
