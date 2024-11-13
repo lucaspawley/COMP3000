@@ -1,8 +1,9 @@
 package com.springboot.sousChefAPI.controller;
 
-import com.springboot.sousChefAPI.model.Account;
-import com.springboot.sousChefAPI.model.TasteProfile;
+import com.springboot.sousChefAPI.model.*;
+import com.springboot.sousChefAPI.repository.TPAllergyLinkRepository;
 import com.springboot.sousChefAPI.service.AccountService;
+import com.springboot.sousChefAPI.service.TPAllergyLinkService;
 import com.springboot.sousChefAPI.service.TasteProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,6 +22,9 @@ public class AccountController {
     @Autowired
     private TasteProfileService tasteProfileService;
 
+    @Autowired
+    private TPAllergyLinkService tpAllergyLinkService;
+
     @GetMapping("/account")
     public List<Account> get() {
         return accountService.getAllAccounts();
@@ -30,11 +34,13 @@ public class AccountController {
     public Account save(@RequestBody Account accountObj) {
         TasteProfile tasteProfile = accountObj.getTasteProfile();
 
-        if (tasteProfile == null || tasteProfile.getTasteProfileId() == null) {
-            tasteProfile = new TasteProfile();
-            tasteProfileService.saveTasteProfile(tasteProfile);
-            accountObj.setTasteProfile(tasteProfile);
+        tasteProfileService.saveTasteProfile(tasteProfile);
+        accountObj.setTasteProfile(tasteProfile);
+
+        for (Allergy allergy : tasteProfile.getAllergies()) {
+            tpAllergyLinkService.saveTPAllergyLink(tasteProfile.getTasteProfileId(), allergy.getAllergyId());
         }
+
         accountService.saveAccount(accountObj);
         return accountObj;
     }
