@@ -1,6 +1,5 @@
 package com.springboot.sousChefAPI.controller;
 
-import com.springboot.sousChefAPI.model.Account;
 import com.springboot.sousChefAPI.model.Allergy;
 import com.springboot.sousChefAPI.service.AllergyService;
 import org.springframework.beans.factory.annotation.Autowired;

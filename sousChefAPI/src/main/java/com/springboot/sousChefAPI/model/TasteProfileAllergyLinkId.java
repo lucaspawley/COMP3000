@@ -28,7 +28,6 @@ public class TasteProfileAllergyLinkId implements Serializable {
         this.allergyId = allergyId;
     }
 
-    // Override equals and hashCode
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
