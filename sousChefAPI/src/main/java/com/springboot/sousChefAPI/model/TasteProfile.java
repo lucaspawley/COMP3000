@@ -13,7 +13,8 @@ public class TasteProfile {
     private Integer tasteProfileId;
 
     @ManyToMany
-    @JoinTable(name = "tbl_link_taste_profile_allergy", joinColumns = @JoinColumn(name = "taste_profile_id"), inverseJoinColumns = @JoinColumn(name = "allergy_id"))
+    @JoinTable(name = "tbl_link_taste_profile_allergy",
+            joinColumns = @JoinColumn(name = "taste_profile_id"), inverseJoinColumns = @JoinColumn(name = "allergy_id"))
     private List<Allergy> allergies = new ArrayList<>();
 
     public Integer getTasteProfileId() {
