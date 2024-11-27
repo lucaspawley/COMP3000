@@ -4,9 +4,12 @@ import com.springboot.sousChefAPI.model.*;
 import com.springboot.sousChefAPI.service.*;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api")
@@ -97,4 +100,11 @@ public class RecipeController {
         return recipe;
     }
 
+
+    @GetMapping("/recipe/{id}")
+    public Recipe getRecipeById(@PathVariable int id) {
+        return recipeService.getRecipeById(id)
+                .map(recipe -> new ResponseEntity<>(recipe, HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND)).getBody();
+    }
 }
