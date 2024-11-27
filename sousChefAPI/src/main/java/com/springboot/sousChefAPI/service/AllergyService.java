@@ -26,6 +26,10 @@ public class AllergyService {
         return allergyRepository.save(allergy);
     }
 
+    public Allergy findByAllergyName(String allergyName) {
+        return allergyRepository.findByAllergyName(allergyName);
+    }
+
     public void deleteAllergy(int id) {
         allergyRepository.deleteById(id);
     }

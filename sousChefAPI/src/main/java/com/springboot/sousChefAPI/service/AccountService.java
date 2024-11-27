@@ -3,6 +3,10 @@ package com.springboot.sousChefAPI.service;
 import com.springboot.sousChefAPI.model.Account;
 import com.springboot.sousChefAPI.repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -17,6 +21,13 @@ public class AccountService implements UserDetailsService {
 
     @Autowired
     private AccountRepository accountRepository;
+
+    @Lazy
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private JWTService jwtService;
 
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(12);
 
@@ -38,32 +49,35 @@ public class AccountService implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public Account loadUserByUsername(String username) throws UsernameNotFoundException {
         Account account = accountRepository.findByUsername(username);
 
         if (account == null) {
             throw new UsernameNotFoundException("User not found");
         }
-
-        return org.springframework.security.core.userdetails.User
-                .withUsername(account.getUsername())
-                .password(account.getPassword())
-                .roles("USER")
-                .build();
+        return account;
+//        return org.springframework.security.core.userdetails.User
+//                .withUsername(account.getUsername())
+//                .password(account.getPassword())
+//                .roles("USER")
+//                .build();
     }
 
-    public Account checkLogin(String username, String rawPassword) throws Exception {
+    public String checkLogin(String username, String rawPassword) throws Exception {
         Account account = accountRepository.findByUsername(username);
 
-        if(account == null) {
+        if (account == null) {
             throw new Exception("Invalid username or password. Please try again.");
         } else {
             boolean validPass = passwordEncoder.matches(rawPassword, account.getPassword());
 
-            if(!validPass) {
+            if (!validPass) {
                 throw new Exception("Invalid username or password. Please try again.");
             } else {
-                return account;
+                Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, rawPassword));
+                if (authentication.isAuthenticated()) {
+                    return jwtService.generateToken(account.getUsername());
+                } else throw new Exception("Invalid username or password. Please try again.");
             }
         }
     }

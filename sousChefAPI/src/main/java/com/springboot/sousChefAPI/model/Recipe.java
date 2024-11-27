@@ -19,7 +19,7 @@ public class Recipe {
     private Integer recipe_rating;
 
     @Column
-    private Integer recipe_services;
+    private Integer recipe_serves;
 
     @ManyToMany
     @JoinTable(name = "tbl_link_recipe_allergy",
@@ -60,12 +60,12 @@ public class Recipe {
         this.recipe_rating = recipe_rating;
     }
 
-    public Integer getRecipe_services() {
-        return recipe_services;
+    public Integer getRecipe_serves() {
+        return recipe_serves;
     }
 
-    public void setRecipe_services(Integer recipe_services) {
-        this.recipe_services = recipe_services;
+    public void setRecipe_serves(Integer recipe_serves) {
+        this.recipe_serves = recipe_serves;
     }
 
     public List<Allergy> getAllergies() {

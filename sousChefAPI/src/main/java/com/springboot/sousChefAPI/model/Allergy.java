@@ -7,11 +7,11 @@ import jakarta.persistence.*;
 public class Allergy {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column
+    @Column(name = "allergy_id")
     private Integer allergyId;
 
-    @Column
-    private String allergy_name;
+    @Column(name = "allergy_name")
+    private String allergyName;
 
     public Integer getAllergyId() {
         return allergyId;
@@ -21,11 +21,11 @@ public class Allergy {
         this.allergyId = allergyId;
     }
 
-    public String getAllergy_name() {
-        return allergy_name;
+    public String getAllergyName() {
+        return allergyName;
     }
 
-    public void setAllergy_name(String allergy_name) {
-        this.allergy_name = allergy_name;
+    public void setAllergyName(String allergyName) {
+        this.allergyName = allergyName;
     }
 }

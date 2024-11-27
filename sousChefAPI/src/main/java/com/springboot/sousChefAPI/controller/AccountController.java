@@ -44,12 +44,17 @@ public class AccountController {
         return accountObj;
     }
 
-    @GetMapping("/account/{id}")
-    public Account get(@PathVariable int id) {
-        return accountService.getAccountById(id)
-                .map(account -> new ResponseEntity<>(account, HttpStatus.OK))
-                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND)).getBody();
+//    @GetMapping("/account/{id}")
+//    public Account get(@PathVariable int id) {
+//        return accountService.getAccountById(id)
+//                .map(account -> new ResponseEntity<>(account, HttpStatus.OK))
+//                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND)).getBody();
+//
+//    }
 
+    @GetMapping("/account/{username}")
+    public Account getByUsername(@PathVariable String username){
+        return accountService.loadUserByUsername(username);
     }
 
     @DeleteMapping("/account/{id}")
@@ -66,7 +71,7 @@ public class AccountController {
     }
 
     @PostMapping("/account/login")
-    public Account login(@RequestParam String username, @RequestParam String password) throws Exception {
+    public String login(@RequestParam String username, @RequestParam String password) throws Exception {
         return accountService.checkLogin(username, password);
     }
 }

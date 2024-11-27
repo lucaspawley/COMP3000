@@ -5,7 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "tbl_link_recipe_ingredient")
+@Table(name = "tbl_link_recipe_method")
 public class RecipeMethodLink {
     @EmbeddedId
     private RecipeMethodLinkId id;

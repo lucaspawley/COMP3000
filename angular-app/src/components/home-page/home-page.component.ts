@@ -13,10 +13,7 @@ export class HomePageComponent implements OnInit {
   constructor(private router: Router, private accountService: AccountService) {}
 
   ngOnInit(): void {
-    const saveData = JSON.parse(sessionStorage.getItem('account') as string);
-    this.accountService.currentAccount = saveData;
-
-    console.log(this.accountService.currentAccount);
-
+    const saveData = JSON.parse(sessionStorage.getItem('token') as string);
+    this.accountService.currentToken = saveData;
   }
 }

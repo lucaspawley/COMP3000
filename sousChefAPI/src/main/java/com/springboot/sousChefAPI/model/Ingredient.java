@@ -7,24 +7,25 @@ import jakarta.persistence.*;
 public class Ingredient {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer ingredient_id;
+    @Column(name = "ingredient_id")
+    private Integer ingredientId;
 
-    @Column
-    private String ingredient_name;
+    @Column(name = "ingredient_name")
+    private String ingredientName;
 
     public Integer getIngredient_id() {
-        return ingredient_id;
+        return ingredientId;
     }
 
     public void setIngredient_id(Integer ingredient_id) {
-        this.ingredient_id = ingredient_id;
+        this.ingredientId = ingredient_id;
     }
 
-    public String getIngredient_name() {
-        return ingredient_name;
+    public String getIngredientName() {
+        return ingredientName;
     }
 
-    public void setIngredient_name(String ingredient_name) {
-        this.ingredient_name = ingredient_name;
+    public void setIngredientName(String ingredientName) {
+        this.ingredientName = ingredientName;
     }
 }
