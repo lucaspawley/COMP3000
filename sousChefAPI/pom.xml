@@ -105,6 +105,9 @@
 						<class>com.springboot.sousChefAPI.model.Account</class>
 						<class>com.springboot.sousChefAPI.model.Allergy</class>
 						<class>com.springboot.sousChefAPI.model.TasteProfile</class>
+						<class>com.springboot.sousChefAPI.model.Method</class>
+						<class>com.springboot.sousChefAPI.model.Recipe</class>
+						<class>com.springboot.sousChefAPI.model.Ingredient</class>
 					</classes>
 					<outputFile>target/types.ts</outputFile>
 					<outputKind>module</outputKind>
