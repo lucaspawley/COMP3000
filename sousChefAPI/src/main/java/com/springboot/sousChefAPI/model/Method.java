@@ -7,7 +7,8 @@ import jakarta.persistence.*;
 public class Method {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer method_id;
+    @Column(name = "method_id")
+    private Integer methodId;
 
     @Column
     private Integer method_step;
@@ -15,12 +16,12 @@ public class Method {
     @Column
     private String method_description;
 
-    public Integer getMethod_id() {
-        return method_id;
+    public Integer getMethodId() {
+        return methodId;
     }
 
-    public void setMethod_id(Integer method_id) {
-        this.method_id = method_id;
+    public void setMethodId(Integer methodId) {
+        this.methodId = methodId;
     }
 
     public Integer getMethod_step() {
