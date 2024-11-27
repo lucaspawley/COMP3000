@@ -1,20 +1,15 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable, OnInit } from '@angular/core';
 import { environment } from '../environments/environment.development';
-import { Account } from '../components/account/types/types';
 import { tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
-export class AccountService implements OnInit {
-  currentAccount: Account | undefined;
+export class AccountService {
+  currentToken: string | undefined;
 
   constructor(private http: HttpClient) {}
-
-  ngOnInit(): void {
-    console.log('hello');
-  }
 
   login(username: string, password: string) {
     let body = new URLSearchParams();
@@ -22,16 +17,17 @@ export class AccountService implements OnInit {
     body.set('password', password);
 
     return this.http
-      .post<any>(`${environment.apiURL}/api/account/login`, body.toString(), {
+      .post(`${environment.apiURL}/api/account/login`, body.toString(), {
         headers: new HttpHeaders().set(
           'Content-Type',
           'application/x-www-form-urlencoded'
         ),
+        responseType: 'text',
       })
       .pipe(
         tap((result) => {
-          this.currentAccount = result;
-          sessionStorage.setItem('account', JSON.stringify(result));
+          this.currentToken = result;
+          sessionStorage.setItem('token', JSON.stringify(result));
         })
       );
   }

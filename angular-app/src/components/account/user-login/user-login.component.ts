@@ -12,7 +12,6 @@ import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
 import { AccountService } from '../../../services/account.service';
-import { Account } from '../types/types';
 
 @Component({
   selector: 'app-user-login',
@@ -31,9 +30,11 @@ import { Account } from '../types/types';
 export class UserLoginComponent implements OnInit {
   loginInForm!: FormGroup;
 
-  currentAccount: Account | undefined;
-
-  constructor(private router: Router, private fb: FormBuilder, private accountService: AccountService) {}
+  constructor(
+    private router: Router,
+    private fb: FormBuilder,
+    private accountService: AccountService
+  ) {}
 
   ngOnInit(): void {
     this.loginInForm = this.fb.group({
@@ -49,8 +50,6 @@ export class UserLoginComponent implements OnInit {
         this.loginInForm.get('password')?.value
       )
       .subscribe((response) => {
-        this.currentAccount = response;
-        console.log(response);
         if (response !== undefined) this.router.navigate(['home']);
       });
   }

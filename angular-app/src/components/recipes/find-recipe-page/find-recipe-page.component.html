@@ -9,34 +9,26 @@
 
 <div class="flex">
   @for (recipe of recipes; track $index) {
-  <p-card
-    [header]="recipe.recipeName"
-    [subheader]="recipe.recipeServes"
-    [style]="{ width: '250px' }"
-    class="pr-2"
-  >
-    <ng-template pTemplate="header">
-      <div class="container">
-        <a
-          [ngClass]="recipe.favourite ? 'fa-solid fa-star' : 'fa-regular fa-star'"
-          class="fa-regular fa-star"
-          (click)="favouriteRecipe(recipe)"
-        ></a>
-        <p-image width="150" [src]="recipe.recipeImage" />
-      </div>
-    </ng-template>
-    <ng-template pTemplate="footer">
-      <div class="flex justify-content-end">
-        <div class="flex align-items-center">
-          <p-button
-            [rounded]="true"
-            icon="fa-solid fa-arrow-right"
-            size="small"
-            (onClick)="goToRecipe(recipe.recipeName)"
-          />
+  <div class="pr-2">
+    <div class="p-card" [style]="{ width: '250px' }">
+      <div class="p-card-body">
+        <div class="p-card-title">{{ recipe.recipe_name }}</div>
+        <div class="p-card-subtitle">Serves: {{ recipe.recipe_serves }} | <i class="fa-solid fa-star fa-sm"></i> {{recipe.recipe_rating}}</div>
+
+        <div class="p-card-footer">
+          <div class="flex justify-content-end">
+            <div class="flex align-items-center">
+              <p-button
+                [rounded]="true"
+                icon="fa-solid fa-arrow-right"
+                size="small"
+                (onClick)="goToRecipe(recipe.recipe_id)"
+              />
+            </div>
+          </div>
         </div>
       </div>
-    </ng-template>
-  </p-card>
+    </div>
+  </div>
   }
 </div>
