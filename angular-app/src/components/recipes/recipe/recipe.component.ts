@@ -3,7 +3,7 @@ import { CardModule } from 'primeng/card';
 import { ImageModule } from 'primeng/image';
 import { ActivatedRoute, UrlSegment } from '@angular/router';
 import { RecipeService } from '../../../services/recipe.service';
-import { Recipe } from '../../account/types/types';
+import { Recipe } from '../../types/types';
 
 @Component({
   selector: 'app-recipe',

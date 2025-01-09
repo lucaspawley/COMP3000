@@ -8,7 +8,7 @@ import { ButtonModule } from 'primeng/button';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { RecipeService } from '../../../services/recipe.service';
-import { Recipe } from '../../account/types/types';
+import { Recipe } from '../../types/types';
 
 @Component({
   selector: 'app-find-recipe-page',
