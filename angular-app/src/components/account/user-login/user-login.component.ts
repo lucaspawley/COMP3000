@@ -1,17 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  ReactiveFormsModule,
-} from '@angular/forms';
-import { Router } from '@angular/router';
 import { CardModule } from 'primeng/card';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
 import { AccountService } from '../../../services/account.service';
+import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-user-login',
@@ -23,6 +19,7 @@ import { AccountService } from '../../../services/account.service';
     InputTextModule,
     PasswordModule,
     ReactiveFormsModule,
+    ButtonModule,
   ],
   templateUrl: './user-login.component.html',
   styleUrl: './user-login.component.scss',
