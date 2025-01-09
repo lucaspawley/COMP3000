@@ -43,14 +43,36 @@ export class UserLoginComponent implements OnInit {
     });
   }
 
-  navigateLogin() {
+  userLogin() {
     this.accountService
       .login(
         this.loginInForm.get('username')?.value,
         this.loginInForm.get('password')?.value
       )
       .subscribe((response) => {
-        if (response !== undefined) this.router.navigate(['home']);
+        console.log(response);
+        if (response !== undefined) {
+          this.accountService.currentToken = response;
+          sessionStorage.setItem('token', JSON.stringify(response));
+          this.router.navigate(['home']);
+        }
+      });
+  }
+
+  signUp() {
+    this.accountService
+      .signUp({
+        accountId: undefined,
+        username: this.loginInForm.get('username')?.value,
+        password: this.loginInForm.get('password')?.value,
+        email: 'email1',
+        tasteProfile: {
+          tasteProfileId: undefined,
+          allergies: [],
+        },
+      })
+      .subscribe((response) => {
+        console.log(response);
       });
   }
 }
