@@ -11,19 +11,18 @@ import { RecipeService } from '../../../services/recipe.service';
 import { Recipe } from '../../types/types';
 
 @Component({
-  selector: 'app-find-recipe-page',
-  standalone: true,
-  imports: [
-    CardModule,
-    InputGroupModule,
-    InputGroupAddonModule,
-    InputTextModule,
-    ImageModule,
-    ButtonModule,
-    CommonModule,
-  ],
-  templateUrl: './find-recipe-page.component.html',
-  styleUrl: './find-recipe-page.component.scss',
+    selector: 'app-find-recipe-page',
+    imports: [
+        CardModule,
+        InputGroupModule,
+        InputGroupAddonModule,
+        InputTextModule,
+        ImageModule,
+        ButtonModule,
+        CommonModule,
+    ],
+    templateUrl: './find-recipe-page.component.html',
+    styleUrl: './find-recipe-page.component.scss'
 })
 export class FindRecipePageComponent implements OnInit {
   recipes: Array<Recipe> | undefined;
