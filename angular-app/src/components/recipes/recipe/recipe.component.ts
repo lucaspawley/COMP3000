@@ -6,11 +6,10 @@ import { RecipeService } from '../../../services/recipe.service';
 import { Recipe } from '../../types/types';
 
 @Component({
-  selector: 'app-recipe',
-  standalone: true,
-  imports: [CardModule, ImageModule],
-  templateUrl: './recipe.component.html',
-  styleUrl: './recipe.component.scss',
+    selector: 'app-recipe',
+    imports: [CardModule, ImageModule],
+    templateUrl: './recipe.component.html',
+    styleUrl: './recipe.component.scss'
 })
 export class RecipeComponent implements OnInit {
   recipe: Recipe | undefined;
