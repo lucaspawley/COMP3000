@@ -17,6 +17,16 @@ public class TasteProfile {
             joinColumns = @JoinColumn(name = "taste_profile_id"), inverseJoinColumns = @JoinColumn(name = "allergy_id"))
     private List<Allergy> allergies = new ArrayList<>();
 
+    @ManyToMany
+    @JoinTable(name = "tbl_link_taste_profile_dietPreference",
+            joinColumns = @JoinColumn(name = "taste_profile_id"), inverseJoinColumns = @JoinColumn(name = "dietPreference_id"))
+    private List<DietPreference> dietPreferences = new ArrayList<>();
+
+    @ManyToMany
+    @JoinTable(name = "tbl_link_taste_profile_ingredient",
+            joinColumns = @JoinColumn(name = "taste_profile_id"), inverseJoinColumns = @JoinColumn(name = "ingredient_id"))
+    private List<Ingredient> ingredients = new ArrayList<>();
+
     public Integer getTasteProfileId() {
         return tasteProfileId;
     }
@@ -31,5 +41,21 @@ public class TasteProfile {
 
     public void setAllergies(List<Allergy> allergies) {
         this.allergies = allergies;
+    }
+
+    public List<DietPreference> getDietPreferences() {
+        return dietPreferences;
+    }
+
+    public void setDietPreferences(List<DietPreference> dietPreferences) {
+        this.dietPreferences = dietPreferences;
+    }
+
+    public List<Ingredient> getIngredients() {
+        return ingredients;
+    }
+
+    public void setIngredients(List<Ingredient> ingredients) {
+        this.ingredients = ingredients;
     }
 }

@@ -5,16 +5,16 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "tbl_link_taste_profile_dietPreference")
-public class TasteProfileDietPreferenceLink {
+@Table(name = "tbl_link_taste_profile_ingredient")
+public class TasteProfileIngredientLink {
     @EmbeddedId
-    private TasteProfileDietPreferenceLinkId id;
+    private TasteProfileIngredientLinkId id;
 
-    public TasteProfileDietPreferenceLinkId getId() {
+    public TasteProfileIngredientLinkId getId() {
         return id;
     }
 
-    public void setId(TasteProfileDietPreferenceLinkId id) {
+    public void setId(TasteProfileIngredientLinkId id) {
         this.id = id;
     }
 
@@ -26,11 +26,11 @@ public class TasteProfileDietPreferenceLink {
         id.setTasteProfileId(tasteProfileId);
     }
 
-    public Integer getDietPreferenceId() {
-        return id.getDietPreferenceId();
+    public Integer getIngredientId() {
+        return id.getIngredientId();
     }
 
-    public void setDietPreferenceId(Integer allergyId) {
-        id.setDietPreferenceId(allergyId);
+    public void setIngredientId(Integer ingredientId) {
+        id.setIngredientId(ingredientId);
     }
 }
