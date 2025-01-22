@@ -21,6 +21,12 @@ public class Recipe {
     @Column
     private Integer recipe_serves;
 
+    @Column
+    private Integer recipe_prep_time;
+
+    @Column
+    private Integer recipe_cook_time;
+
     @ManyToMany
     @JoinTable(name = "tbl_link_recipe_allergy",
             joinColumns = @JoinColumn(name = "recipe_id"), inverseJoinColumns = @JoinColumn(name = "allergy_id"))
@@ -90,5 +96,21 @@ public class Recipe {
 
     public void setMethods(List<Method> methods) {
         this.methods = methods;
+    }
+
+    public Integer getRecipe_prep_time() {
+        return recipe_prep_time;
+    }
+
+    public void setRecipe_prep_time(Integer recipe_prep_time) {
+        this.recipe_prep_time = recipe_prep_time;
+    }
+
+    public Integer getRecipe_cook_time() {
+        return recipe_cook_time;
+    }
+
+    public void setRecipe_cook_time(Integer recipe_cook_time) {
+        this.recipe_cook_time = recipe_cook_time;
     }
 }
