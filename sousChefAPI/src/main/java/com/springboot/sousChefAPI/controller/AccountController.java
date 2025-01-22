@@ -1,9 +1,7 @@
 package com.springboot.sousChefAPI.controller;
 
 import com.springboot.sousChefAPI.model.*;
-import com.springboot.sousChefAPI.service.AccountService;
-import com.springboot.sousChefAPI.service.TPAllergyLinkService;
-import com.springboot.sousChefAPI.service.TasteProfileService;
+import com.springboot.sousChefAPI.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +22,12 @@ public class AccountController {
     @Autowired
     private TPAllergyLinkService tpAllergyLinkService;
 
+    @Autowired
+    private TPIngredientLinkService tpIngredientLinkService;
+
+    @Autowired
+    private TPDietPreferenceLinkService tpDietPreferenceLinkService;
+
     @GetMapping("/account")
     public List<Account> get() {
         return accountService.getAllAccounts();
@@ -33,11 +37,19 @@ public class AccountController {
     public Account save(@RequestBody Account accountObj) {
         TasteProfile tasteProfile = accountObj.getTasteProfile();
 
-        tasteProfileService.saveTasteProfile(tasteProfile);
         accountObj.setTasteProfile(tasteProfile);
+        tasteProfileService.saveTasteProfile(tasteProfile);
 
         for (Allergy allergy : tasteProfile.getAllergies()) {
             tpAllergyLinkService.saveTPAllergyLink(tasteProfile.getTasteProfileId(), allergy.getAllergyId());
+        }
+
+        for (Ingredient ingredient : tasteProfile.getIngredients()) {
+            tpAllergyLinkService.saveTPAllergyLink(tasteProfile.getTasteProfileId(), ingredient.getIngredient_id());
+        }
+
+        for (DietPreference dietPreference : tasteProfile.getDietPreferences()) {
+            tpDietPreferenceLinkService.saveTPDietPreferenceLink(tasteProfile.getTasteProfileId(), dietPreference.getDietPreferenceId());
         }
 
         accountService.saveAccount(accountObj);
@@ -53,7 +65,7 @@ public class AccountController {
 //    }
 
     @GetMapping("/account/{username}")
-    public Account getByUsername(@PathVariable String username){
+    public Account getByUsername(@PathVariable String username) {
         return accountService.loadUserByUsername(username);
     }
 
