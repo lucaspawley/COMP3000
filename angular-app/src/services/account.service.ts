@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable, OnInit } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { environment } from '../environments/environment.development';
-import { Observable, tap } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Account } from '../components/types/types';
 
 @Injectable({

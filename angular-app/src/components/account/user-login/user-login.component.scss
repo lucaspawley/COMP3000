@@ -1,6 +1,11 @@
-.card {
-  width: auto;
-  position: absolute;
-  top: 20%;
-  left: 40%;
+.login-card {
+  height: 50%;
+  width: 25%;
+}
+
+.p-step:last-of-type {
+    flex: initial !important;
+    flex-grow: 0 !important;
+    flex-shrink: auto;
+    flex-basis: 0 !important;
 }
