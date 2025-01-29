@@ -27,6 +27,9 @@ public class Recipe {
     @Column
     private Integer recipe_cook_time;
 
+    @Column(name = "account_id")
+    private Integer accountID;
+
     @ManyToMany
     @JoinTable(name = "tbl_link_recipe_allergy",
             joinColumns = @JoinColumn(name = "recipe_id"), inverseJoinColumns = @JoinColumn(name = "allergy_id"))
@@ -112,5 +115,13 @@ public class Recipe {
 
     public void setRecipe_cook_time(Integer recipe_cook_time) {
         this.recipe_cook_time = recipe_cook_time;
+    }
+
+    public Integer getAccountId() {
+        return accountID;
+    }
+
+    public void setAccountId(Integer accountID) {
+        this.accountID = accountID;
     }
 }

@@ -44,18 +44,6 @@ public class RecipeController {
     @Transactional
     public Recipe save(@RequestBody Recipe recipe) {
 
-        List<Ingredient> ingredients = recipe.getIngredients();
-        for (Ingredient ingredient : ingredients) {
-            if (ingredient.getIngredientName() != null) {
-                Ingredient findIngredient = ingredientService.findByName(ingredient.getIngredientName());
-                if (findIngredient == null) {
-                    ingredientService.saveIngredient(ingredient);
-                } else {
-                    ingredient.setIngredient_id(findIngredient.getIngredient_id());
-                }
-            }
-        }
-
         List<Allergy> allergies = recipe.getAllergies();
         for (Allergy allergy : allergies) {
             if (allergy.getAllergyName() != null) {
@@ -64,6 +52,18 @@ public class RecipeController {
                     allergyService.saveAllergy(allergy);
                 } else {
                     allergy.setAllergyId(findAllergy.getAllergyId());
+                }
+            }
+        }
+
+        List<Ingredient> ingredients = recipe.getIngredients();
+        for (Ingredient ingredient : ingredients) {
+            if (ingredient.getIngredientName() != null) {
+                Ingredient findIngredient = ingredientService.findByName(ingredient.getIngredientName());
+                if (findIngredient == null) {
+                    ingredientService.saveIngredient(ingredient);
+                } else {
+                    ingredient.setIngredient_id(findIngredient.getIngredient_id());
                 }
             }
         }
@@ -101,10 +101,15 @@ public class RecipeController {
     }
 
 
-    @GetMapping("/recipe/{id}")
-    public Recipe getRecipeById(@PathVariable int id) {
-        return recipeService.getRecipeById(id)
-                .map(recipe -> new ResponseEntity<>(recipe, HttpStatus.OK))
-                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND)).getBody();
+//    @GetMapping("/recipe/{id}")
+//    public Recipe getRecipeById(@PathVariable int id) {
+//        return recipeService.getRecipeById(id)
+//                .map(recipe -> new ResponseEntity<>(recipe, HttpStatus.OK))
+//                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND)).getBody();
+//    }
+
+    @GetMapping("/recipe/{accountID}")
+    public List<Recipe> getByAccountId(@PathVariable int accountID) {
+        return recipeService.findByAccountId(accountID);
     }
 }

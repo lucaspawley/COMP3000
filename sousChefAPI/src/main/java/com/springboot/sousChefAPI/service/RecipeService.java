@@ -21,6 +21,10 @@ public class RecipeService {
         return recipeRepository.findById(id);
     }
 
+    public List<Recipe> findByAccountId(int accountID) {
+        return recipeRepository.findByAccountID(accountID);
+    }
+
     public Recipe saveRecipe(Recipe recipe) {
         return recipeRepository.save(recipe);
     }
