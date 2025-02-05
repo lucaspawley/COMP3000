@@ -100,6 +100,11 @@ export class UserLoginComponent implements OnInit {
         if (response !== undefined) {
           this.accountService.currentToken = response;
           sessionStorage.setItem('token', JSON.stringify(response));
+          this.accountService
+            .getUserByUsername(this.loginInForm.get('username')?.value)
+            .subscribe((res) => {
+              if (res) this.accountService.currentUser = res;
+            });
           this.router.navigate(['home']);
         }
       });

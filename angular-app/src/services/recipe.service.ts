@@ -1,7 +1,8 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../environments/environment.development';
-import { tap } from 'rxjs';
+import { Observable, tap } from 'rxjs';
+import { Recipe } from '../components/types/types';
 
 @Injectable({
   providedIn: 'root',
@@ -9,25 +10,33 @@ import { tap } from 'rxjs';
 export class RecipeService {
   constructor(private http: HttpClient) {}
 
-  getAllRecipes() {
+  getAllRecipes(): Observable<any> {
     return this.http
       .get(`${environment.apiURL}/api/recipes`, {
         headers: new HttpHeaders().set(
           'Authorization',
           `Bearer ${JSON.parse(sessionStorage.getItem('token') as string)}`
         ),
-      })
-      .pipe(tap(() => {}));
+      });
   }
 
-  getRecipe(recipeId: string) {
+  getRecipe(recipeId: string): Observable<Recipe> {
     return this.http
-      .get(`${environment.apiURL}/api/recipes` + recipeId, {
+      .get(`${environment.apiURL}/api/recipe/${recipeId}`, {
         headers: new HttpHeaders().set(
           'Authorization',
           `Bearer ${JSON.parse(sessionStorage.getItem('token') as string)}`
         ),
-      })
-      .pipe(tap(() => {}));
+      });
   }
+
+  getRecipeByAccountId(accountId: number): Observable<any> {
+    return this.http
+      .get(`${environment.apiURL}/api/recipe/account/${accountId}`, {
+        headers: new HttpHeaders().set(
+          'Authorization',
+          `Bearer ${JSON.parse(sessionStorage.getItem('token') as string)}`
+        ),
+      });
+  } 
 }
