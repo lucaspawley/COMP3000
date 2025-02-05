@@ -18,7 +18,7 @@ public class RecipeController {
     private RecipeService recipeService;
 
     @Autowired
-    private IngredientService ingredientService;
+    private RecipeIngredientService recipeIngredientService;
 
     @Autowired
     private RecipeIngredientLinkService recipeIngredientlinkService;
@@ -56,14 +56,14 @@ public class RecipeController {
             }
         }
 
-        List<Ingredient> ingredients = recipe.getIngredients();
-        for (Ingredient ingredient : ingredients) {
-            if (ingredient.getIngredientName() != null) {
-                Ingredient findIngredient = ingredientService.findByName(ingredient.getIngredientName());
+        List<RecipeIngredient> ingredients = recipe.getIngredients();
+        for (RecipeIngredient ingredient : ingredients) {
+            if (ingredient.getRecipe_ingredient_name() != null) {
+                RecipeIngredient findIngredient = recipeIngredientService.findByName(ingredient.getRecipe_ingredient_name());
                 if (findIngredient == null) {
-                    ingredientService.saveIngredient(ingredient);
+                    recipeIngredientService.saveIngredient(ingredient);
                 } else {
-                    ingredient.setIngredient_id(findIngredient.getIngredient_id());
+                    ingredient.setRecipe_ingredient_id(findIngredient.getRecipe_ingredient_id());
                 }
             }
         }
@@ -76,10 +76,10 @@ public class RecipeController {
         recipeService.saveRecipe(recipe);
         Integer recipeId = recipe.getRecipe_id();
 
-        for (Ingredient ingredient : ingredients) {
-            RecipeIngredientLink linkExists = recipeIngredientlinkService.linkExists(recipeId, ingredient.getIngredient_id());
-            if (ingredient.getIngredient_id() != null) {
-                recipeIngredientlinkService.saveRecipeIngredientLink(recipeId, ingredient.getIngredient_id());
+        for (RecipeIngredient ingredient : ingredients) {
+            RecipeIngredientLink linkExists = recipeIngredientlinkService.linkExists(recipeId, ingredient.getRecipe_ingredient_id());
+            if (ingredient.getRecipe_ingredient_id() != null) {
+                recipeIngredientlinkService.saveRecipeIngredientLink(recipeId, ingredient.getRecipe_ingredient_id());
             }
         }
 
@@ -108,7 +108,7 @@ public class RecipeController {
 //                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND)).getBody();
 //    }
 
-    @GetMapping("/recipe/{accountID}")
+    @GetMapping("/recipe/account/{accountID}")
     public List<Recipe> getByAccountId(@PathVariable int accountID) {
         return recipeService.findByAccountId(accountID);
     }
