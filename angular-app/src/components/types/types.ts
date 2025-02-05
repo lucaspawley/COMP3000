@@ -40,6 +40,7 @@ export class Recipe {
     recipe_serves?: number;
     recipe_prep_time?: number;
     recipe_cook_time?: number;
+    accountId?: number;
     allergies?: Allergy[];
     ingredients?: Ingredient[];
     methods?: Method[];
