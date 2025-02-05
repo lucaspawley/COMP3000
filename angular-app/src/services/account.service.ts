@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable, OnInit } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { environment } from '../environments/environment.development';
-import { Observable, tap } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Account } from '../components/types/types';
 
 @Injectable({
@@ -9,6 +9,7 @@ import { Account } from '../components/types/types';
 })
 export class AccountService {
   currentToken: string | undefined;
+  currentUser: Account | undefined;
 
   constructor(private http: HttpClient) {}
 
@@ -30,7 +31,17 @@ export class AccountService {
     );
   }
 
-  signUp(newUser: Account): Observable<Account> {
+  signUp(newUser: Account): Observable<any> {
     return this.http.post(`${environment.apiURL}/api/account/create`, newUser);
+  }
+
+  getUserByUsername(username: string): Observable<any> {
+    return this.http
+    .get(`${environment.apiURL}/api/account/${username}`, {
+      headers: new HttpHeaders().set(
+        'Authorization',
+        `Bearer ${JSON.parse(sessionStorage.getItem('token') as string)}`
+      ),
+    });
   }
 }

@@ -10,6 +10,7 @@ import { CommonModule } from '@angular/common';
 import { RecipeService } from '../../../services/recipe.service';
 import { Recipe } from '../../types/types';
 
+
 @Component({
     selector: 'app-find-recipe-page',
     imports: [

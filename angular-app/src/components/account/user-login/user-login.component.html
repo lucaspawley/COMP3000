@@ -1,24 +1,263 @@
-<p-card class="card border-round surface-overlay">
-  <div [formGroup]="loginInForm">
-    <p-inputGroup class="mb-2">
-      <p-inputGroupAddon>
-        <i class="fa-solid fa-user"></i>
-      </p-inputGroupAddon>
-      <input pInputText formControlName="username" placeholder="Username" />
-    </p-inputGroup>
-    <p-inputGroup class="mb-2">
-      <p-inputGroupAddon>
-        <i class="fa-solid fa-lock"></i>
-      </p-inputGroupAddon>
-      <input pPassword type="password" [feedback]="false" formControlName="password" placeholder="Password" />
-    </p-inputGroup>
-  </div>
-  <div class="flex justify-content-center">
-    <button pButton type="button" (click)="userLogin()">
-      <span class="p-button-label">Login</span>
-    </button>
-    <button pButton type="button" class="ml-2" (click)="signUp()">
-      <span class="p-button-label">Sign Up</span>
-    </button>
-  </div>
-</p-card>
+<div class="flex justify-content-center">
+  <p-card class="border-round surface-overlay login-card">
+    @if (!signUpMode) {
+    <div class="p-card-title mb-1">Login</div>
+    <div [formGroup]="loginInForm">
+      <p-inputGroup class="mb-2">
+        <p-inputGroupAddon>
+          <i class="fa-solid fa-user"></i>
+        </p-inputGroupAddon>
+        <input pInputText formControlName="username" placeholder="Username" />
+      </p-inputGroup>
+      <p-inputGroup class="mb-2">
+        <p-inputGroupAddon>
+          <i class="fa-solid fa-lock"></i>
+        </p-inputGroupAddon>
+        <input
+          pPassword
+          type="password"
+          [feedback]="false"
+          formControlName="password"
+          placeholder="Password"
+        />
+      </p-inputGroup>
+    </div>
+    <div class="flex justify-content-center">
+      <button pButton type="button" (click)="userLogin()">
+        <span class="p-button-label">Login</span>
+      </button>
+      <button pButton type="button" class="ml-2" (click)="changeMode()">
+        <span class="p-button-label">Sign Up</span>
+      </button>
+    </div>
+    } @else {
+    <p-stepper [(value)]="currentStep">
+      <p-step-list>
+        <p-step [value]="1" class="flex flex-row flex-auto gap-2">
+          <ng-template
+            #content
+            let-activateCallback="activateCallback"
+            let-value="value"
+          >
+            <p-button
+              icon="fa-solid fa-user"
+              [rounded]="true"
+              [outlined]="currentStep != 1"
+              class="bg-transparent outlined p-button-rounded border-0 inline-flex flex-col gap-2"
+              (click)="activateCallback()"
+            >
+            </p-button>
+          </ng-template>
+        </p-step>
+        <p-step [value]="2" class="flex flex-row flex-auto gap-2">
+          <ng-template
+            #content
+            let-activateCallback="activateCallback"
+            let-value="value"
+          >
+            <p-button
+              icon="fa-solid fa-wheat-awn-circle-exclamation"
+              [rounded]="true"
+              [outlined]="currentStep != 2"
+              class="bg-transparent border-0 inline-flex flex-col gap-2"
+              (click)="activateCallback()"
+            >
+            </p-button>
+          </ng-template>
+        </p-step>
+        <p-step [value]="3" class="flex flex-row flex-auto gap-2">
+          <ng-template
+            #content
+            let-activateCallback="activateCallback"
+            let-value="value"
+          >
+            <p-button
+              icon="fa-solid fa-apple-whole"
+              [rounded]="true"
+              [outlined]="currentStep != 3"
+              class="bg-transparent border-0 inline-flex flex-col gap-2"
+              (click)="activateCallback()"
+            >
+            </p-button>
+          </ng-template>
+        </p-step>
+        <p-step [value]="4" class="flex flex-row flex-auto gap-2">
+          <ng-template
+            #content
+            let-activateCallback="activateCallback"
+            let-value="value"
+          >
+            <p-button
+              icon="fa-solid fa-thumbs-down"
+              [rounded]="true"
+              [outlined]="currentStep != 4"
+              class="bg-transparent border-0 inline-flex flex-col gap-2"
+              (click)="activateCallback()"
+            >
+            </p-button>
+          </ng-template>
+        </p-step>
+      </p-step-list>
+
+      <p-step-panels>
+        <p-step-panel [value]="1">
+          <ng-template #content let-activateCallback="activateCallback">
+            <div [formGroup]="signUpForm">
+              <div class="mb-2">
+                <label for="username">Username</label>
+                <p-inputGroup class="mb-2">
+                  <input pInputText formControlName="username" />
+                </p-inputGroup>
+              </div>
+              <div class="mb-2">
+                <label for="email">Email</label>
+                <p-inputGroup class="mb-2">
+                  <input pInputText formControlName="email" />
+                </p-inputGroup>
+              </div>
+              <div class="mb-2">
+                <label for="password">Password</label>
+                <p-inputGroup class="mb-2">
+                  <input
+                    pPassword
+                    type="password"
+                    [feedback]="false"
+                    formControlName="password"
+                  />
+                </p-inputGroup>
+              </div>
+              <div class="mb-2">
+                <label for="confirmPassword">Confirm Password</label>
+                <p-inputGroup class="mb-2">
+                  <input
+                    pPassword
+                    type="password"
+                    [feedback]="false"
+                    formControlName="confirmPassword"
+                  />
+                </p-inputGroup>
+              </div>
+            </div>
+            <div class="flex justify-content-between">
+              <p-button (onClick)="changeMode()"
+                ><i class="fa-solid fa-arrow-left"></i> Back</p-button
+              >
+              <p-button (onClick)="activateCallback(2)"
+                >Next <i class="fa-solid fa-arrow-right"></i
+              ></p-button>
+            </div>
+          </ng-template>
+        </p-step-panel>
+        <p-step-panel [value]="2">
+          <ng-template #content let-activateCallback="activateCallback">
+            <p-inputgroup class="mb-2">
+              <input
+                pInputText
+                placeholder="Allergy"
+                [formControl]="allergyFormControl"
+              />
+              <p-inputgroup-addon>
+                <p-button
+                  icon="fa-solid fa-plus"
+                  severity="secondary"
+                  (onClick)="addAllergy(allergyFormControl.value)"
+                />
+              </p-inputgroup-addon>
+            </p-inputgroup>
+            <div class="flex flex-wrap">
+              @for (allergy of allergyFormArray.value; track $index) {
+              <p-chip
+                (onRemove)="removeAllergy($index)"
+                class="mb-1 ml-1"
+                [label]="allergy"
+                [removable]="true"
+              />
+              }
+            </div>
+            <div class="flex pt-2 justify-content-between">
+              <p-button (onClick)="activateCallback(1)"
+                ><i class="fa-solid fa-arrow-left"></i> Back</p-button
+              >
+              <p-button (onClick)="activateCallback(3)"
+                >Next <i class="fa-solid fa-arrow-right"></i
+              ></p-button>
+            </div>
+          </ng-template>
+        </p-step-panel>
+        <p-step-panel [value]="3">
+          <ng-template #content let-activateCallback="activateCallback">
+            <p-inputgroup class="mb-2">
+              <input
+                pInputText
+                placeholder="Dietary Preference"
+                [formControl]="dietPreferenceFormControl"
+              />
+              <p-inputgroup-addon>
+                <p-button
+                  icon="fa-solid fa-plus"
+                  severity="secondary"
+                  (onClick)="addDietPref(dietPreferenceFormControl.value)"
+                />
+              </p-inputgroup-addon>
+            </p-inputgroup>
+            <div class="flex flex-wrap">
+              @for (dietPref of dietPreferenceFormArray.value; track $index) {
+              <p-chip
+                (onRemove)="removeDietPref($index)"
+                class="mb-1 ml-1"
+                [label]="dietPref"
+                [removable]="true"
+              />
+              }
+            </div>
+            <div class="flex pt-2 justify-content-between">
+              <p-button (onClick)="activateCallback(2)"
+                ><i class="fa-solid fa-arrow-left"></i> Back</p-button
+              >
+              <p-button (onClick)="activateCallback(4)"
+                >Next <i class="fa-solid fa-arrow-right"></i
+              ></p-button>
+            </div>
+          </ng-template>
+        </p-step-panel>
+        <p-step-panel [value]="4">
+          <ng-template #content let-activateCallback="activateCallback">
+            <p-inputgroup class="mb-2">
+              <input
+                pInputText
+                placeholder="Disliked Ingredient"
+                [formControl]="ingredientsFormControl"
+              />
+              <p-inputgroup-addon>
+                <p-button
+                  icon="fa-solid fa-plus"
+                  severity="secondary"
+                  (onClick)="addIngredient(ingredientsFormControl.value)"
+                />
+              </p-inputgroup-addon>
+            </p-inputgroup>
+            <div class="flex flex-wrap">
+              @for (ingredient of ingredientsFormArray.value; track $index) {
+              <p-chip
+                (onRemove)="removeIngredient($index)"
+                class="mb-1 ml-1"
+                [label]="ingredient"
+                [removable]="true"
+              />
+              }
+            </div>
+            <div class="flex pt-2 justify-content-between">
+              <p-button (onClick)="activateCallback(3)"
+                ><i class="fa-solid fa-arrow-left"></i> Back</p-button
+              >
+              <p-button (onClick)="signUp()"
+                >Sign Up <i class="fa-solid fa-arrow-right"></i
+              ></p-button>
+            </div>
+          </ng-template>
+        </p-step-panel>
+      </p-step-panels>
+    </p-stepper>
+    }</p-card
+  >
+</div>

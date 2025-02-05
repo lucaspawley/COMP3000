@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 2.24.612 on 2024-11-27 15:18:00.
+// Generated using typescript-generator version 2.24.612 on 2025-01-23 12:20:54.
 
 export class Account implements UserDetails {
     password?: string;
@@ -8,8 +8,8 @@ export class Account implements UserDetails {
     username?: string;
     accountNonLocked?: boolean;
     authorities?: GrantedAuthority[];
-    credentialsNonExpired?: boolean;
     accountNonExpired?: boolean;
+    credentialsNonExpired?: boolean;
     accountId?: number;
     email?: string;
     tasteProfile?: TasteProfile;
@@ -23,6 +23,8 @@ export class Allergy {
 export class TasteProfile {
     tasteProfileId?: number;
     allergies?: Allergy[];
+    dietPreferences?: DietPreference[];
+    ingredients?: Ingredient[];
 }
 
 export class Method {
@@ -36,6 +38,9 @@ export class Recipe {
     recipe_name?: string;
     recipe_rating?: number;
     recipe_serves?: number;
+    recipe_prep_time?: number;
+    recipe_cook_time?: number;
+    accountId?: number;
     allergies?: Allergy[];
     ingredients?: Ingredient[];
     methods?: Method[];
@@ -52,8 +57,13 @@ export interface UserDetails extends Serializable {
     username?: string;
     accountNonLocked?: boolean;
     authorities?: GrantedAuthority[];
-    credentialsNonExpired?: boolean;
     accountNonExpired?: boolean;
+    credentialsNonExpired?: boolean;
+}
+
+export class DietPreference {
+    dietPreferenceId?: number;
+    dietPreferenceName?: string;
 }
 
 export interface GrantedAuthority extends Serializable {
