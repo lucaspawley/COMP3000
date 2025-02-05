@@ -37,8 +37,8 @@ public class Recipe {
 
     @ManyToMany
     @JoinTable(name = "tbl_link_recipe_ingredient",
-            joinColumns = @JoinColumn(name = "recipe_id"), inverseJoinColumns = @JoinColumn(name = "ingredient_id"))
-    private List<Ingredient> ingredients = new ArrayList<>();
+            joinColumns = @JoinColumn(name = "recipe_id"), inverseJoinColumns = @JoinColumn(name = "recipe_ingredient_id"))
+    private List<RecipeIngredient> ingredients = new ArrayList<>();
 
     @ManyToMany
     @JoinTable(name = "tbl_link_recipe_method",
@@ -85,11 +85,11 @@ public class Recipe {
         this.allergies = allergies;
     }
 
-    public List<Ingredient> getIngredients() {
+    public List<RecipeIngredient> getIngredients() {
         return ingredients;
     }
 
-    public void setIngredients(List<Ingredient> ingredients) {
+    public void setIngredients(List<RecipeIngredient> ingredients) {
         this.ingredients = ingredients;
     }
 

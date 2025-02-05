@@ -8,7 +8,7 @@ import java.util.Objects;
 public class RecipeIngredientLinkId implements Serializable {
     @Column(name = "recipe_id")
     private Integer recipeId;
-    @Column(name = "ingredient_id")
+    @Column(name = "recipe_ingredient_id")
     private Integer ingredientId;
 
     public Integer getRecipeId() {
