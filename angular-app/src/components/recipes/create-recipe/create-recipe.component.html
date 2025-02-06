@@ -32,6 +32,35 @@
     </div>
   </div>
 
+  <h3>Allergies</h3>
+
+  <div class="card">
+    <p-inputgroup class="mb-2">
+      <input
+        pInputText
+        placeholder="Allergy"
+        [formControl]="allergyFormControl"
+      />
+      <p-inputgroup-addon>
+        <p-button
+          icon="fa-solid fa-plus"
+          severity="secondary"
+          (onClick)="addAllergy(allergyFormControl.value)"
+        />
+      </p-inputgroup-addon>
+    </p-inputgroup>
+    <div class="flex flex-wrap">
+      @for (allergy of allergyFormArray.value; track $index) {
+      <p-chip
+        (onRemove)="removeAllergy($index)"
+        class="mb-1 ml-1"
+        [label]="allergy.allergyName"
+        [removable]="true"
+      />
+      }
+    </div>
+  </div>
+
   <h3>Ingredients</h3>
 
   @if (recipeIngredientsFormArray.value !== []) { @for (ingredient of

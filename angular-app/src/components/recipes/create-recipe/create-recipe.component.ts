@@ -17,6 +17,10 @@ import { RecipeService } from '../../../services/recipe.service';
 import { CdkDrag, CdkDragHandle, CdkDropList } from '@angular/cdk/drag-drop';
 import { TextareaModule } from 'primeng/textarea';
 import { FormControlPipe } from '../../../pipes/form-control.pipe';
+import { ChipModule } from 'primeng/chip';
+import { Recipe } from '../../types/types';
+import { Router } from '@angular/router';
+import { AccountService } from '../../../services/account.service';
 
 @Component({
   selector: 'app-create-recipe',
@@ -34,6 +38,7 @@ import { FormControlPipe } from '../../../pipes/form-control.pipe';
     CdkDropList,
     FormControlPipe,
     CdkDragHandle,
+    ChipModule,
   ],
   templateUrl: './create-recipe.component.html',
   styleUrl: './create-recipe.component.scss',
@@ -50,9 +55,14 @@ export class CreateRecipeComponent implements OnInit {
   methodFormArray!: FormArray;
   methodFormGroup!: FormGroup;
 
-  methodSteps: Number = 2;
+  methodSteps: number = 2;
 
-  constructor(private fb: FormBuilder, private recipeService: RecipeService) {}
+  constructor(
+    private fb: FormBuilder,
+    private recipeService: RecipeService,
+    private router: Router,
+    private accountService: AccountService
+  ) {}
 
   ngOnInit(): void {
     this.allergyFormArray = this.fb.array([]);
@@ -86,9 +96,11 @@ export class CreateRecipeComponent implements OnInit {
       recipe_cook_time: 0,
       recipe_prep_time: 0,
       recipe_serves: 0,
+      recipe_rating: 0,
       allergies: this.allergyFormArray,
       ingredients: this.recipeIngredientsFormArray,
       methods: this.methodFormArray,
+      accountId: JSON.parse(sessionStorage.getItem('accountId') as string),
     });
   }
 
@@ -108,6 +120,20 @@ export class CreateRecipeComponent implements OnInit {
 
     this.recipeIngredientsFormArray.push(newRecipeIngredient);
     this.recipeIngredientFormGroup.reset();
+  }
+
+  addAllergy(allergyString: string) {
+    let newAllergy = new FormControl(allergyString);
+    if (allergyString) {
+      this.allergyFormArray.push(
+        this.fb.group({ allergyId: null, allergyName: newAllergy })
+      );
+      this.allergyFormControl.reset();
+    }
+  }
+
+  removeAllergy(allergyIndex: number) {
+    this.allergyFormArray.removeAt(allergyIndex);
   }
 
   moveItemInFormArray(
@@ -147,10 +173,14 @@ export class CreateRecipeComponent implements OnInit {
         method_description: '',
       })
     );
+    this.methodSteps++;
   }
 
   saveRecipe() {
-    console.log(this.methodFormArray);
-    console.log(this.recipeCreationForm);
+    const newRecipe: Recipe = this.recipeCreationForm.value;
+
+    this.recipeService.createRecipe(newRecipe).subscribe(() => {
+      this.router.navigate(['my-recipes']);
+    });
   }
 }
