@@ -1,8 +1,17 @@
+<div class="mb-3">
+  <p-card>
+    <p-button
+      [rounded]="true"
+      icon="fa-solid fa-plus"
+      label="Create"
+      (onClick)="goToCreateRecipe()"
+  /></p-card>
+</div>
 <div class="flex">
   @for (recipe of recipes; track $index) {
   <div class="pr-2">
-    <p-card class="" [style]="{ width: '250px' }">
-      <div class="p-card-body">
+    <p-card [style]="{ width: '250px' }">
+      <div class="p-card-body recipe-card">
         <div class="p-card-title">{{ recipe.recipe_name }}</div>
         <div class="p-card-subtitle">
           Serves: {{ recipe.recipe_serves }} |

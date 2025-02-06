@@ -1,15 +1,15 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 2.24.612 on 2025-01-23 12:20:54.
+// Generated using typescript-generator version 2.24.612 on 2025-02-05 12:03:00.
 
 export class Account implements UserDetails {
-    password?: string;
     enabled?: boolean;
     username?: string;
-    accountNonLocked?: boolean;
-    authorities?: GrantedAuthority[];
-    accountNonExpired?: boolean;
     credentialsNonExpired?: boolean;
+    accountNonExpired?: boolean;
+    authorities?: GrantedAuthority[];
+    accountNonLocked?: boolean;
+    password?: string;
     accountId?: number;
     email?: string;
     tasteProfile?: TasteProfile;
@@ -40,10 +40,10 @@ export class Recipe {
     recipe_serves?: number;
     recipe_prep_time?: number;
     recipe_cook_time?: number;
-    accountId?: number;
     allergies?: Allergy[];
-    ingredients?: Ingredient[];
+    ingredients?: RecipeIngredient[];
     methods?: Method[];
+    accountId?: number;
 }
 
 export class Ingredient {
@@ -52,18 +52,25 @@ export class Ingredient {
 }
 
 export interface UserDetails extends Serializable {
-    password?: string;
     enabled?: boolean;
     username?: string;
-    accountNonLocked?: boolean;
-    authorities?: GrantedAuthority[];
-    accountNonExpired?: boolean;
     credentialsNonExpired?: boolean;
+    accountNonExpired?: boolean;
+    authorities?: GrantedAuthority[];
+    accountNonLocked?: boolean;
+    password?: string;
 }
 
 export class DietPreference {
     dietPreferenceId?: number;
     dietPreferenceName?: string;
+}
+
+export class RecipeIngredient {
+    recipe_ingredient_id?: number;
+    recipe_ingredient_amount?: number;
+    recipe_ingredient_measurement?: string;
+    recipe_ingredient_name?: string;
 }
 
 export interface GrantedAuthority extends Serializable {

@@ -16,7 +16,7 @@ import { Router } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { StepperModule } from 'primeng/stepper';
 import { ChipModule } from 'primeng/chip';
-import { Account, UserDetails } from '../../types/types';
+import { Account } from '../../types/types';
 
 @Component({
   selector: 'app-user-login',
@@ -102,8 +102,11 @@ export class UserLoginComponent implements OnInit {
           sessionStorage.setItem('token', JSON.stringify(response));
           this.accountService
             .getUserByUsername(this.loginInForm.get('username')?.value)
-            .subscribe((res) => {
-              if (res) this.accountService.currentUser = res;
+            .subscribe((res: Account) => {
+              if (res) {
+                this.accountService.currentAccountId = res.accountId;
+                sessionStorage.setItem('accountId', JSON.stringify(res.accountId));
+              }
             });
           this.router.navigate(['home']);
         }

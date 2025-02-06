@@ -7,6 +7,7 @@ import { ShoppingListsPageComponent } from '../components/shopping-lists-page/sh
 import { HomePageComponent } from '../components/home-page/home-page.component';
 import { RecipeComponent } from '../components/recipes/recipe/recipe.component';
 import { MyRecipesComponent } from '../components/recipes/my-recipes/my-recipes.component';
+import { CreateRecipeComponent } from '../components/recipes/create-recipe/create-recipe.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -15,6 +16,7 @@ export const routes: Routes = [
   { path: 'home', component: HomePageComponent },
   { path: 'my-recipes', component: MyRecipesComponent },
   { path: 'find-recipes', component: FindRecipePageComponent },
+  { path: 'create-recipe', component: CreateRecipeComponent },
   { path: 'assistant', component: AssistantPageComponent },
   { path: 'shopping-lists', component: ShoppingListsPageComponent },
   { path: ':recipeName', component: RecipeComponent, pathMatch: 'full' },
