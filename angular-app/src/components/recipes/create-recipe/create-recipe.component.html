@@ -1,0 +1,146 @@
+<p-card>
+  <h2 class="mb-2 mt-0">Create Recipe</h2>
+
+  <div [formGroup]="recipeCreationForm" class="card mb-4">
+    <div class="mb-2">
+      <label for="recipe_name">Recipe Name</label>
+      <p-inputGroup>
+        <input pInputText formControlName="recipe_name" />
+      </p-inputGroup>
+    </div>
+    <div class="flex">
+      <p-inputgroup class="small-text mr-2">
+        <p-inputgroup-addon>
+          <i class="fa-solid fa-user"></i>
+        </p-inputgroup-addon>
+        <input pInputText type="number" formControlName="recipe_serves"
+      /></p-inputgroup>
+
+      <p-inputgroup class="small-text mr-2">
+        <p-inputgroup-addon>
+          <i class="fa-solid fa-fire"></i>
+        </p-inputgroup-addon>
+        <input pInputText type="number" formControlName="recipe_cook_time"
+      /></p-inputgroup>
+
+      <p-inputgroup class="small-text mr-2">
+        <p-inputgroup-addon>
+          <i class="fa-solid fa-utensils"></i>
+        </p-inputgroup-addon>
+        <input pInputText type="number" formControlName="recipe_prep_time"
+      /></p-inputgroup>
+    </div>
+  </div>
+
+  <h3>Ingredients</h3>
+
+  @if (recipeIngredientsFormArray.value !== []) { @for (ingredient of
+  recipeIngredientsFormArray.controls; track $index) {
+  <div class="mb-1">
+    {{ ingredient.get("recipe_ingredient_amount")?.value
+    }}{{ ingredient.get("recipe_ingredient_measurement")?.value }}
+    {{ ingredient.get("recipe_ingredient_name")?.value }}
+  </div>
+  } }
+  <div
+    [formGroup]="recipeIngredientFormGroup"
+    class="flex flex-column card mt-2 pr-8"
+  >
+    <div class="flex align-items-center justify-content-center mb-2">
+      <div>
+        <label for="recipe_ingredient_name">Ingredient</label>
+        <p-inputGroup>
+          <input
+            pInputText
+            pSize="small"
+            formControlName="recipe_ingredient_name"
+            class="mr-2"
+          />
+        </p-inputGroup>
+      </div>
+      <div>
+        <label for="recipe_ingredient_amount">Amount</label>
+        <p-inputGroup>
+          <input
+            pInputText
+            pSize="small"
+            formControlName="recipe_ingredient_amount"
+            class="mr-2"
+          />
+        </p-inputGroup>
+      </div>
+      <div>
+        <label for="recipe_ingredient_measurement">Measurement</label>
+        <p-inputGroup>
+          <p-inputGroup>
+            <input
+              pInputText
+              pSize="small"
+              formControlName="recipe_ingredient_measurement"
+            />
+          </p-inputGroup>
+        </p-inputGroup>
+      </div>
+    </div>
+    <div class="flex align-items-center justify-content-center">
+      <p-button
+        (onClick)="addToArray()"
+        size="small"
+        [rounded]="true"
+        icon="fa-solid fa-plus"
+      ></p-button>
+    </div>
+  </div>
+
+  <h3 class="mb-0 mt-0">Method</h3>
+
+  <div [formGroup]="recipeCreationForm" class="mb-2 flex boundary">
+    <div
+      formArrayName="methods"
+      cdkDropList
+      cdkDropListOrientation="mixed"
+      class="example-list flex"
+      (cdkDropListDropped)="drop($event)"
+    >
+      @for (method of methodFormArray.controls; track $index;) {
+      <p-card
+        [formGroupName]="$index"
+        class="mr-2 mt-2 box"
+        cdkDragBoundary=".boundary"
+        cdkDrag
+      >
+        <div class="flex justify-content-between">
+          <div class="p-card-title mb-1">
+            Step {{ method.get("method_step")?.value }}
+          </div>
+          <div cdkDragHandle [style]="{ color: '#8DB38B', cursor: 'move' }">
+            <i class="fa-solid fa-arrows-up-down-left-right"></i>
+          </div>
+        </div>
+        @if(method.get('method_description') !== null){
+        <textarea
+          pTextarea
+          [formControl]="method.get('method_description') | formControl"
+          [autoResize]="true"
+          [style]="{ width: '100%' }"
+        ></textarea
+        >}</p-card
+      >}
+      <div class="flex">
+        <p-button
+          (onClick)="addMethod()"
+          class="flex align-items-center"
+          size="small"
+          [rounded]="true"
+          icon="fa-solid fa-plus"
+        ></p-button>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <p-button (onClick)="saveRecipe()" [rounded]="true"
+      ><i class="fa-solid fa-save"></i> Save</p-button
+    >
+  </div>
+</p-card>
