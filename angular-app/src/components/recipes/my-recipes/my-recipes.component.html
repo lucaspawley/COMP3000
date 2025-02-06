@@ -1,10 +1,12 @@
-<p-button
-  [rounded]="true"
-  icon="fa-solid fa-plus"
-  class="mb-3"
-  label="Create"
-  (onClick)="goToCreateRecipe()"
-/>
+<div class="mb-3">
+  <p-card>
+    <p-button
+      [rounded]="true"
+      icon="fa-solid fa-plus"
+      label="Create"
+      (onClick)="goToCreateRecipe()"
+  /></p-card>
+</div>
 <div class="flex">
   @for (recipe of recipes; track $index) {
   <div class="pr-2">
