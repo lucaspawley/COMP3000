@@ -1,7 +1,13 @@
+<p-button
+  [rounded]="true"
+  icon="fa-solid fa-plus"
+  label="Create"
+  (onClick)="goToCreateRecipe()"
+/>
 <div class="flex">
   @for (recipe of recipes; track $index) {
   <div class="pr-2">
-    <p-card class="" [style]="{ width: '250px' }">
+    <p-card [style]="{ width: '250px' }">
       <div class="p-card-body">
         <div class="p-card-title">{{ recipe.recipe_name }}</div>
         <div class="p-card-subtitle">

@@ -35,9 +35,8 @@ export class MyRecipesComponent {
   ) {}
 
   ngOnInit(): void {
-    if (this.accountService.currentUser?.accountId)
       this.recipeService
-        .getRecipeByAccountId(this.accountService.currentUser?.accountId)
+        .getRecipeByAccountId(JSON.parse(sessionStorage.getItem('accountId') as string))
         .subscribe((result: any) => {
           this.recipes = result;
         });
@@ -45,5 +44,9 @@ export class MyRecipesComponent {
 
   goToRecipe(recipeId: number | undefined) {
     this.router.navigate([recipeId]);
+  }
+
+  goToCreateRecipe() {
+    this.router.navigate(['create-recipe']);
   }
 }
