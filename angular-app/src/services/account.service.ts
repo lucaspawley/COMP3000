@@ -9,7 +9,7 @@ import { Account } from '../components/types/types';
 })
 export class AccountService {
   currentToken: string | undefined;
-  currentUser: Account | undefined;
+  currentAccountId: Number | undefined;
 
   constructor(private http: HttpClient) {}
 
