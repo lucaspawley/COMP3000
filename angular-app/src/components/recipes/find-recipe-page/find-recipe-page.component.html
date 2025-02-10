@@ -10,13 +10,20 @@
 <div class="flex">
   @for (recipe of recipes; track $index) {
   <div class="pr-2">
-    <p-card class="" [style]="{ width: '250px' }">
-      <div class="p-card-body">
+    <p-card [style]="{ width: '300px' }">
+      <div class="p-card-body recipe-card">
         <div class="p-card-title">{{ recipe.recipe_name }}</div>
         <div class="p-card-subtitle">
-          Serves: {{ recipe.recipe_serves }} |
-          <i class="fa-solid fa-star fa-sm"></i> {{ recipe.recipe_rating }}
+          <i class="fa-solid fa-user fa-sm"></i> {{ recipe.recipe_serves }} |
+          <i class="fa-solid fa-fire fa-sm"></i> {{ recipe.recipe_cook_time }} |
+          <i class="fa-solid fa-utensils fa-sm"></i>
+          {{ recipe.recipe_prep_time }} | <i class="fa-solid fa-star fa-sm"></i>
+          {{ recipe.recipe_rating }}
         </div>
+
+        @if(recipe?.imageSafeUrl){
+        <img [src]="recipe?.imageSafeUrl" alt="Recipe Image" width="250" />
+        }
 
         <div class="p-card-footer">
           <div class="flex justify-content-end">

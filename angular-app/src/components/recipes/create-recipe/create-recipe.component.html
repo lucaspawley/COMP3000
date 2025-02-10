@@ -1,4 +1,8 @@
 <p-card>
+  <div class="flex">
+    <input type="file" (change)="onFileUpload($event)" />
+  </div>
+
   <h2 class="mb-2 mt-0">Create Recipe</h2>
 
   <div [formGroup]="recipeCreationForm" class="card mb-4">
@@ -77,17 +81,6 @@
   >
     <div class="flex align-items-center justify-content-center mb-2">
       <div>
-        <label for="recipe_ingredient_name">Ingredient</label>
-        <p-inputGroup>
-          <input
-            pInputText
-            pSize="small"
-            formControlName="recipe_ingredient_name"
-            class="mr-2"
-          />
-        </p-inputGroup>
-      </div>
-      <div>
         <label for="recipe_ingredient_amount">Amount</label>
         <p-inputGroup>
           <input
@@ -106,8 +99,19 @@
               pInputText
               pSize="small"
               formControlName="recipe_ingredient_measurement"
+              class="mr-2"
             />
           </p-inputGroup>
+        </p-inputGroup>
+      </div>
+      <div>
+        <label for="recipe_ingredient_name">Ingredient</label>
+        <p-inputGroup>
+          <input
+            pInputText
+            pSize="small"
+            formControlName="recipe_ingredient_name"
+          />
         </p-inputGroup>
       </div>
     </div>
@@ -134,7 +138,7 @@
       @for (method of methodFormArray.controls; track $index;) {
       <p-card
         [formGroupName]="$index"
-        class="mr-2 mt-2 box"
+        class="mr-2 mt-2"
         cdkDragBoundary=".boundary"
         cdkDrag
       >
