@@ -6,6 +6,7 @@ import aura from '@primeng/themes/aura';
 
 import { routes } from './app.routes';
 import { provideHttpClient } from '@angular/common/http';
+import { IMAGE_CONFIG } from '@angular/common';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -13,13 +14,20 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideHttpClient(),
     provideAnimationsAsync(),
-        providePrimeNG({
-            theme: {
-                preset: aura,
-                options: {
-                  darkModeSelector: 'false'
-              }
-            }
-        })
+    providePrimeNG({
+      theme: {
+        preset: aura,
+        options: {
+          darkModeSelector: 'false',
+        },
+      },
+    }),
+    {
+      provide: IMAGE_CONFIG,
+      useValue: {
+        disableImageSizeWarning: true,
+        disableImageLazyLoadWarning: true,
+      },
+    },
   ],
 };

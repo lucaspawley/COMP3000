@@ -1,15 +1,17 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 2.24.612 on 2025-02-05 12:03:00.
+// Generated using typescript-generator version 2.24.612 on 2025-02-10 12:24:32.
+
+import { SafeUrl } from "@angular/platform-browser";
 
 export class Account implements UserDetails {
+    authorities?: GrantedAuthority[];
+    accountNonLocked?: boolean;
+    password?: string;
     enabled?: boolean;
     username?: string;
     credentialsNonExpired?: boolean;
     accountNonExpired?: boolean;
-    authorities?: GrantedAuthority[];
-    accountNonLocked?: boolean;
-    password?: string;
     accountId?: number;
     email?: string;
     tasteProfile?: TasteProfile;
@@ -34,16 +36,22 @@ export class Method {
 }
 
 export class Recipe {
+    map(arg0: (recipe: any) => any): Recipe | undefined {
+      throw new Error('Method not implemented.');
+    }
     recipe_id?: number;
     recipe_name?: string;
     recipe_rating?: number;
     recipe_serves?: number;
     recipe_prep_time?: number;
     recipe_cook_time?: number;
+    imageData?: any;
+    imageSafeUrl?: SafeUrl;
     allergies?: Allergy[];
     ingredients?: RecipeIngredient[];
     methods?: Method[];
     accountId?: number;
+    imageBase64?: string;
 }
 
 export class Ingredient {
@@ -52,13 +60,13 @@ export class Ingredient {
 }
 
 export interface UserDetails extends Serializable {
+    authorities?: GrantedAuthority[];
+    accountNonLocked?: boolean;
+    password?: string;
     enabled?: boolean;
     username?: string;
     credentialsNonExpired?: boolean;
     accountNonExpired?: boolean;
-    authorities?: GrantedAuthority[];
-    accountNonLocked?: boolean;
-    password?: string;
 }
 
 export class DietPreference {
