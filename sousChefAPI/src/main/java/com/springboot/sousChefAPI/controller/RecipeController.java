@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
@@ -40,9 +41,10 @@ public class RecipeController {
         return recipeService.getAllRecipes();
     }
 
-    @PostMapping("/recipe")
+    @PostMapping(value = "/recipe", consumes = {"multipart/form-data"})
     @Transactional
-    public Recipe save(@RequestBody Recipe recipe) {
+    public Recipe save(@RequestPart("recipe") Recipe recipe,
+                       @RequestPart("image") MultipartFile file) {
 
         List<Allergy> allergies = recipe.getAllergies();
         for (Allergy allergy : allergies) {
@@ -73,7 +75,7 @@ public class RecipeController {
             methodService.saveMethod(method);
         }
 
-        recipeService.saveRecipe(recipe);
+        recipeService.saveRecipe(recipe, file);
         Integer recipeId = recipe.getRecipe_id();
 
         for (RecipeIngredient ingredient : ingredients) {

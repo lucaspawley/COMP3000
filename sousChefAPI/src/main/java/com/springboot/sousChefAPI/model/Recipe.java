@@ -3,6 +3,7 @@ package com.springboot.sousChefAPI.model;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
 @Entity
@@ -26,6 +27,10 @@ public class Recipe {
 
     @Column
     private Integer recipe_cook_time;
+
+    @Lob
+    @Column(columnDefinition = "LONGBLOB", name = "recipe_image")
+    private byte[] imageData;
 
     @Column(name = "account_id")
     private Integer accountID;
@@ -123,5 +128,20 @@ public class Recipe {
 
     public void setAccountId(Integer accountID) {
         this.accountID = accountID;
+    }
+
+    public byte[] getImageData() {
+        return imageData;
+    }
+
+    public void setImageData(byte[] imageData) {
+        this.imageData = imageData;
+    }
+
+    public String getImageBase64() {
+        if (this.imageData != null) {
+            return Base64.getEncoder().encodeToString(this.imageData);
+        }
+        return null;
     }
 }
