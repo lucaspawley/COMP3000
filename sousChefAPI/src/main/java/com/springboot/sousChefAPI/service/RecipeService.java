@@ -4,9 +4,12 @@ import com.springboot.sousChefAPI.model.Recipe;
 import com.springboot.sousChefAPI.repository.RecipeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class RecipeService {
@@ -14,7 +17,7 @@ public class RecipeService {
     private RecipeRepository recipeRepository;
 
     public List<Recipe> getAllRecipes() {
-        return recipeRepository.findAll();
+        return recipeRepository.findAll().stream().peek(Recipe::getImageBase64).collect(Collectors.toList());
     }
 
     public Optional<Recipe> getRecipeById(int id) {
@@ -22,11 +25,16 @@ public class RecipeService {
     }
 
     public List<Recipe> findByAccountId(int accountID) {
-        return recipeRepository.findByAccountID(accountID);
+        return recipeRepository.findByAccountID(accountID).stream().peek(Recipe::getImageBase64).collect(Collectors.toList());
     }
 
-    public Recipe saveRecipe(Recipe recipe) {
-        return recipeRepository.save(recipe);
+    public Recipe saveRecipe(Recipe recipe, MultipartFile file) {
+        try {
+            recipe.setImageData(file.getBytes());
+            return recipeRepository.save(recipe);
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to process image file", e);
+        }
     }
 
     public void deleteRecipe(int id) {

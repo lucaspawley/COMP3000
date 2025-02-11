@@ -19,7 +19,7 @@ export class RecipeService {
     });
   }
 
-  getRecipe(recipeId: string): Observable<Recipe> {
+  getRecipe(recipeId: string): Observable<any> {
     return this.http.get(`${environment.apiURL}/api/recipe/${recipeId}`, {
       headers: new HttpHeaders().set(
         'Authorization',
@@ -40,8 +40,18 @@ export class RecipeService {
     );
   }
 
-  createRecipe(recipe: Recipe): Observable<any> {
-    return this.http.post(`${environment.apiURL}/api/recipe`, recipe, {
+  createRecipe(recipe: Recipe, file: File): Observable<any> {
+    const formData = new FormData();
+    formData.append(
+      'recipe',
+      new Blob([JSON.stringify(recipe)], { type: 'application/json' })
+    );
+    formData.append('image', file);
+
+    // Debugging: Check if the FormData is correct
+    console.log(formData);
+
+    return this.http.post(`${environment.apiURL}/api/recipe`, formData, {
       headers: new HttpHeaders().set(
         'Authorization',
         `Bearer ${JSON.parse(sessionStorage.getItem('token') as string)}`

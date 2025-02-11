@@ -21,6 +21,7 @@ import { ChipModule } from 'primeng/chip';
 import { Recipe } from '../../types/types';
 import { Router } from '@angular/router';
 import { AccountService } from '../../../services/account.service';
+import { FileUploadModule } from 'primeng/fileupload';
 
 @Component({
   selector: 'app-create-recipe',
@@ -39,12 +40,14 @@ import { AccountService } from '../../../services/account.service';
     FormControlPipe,
     CdkDragHandle,
     ChipModule,
+    FileUploadModule,
   ],
   templateUrl: './create-recipe.component.html',
   styleUrl: './create-recipe.component.scss',
 })
 export class CreateRecipeComponent implements OnInit {
   recipeCreationForm!: FormGroup;
+  recipeImage!: File;
 
   allergyFormArray!: FormArray;
   allergyFormControl!: FormControl;
@@ -176,11 +179,18 @@ export class CreateRecipeComponent implements OnInit {
     this.methodSteps++;
   }
 
+  onFileUpload(event: any) {
+    this.recipeImage = event.target.files[0];
+    console.log(this.recipeImage);
+  }
+
   saveRecipe() {
     const newRecipe: Recipe = this.recipeCreationForm.value;
 
-    this.recipeService.createRecipe(newRecipe).subscribe(() => {
-      this.router.navigate(['my-recipes']);
-    });
+    this.recipeService
+      .createRecipe(newRecipe, this.recipeImage)
+      .subscribe(() => {
+        this.router.navigate(['my-recipes']);
+      });
   }
 }

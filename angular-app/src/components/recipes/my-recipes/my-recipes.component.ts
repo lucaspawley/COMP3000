@@ -10,6 +10,7 @@ import { Recipe } from '../../types/types';
 import { Router } from '@angular/router';
 import { RecipeService } from '../../../services/recipe.service';
 import { AccountService } from '../../../services/account.service';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-my-recipes',
@@ -31,15 +32,26 @@ export class MyRecipesComponent {
   constructor(
     private router: Router,
     private recipeService: RecipeService,
-    private accountService: AccountService
+    private accountService: AccountService,
+    private sanitizer: DomSanitizer
   ) {}
 
   ngOnInit(): void {
       this.recipeService
         .getRecipeByAccountId(JSON.parse(sessionStorage.getItem('accountId') as string))
-        .subscribe((result: any) => {
-          this.recipes = result;
+        .subscribe((result: Recipe) => {
+          if (Array.isArray(result)) {
+            this.recipes = result.map(recipe => ({
+              ...recipe,
+              imageSafeUrl: this.sanitizeImage(recipe.imageBase64)
+            }));
+          }
+          console.log(this.recipes);
         });
+  }
+
+  sanitizeImage(base64: string): SafeUrl {
+    return this.sanitizer.bypassSecurityTrustUrl(`data:image/jpeg;base64,${base64}`);
   }
 
   goToRecipe(recipeId: number | undefined) {

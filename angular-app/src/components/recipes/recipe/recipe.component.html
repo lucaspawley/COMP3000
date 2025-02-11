@@ -1,3 +1,80 @@
-<div>
+<div class="mb-2">
+  <p-card>
+    <div class="flex">
+      <div class="mr-1">
+        <p-button
+          [rounded]="true"
+          icon="fa-solid fa-plus"
+          label="Add to List"
+          (onClick)="addToList()"
+        />
+      </div>
+      <div class="mr-1">
+        <p-button
+          [rounded]="true"
+          icon="fa-regular fa-heart"
+          label="Favourite Recipe"
+          (onClick)="favouriteRecipe()"
+        />
+      </div>
+      <div>
+        <p-button
+          [rounded]="true"
+          icon="fa-solid fa-star"
+          label="Rate"
+          (onClick)="rateRecipe()"
+        />
+      </div></div
+  ></p-card>
+</div>
 
+<div>
+  <p-card>
+    <ng-template #title
+      ><h2 class="mb-0 mt-0">{{ recipe?.recipe_name }}</h2>
+    </ng-template>
+    <ng-template #subtitle>
+      Serves {{ recipe?.recipe_serves }} | Cook time:
+      {{ recipe?.recipe_cook_time }} minutes | Prep time:
+      {{ recipe?.recipe_prep_time }} minutes | {{ recipe?.recipe_rating }}
+      <i class="fa-solid fa-star"></i>
+    </ng-template>
+
+    <h3 class="mb-1">Allergies</h3>
+    @if(recipe?.allergies == []){ @for (allergy of recipe?.allergies; track
+    $index) {
+    <p-chip
+      class="mr-1"
+      [style]="{ background: '#8DB38B', color: 'white' }"
+      [label]="allergy.allergyName"
+    />
+    }}@else {No Allergies}
+
+    <h3 class="mb-2">Ingredient</h3>
+
+    @for (ingredient of recipe?.ingredients; track $index) {
+    <p class="mb-1 mt-1">
+      {{ ingredient.recipe_ingredient_amount
+      }}{{ ingredient.recipe_ingredient_measurement }}
+      {{ ingredient.recipe_ingredient_name }}
+    </p>
+    }
+
+    <h3 class="mb-2">Method</h3>
+    <div class="flex flex-wrap">
+      @for (method of recipe?.methods; track $index) {
+      <div class="mr-2 mb-2 card">
+        <p-card
+          ><ng-template #title>Step {{ method.method_step }} </ng-template>
+          {{ method.method_description }}
+        </p-card>
+      </div>
+      }
+    </div>
+    <div>
+      @if(recipe?.imageSafeUrl){
+      <img [src]="recipe?.imageSafeUrl" alt="Recipe Image" width="300" />
+      }
+    </div></p-card
+  >
 </div>
