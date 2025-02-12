@@ -22,6 +22,11 @@
         />
       </p-inputGroup>
     </div>
+    <div class="mb-1">
+      @if (loginError) {
+      <small class="error">{{ loginError }}</small>
+      }
+    </div>
     <div class="flex justify-content-center">
       <button pButton type="button" (click)="userLogin()">
         <span class="p-button-label">Login</span>
@@ -136,6 +141,11 @@
                     formControlName="confirmPassword"
                   />
                 </p-inputGroup>
+              </div>
+              <div class="mb-1">
+                @if (signUpForm.hasError('passwordMismatch') &&
+                signUpForm.touched) {
+                <small class="error">Passwords do not match!</small>}
               </div>
             </div>
             <div class="flex justify-content-between">

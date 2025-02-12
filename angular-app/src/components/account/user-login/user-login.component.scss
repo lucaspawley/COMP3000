@@ -4,8 +4,12 @@
 }
 
 .p-step:last-of-type {
-    flex: initial !important;
-    flex-grow: 0 !important;
-    flex-shrink: auto;
-    flex-basis: 0 !important;
+  flex: initial !important;
+  flex-grow: 0 !important;
+  flex-shrink: auto;
+  flex-basis: 0 !important;
+}
+
+.error {
+  color: red;
 }
