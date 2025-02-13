@@ -1,5 +1,6 @@
 package com.springboot.sousChefAPI.service;
 
+import com.springboot.sousChefAPI.exception.InvalidLoginException;
 import com.springboot.sousChefAPI.model.Account;
 import com.springboot.sousChefAPI.repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,19 +68,24 @@ public class AccountService implements UserDetailsService {
         Account account = accountRepository.findByUsername(username);
 
         if (account == null) {
-            throw new Exception("Invalid username or password. Please try again.");
-        } else {
-            boolean validPass = passwordEncoder.matches(rawPassword, account.getPassword());
-
-            if (!validPass) {
-                throw new Exception("Invalid username or password. Please try again.");
-            } else {
-                Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, rawPassword));
-                if (authentication.isAuthenticated()) {
-                    return jwtService.generateToken(account.getUsername());
-                } else throw new Exception("Invalid username or password. Please try again.");
-            }
+            throw new InvalidLoginException("Invalid Credentials. Please try again.");
         }
+
+        boolean validPass = passwordEncoder.matches(rawPassword, account.getPassword());
+
+        if (!validPass) {
+            throw new InvalidLoginException("Invalid Credentials. Please try again.");
+        }
+
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(username, rawPassword)
+        );
+
+        if (!authentication.isAuthenticated()) {
+            throw new InvalidLoginException("Invalid Credentials. Please try again.");
+        }
+
+        return jwtService.generateToken(account.getUsername());
     }
 }
 

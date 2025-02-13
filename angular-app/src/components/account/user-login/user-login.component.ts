@@ -6,17 +6,22 @@ import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
 import { AccountService } from '../../../services/account.service';
 import {
+  AbstractControl,
   FormArray,
   FormBuilder,
   FormControl,
   FormGroup,
   ReactiveFormsModule,
+  ValidationErrors,
+  ValidatorFn,
+  Validators,
 } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { StepperModule } from 'primeng/stepper';
 import { ChipModule } from 'primeng/chip';
 import { Account } from '../../types/types';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-user-login',
@@ -51,6 +56,7 @@ export class UserLoginComponent implements OnInit {
 
   signUpMode: boolean = false;
   currentStep: number = 1;
+  loginError: string | undefined;
 
   constructor(
     private router: Router,
@@ -80,13 +86,21 @@ export class UserLoginComponent implements OnInit {
       ingredients: this.ingredientsFormArray,
     });
 
-    this.signUpForm = this.fb.group({
-      accountId: new FormControl(null),
-      username: new FormControl(''),
-      password: new FormControl(''),
-      confirmPassword: new FormControl(''),
-      email: new FormControl(''),
-    });
+    this.signUpForm = this.fb.group(
+      {
+        accountId: new FormControl(null),
+        username: new FormControl('', Validators.required),
+        password: new FormControl('', Validators.required),
+        confirmPassword: new FormControl('', Validators.required),
+        email: new FormControl('', Validators.required),
+      },
+      {
+        validators: this.confirmPasswordValidator(
+          'password',
+          'confirmPassword'
+        ),
+      }
+    );
   }
 
   userLogin() {
@@ -95,22 +109,46 @@ export class UserLoginComponent implements OnInit {
         this.loginInForm.get('username')?.value,
         this.loginInForm.get('password')?.value
       )
-      .subscribe((response) => {
-        console.log(response);
-        if (response !== undefined) {
-          this.accountService.currentToken = response;
-          sessionStorage.setItem('token', JSON.stringify(response));
-          this.accountService
-            .getUserByUsername(this.loginInForm.get('username')?.value)
-            .subscribe((res: Account) => {
-              if (res) {
-                this.accountService.currentAccountId = res.accountId;
-                sessionStorage.setItem('accountId', JSON.stringify(res.accountId));
-              }
-            });
-          this.router.navigate(['home']);
-        }
+      .subscribe({
+        next: (response: string) => {
+          if (response !== undefined) {
+            this.accountService.currentToken = response;
+            sessionStorage.setItem('token', JSON.stringify(response));
+            this.accountService
+              .getUserByUsername(this.loginInForm.get('username')?.value)
+              .subscribe((res: Account) => {
+                if (res) {
+                  this.accountService.currentAccountId = res.accountId;
+                  sessionStorage.setItem(
+                    'accountId',
+                    JSON.stringify(res.accountId)
+                  );
+                }
+              });
+            this.router.navigate(['home']);
+          }
+        },
+        error: (e: HttpErrorResponse) => {
+          this.loginError = e.error;
+          this.loginInForm.reset();
+        },
       });
+  }
+
+  confirmPasswordValidator(
+    passwordField: string,
+    confirmPasswordField: string
+  ): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const password = control.get(passwordField)?.value;
+      const confirmPassword = control.get(confirmPasswordField)?.value;
+
+      if (password !== confirmPassword) {
+        return { passwordMismatch: true };
+      }
+
+      return null;
+    };
   }
 
   changeMode() {
@@ -155,42 +193,44 @@ export class UserLoginComponent implements OnInit {
   }
 
   signUp() {
-    this.signUpForm.removeControl('confirmPassword');
+    if (this.signUpForm.valid) {
+      this.signUpForm.removeControl('confirmPassword');
 
-    let newUser: Account = this.signUpForm.value;
+      let newUser: Account = this.signUpForm.value;
 
-    newUser.tasteProfile = {
-      tasteProfileId: undefined,
-      allergies: [],
-      dietPreferences: [],
-      ingredients: [],
-    };
+      newUser.tasteProfile = {
+        tasteProfileId: undefined,
+        allergies: [],
+        dietPreferences: [],
+        ingredients: [],
+      };
 
-    this.allergyFormArray.value.forEach((allergy: string) => {
-      newUser.tasteProfile?.allergies?.push({
-        allergyId: undefined,
-        allergyName: allergy,
+      this.allergyFormArray.value.forEach((allergy: string) => {
+        newUser.tasteProfile?.allergies?.push({
+          allergyId: undefined,
+          allergyName: allergy,
+        });
       });
-    });
 
-    this.dietPreferenceFormArray.value.forEach((dietPref: string) => {
-      newUser.tasteProfile?.dietPreferences?.push({
-        dietPreferenceId: undefined,
-        dietPreferenceName: dietPref,
+      this.dietPreferenceFormArray.value.forEach((dietPref: string) => {
+        newUser.tasteProfile?.dietPreferences?.push({
+          dietPreferenceId: undefined,
+          dietPreferenceName: dietPref,
+        });
       });
-    });
 
-    this.ingredientsFormArray.value.forEach((ingredient: string) => {
-      newUser.tasteProfile?.ingredients?.push({
-        ingredient_id: undefined,
-        ingredientName: ingredient,
+      this.ingredientsFormArray.value.forEach((ingredient: string) => {
+        newUser.tasteProfile?.ingredients?.push({
+          ingredient_id: undefined,
+          ingredientName: ingredient,
+        });
       });
-    });
 
-    this.accountService.signUp(newUser).subscribe((response) => {
-      console.log(response);
-      this.signUpForm.addControl('confirmPassword', new FormControl(''));
-      this.changeMode();
-    });
+      this.accountService.signUp(newUser).subscribe((response) => {
+        console.log(response);
+        this.signUpForm.addControl('confirmPassword', new FormControl(''));
+        this.changeMode();
+      });
+    }
   }
 }
