@@ -9,7 +9,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -111,8 +113,12 @@ public class RecipeController {
     }
 
     @PostMapping("/recipe/favourite")
-    public String favouriteRecipe(@RequestBody FavouriteRecipe favouriteRecipe){
-        return favouriteRecipeService.save(favouriteRecipe);
+    public ResponseEntity<Map<String, String>> favouriteRecipe(@RequestBody FavouriteRecipe favouriteRecipe){
+        favouriteRecipeService.save(favouriteRecipe);
+
+        Map<String, String> response = new HashMap<>();
+        response.put("message", "Recipe added to favourites!");
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/recipe/{id}")
