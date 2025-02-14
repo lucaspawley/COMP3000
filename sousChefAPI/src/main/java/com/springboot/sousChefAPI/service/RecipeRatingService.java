@@ -30,16 +30,17 @@ public class RecipeRatingService {
     }
 
     @Transactional
-    public RecipeRating saveRecipeRatingAndUpdateRecipe(Integer recipeId, Integer accountId, Integer rating) {
+    public Optional<Recipe> saveRecipeRatingAndUpdateRecipe(Integer recipeId, Integer accountId, Integer rating) {
         RecipeRating recipeRating = new RecipeRating();
         recipeRating.setRecipeId(recipeId);
         recipeRating.setAccountId(accountId);
         recipeRating.setRecipeRating(rating);
         recipeRatingRepository.save(recipeRating);
 
-        List<Integer> ratings = recipeRatingRepository.findAllByRecipeId(recipeId)
+        List<Double> ratings = recipeRatingRepository.findAllByRecipeId(recipeId)
                 .stream()
                 .map(RecipeRating::getRecipeRating)
+                .map(Double::valueOf) // Convert Integer to Double
                 .collect(Collectors.toList());
 
         double meanRating = calculateMean(ratings);
@@ -47,17 +48,18 @@ public class RecipeRatingService {
         Optional<Recipe> recipeOptional = recipeRepository.findById(recipeId);
         if (recipeOptional.isPresent()) {
             Recipe recipe = recipeOptional.get();
-            recipe.setRecipe_rating((double) Math.round(meanRating)); // Round to nearest whole number
+            recipe.setRecipe_rating(meanRating);
             recipeRepository.save(recipe);
         }
 
-        return recipeRating;
+        return recipeOptional;
     }
 
-    private double calculateMean(List<Integer> ratings) {
+    private double calculateMean(List<Double> ratings) {
         if (ratings.isEmpty()) {
-            return 0;
+            return 0.0;
         }
-        return ratings.stream().mapToInt(Integer::intValue).average().orElse(0);
+        return ratings.stream().mapToDouble(Double::doubleValue).average().orElse(0.0);
     }
+
 }

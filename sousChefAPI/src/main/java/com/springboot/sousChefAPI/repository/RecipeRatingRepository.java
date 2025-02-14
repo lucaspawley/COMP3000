@@ -10,5 +10,5 @@ import java.util.List;
 public interface RecipeRatingRepository extends JpaRepository<RecipeRating, Integer> {
     RecipeRating findByRecipeIdAndAccountId(Integer recipeId, Integer accountId);
     List<RecipeRating> findByRecipeId(Integer recipeId);
-    List<RecipeRating> findAllByRecipeId(Integer recipeId);
+    List<RecipeRating> findAllByRecipeId(double recipeId);
 }
