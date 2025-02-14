@@ -108,6 +108,8 @@
 						<class>com.springboot.sousChefAPI.model.Method</class>
 						<class>com.springboot.sousChefAPI.model.Recipe</class>
 						<class>com.springboot.sousChefAPI.model.Ingredient</class>
+						<class>com.springboot.sousChefAPI.model.RecipeRating</class>
+						<class>com.springboot.sousChefAPI.model.RecipeIngredient</class>
 					</classes>
 					<outputFile>target/types.ts</outputFile>
 					<outputKind>module</outputKind>
