@@ -111,6 +111,7 @@ export class UserLoginComponent implements OnInit {
       )
       .subscribe({
         next: (response: string) => {
+          console.log(response);
           if (response !== undefined) {
             this.accountService.currentToken = response;
             sessionStorage.setItem('token', JSON.stringify(response));
