@@ -20,11 +20,7 @@ public class FavouriteRecipeService {
 
     ;
 
-    public String save(Integer recipeId, Integer accountId) {
-        FavouriteRecipe favouriteRecipe = new FavouriteRecipe();
-        favouriteRecipe.setRecipeId(recipeId);
-        favouriteRecipe.setAccountId(accountId);
-
+    public String save(FavouriteRecipe favouriteRecipe) {
         favouriteRecipeRepository.save(favouriteRecipe);
 
         return "Recipe add to favourites!";

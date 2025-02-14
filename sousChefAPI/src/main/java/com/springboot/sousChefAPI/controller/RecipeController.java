@@ -110,9 +110,9 @@ public class RecipeController {
         return favouriteRecipeService.getByAccountId(id);
     }
 
-    @PostMapping("/recipe/favourite/{accountId}/{recipeId}")
-    public String favouriteRecipe(@PathVariable int accountId, @PathVariable int recipeId){
-        return favouriteRecipeService.save(recipeId, accountId);
+    @PostMapping("/recipe/favourite")
+    public String favouriteRecipe(@RequestBody FavouriteRecipe favouriteRecipe){
+        return favouriteRecipeService.save(favouriteRecipe);
     }
 
     @GetMapping("/recipe/{id}")
