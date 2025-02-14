@@ -35,6 +35,12 @@ export class Method {
     method_description?: string;
 }
 
+export class FavouriteRecipe {
+    favourite_id?: number;
+    recipeId?: number;
+    accountId?: number;
+}
+
 export class Recipe {
     map(arg0: (recipe: any) => any): Recipe | undefined {
       throw new Error('Method not implemented.');

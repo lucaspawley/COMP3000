@@ -3,7 +3,7 @@ import { CardModule } from 'primeng/card';
 import { ImageModule } from 'primeng/image';
 import { ActivatedRoute } from '@angular/router';
 import { RecipeService } from '../../../services/recipe.service';
-import { Recipe } from '../../types/types';
+import { FavouriteRecipe, Recipe } from '../../types/types';
 import { ChipModule } from 'primeng/chip';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
@@ -68,7 +68,7 @@ export class RecipeComponent implements OnInit {
 
     this.ratingFormGroup = this.fb.group({
       recipeId: recipeId,
-      accountId: this.accountService.currentAccountId,
+      accountId: JSON.parse(sessionStorage.getItem('accountId') as string),
       recipeRating: 0,
     });
   }
@@ -92,5 +92,15 @@ export class RecipeComponent implements OnInit {
 
   addToList() {}
 
-  favouriteRecipe() {}
+  favouriteRecipe() {
+    let newFav: FavouriteRecipe = {
+      favourite_id: undefined,
+      recipeId: this.recipe!.recipe_id!,
+      accountId: JSON.parse(sessionStorage.getItem('accountId') as string),
+    };
+
+    this.recipeService.favouriteRecipe(newFav).subscribe((res) => {
+      console.log(res);
+    });
+  }
 }

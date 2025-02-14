@@ -28,6 +28,7 @@ import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 })
 export class MyRecipesComponent {
   recipes: Array<Recipe> | undefined;
+  favouriteRecipes: Array<Recipe> | undefined;
 
   constructor(
     private router: Router,
@@ -37,21 +38,37 @@ export class MyRecipesComponent {
   ) {}
 
   ngOnInit(): void {
-      this.recipeService
-        .getRecipeByAccountId(JSON.parse(sessionStorage.getItem('accountId') as string))
-        .subscribe((result: Recipe) => {
-          if (Array.isArray(result)) {
-            this.recipes = result.map(recipe => ({
-              ...recipe,
-              imageSafeUrl: this.sanitizeImage(recipe.imageBase64)
-            }));
-          }
-          console.log(this.recipes);
-        });
+    this.recipeService
+      .getRecipeByAccountId(
+        JSON.parse(sessionStorage.getItem('accountId') as string)
+      )
+      .subscribe((result: Recipe) => {
+        if (Array.isArray(result)) {
+          this.recipes = result.map((recipe) => ({
+            ...recipe,
+            imageSafeUrl: this.sanitizeImage(recipe.imageBase64),
+          }));
+        }
+      });
+
+    this.recipeService
+      .getFavouriteRecipes(
+        JSON.parse(sessionStorage.getItem('accountId') as string)
+      )
+      .subscribe((result: Recipe) => {
+        if (Array.isArray(result)) {
+          this.favouriteRecipes = result.map((recipe) => ({
+            ...recipe,
+            imageSafeUrl: this.sanitizeImage(recipe.imageBase64),
+          }));
+        }
+      });
   }
 
   sanitizeImage(base64: string): SafeUrl {
-    return this.sanitizer.bypassSecurityTrustUrl(`data:image/jpeg;base64,${base64}`);
+    return this.sanitizer.bypassSecurityTrustUrl(
+      `data:image/jpeg;base64,${base64}`
+    );
   }
 
   goToRecipe(recipeId: number | undefined) {

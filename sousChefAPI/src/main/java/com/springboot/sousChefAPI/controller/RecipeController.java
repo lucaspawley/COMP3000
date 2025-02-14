@@ -36,6 +36,9 @@ public class RecipeController {
     @Autowired
     private RecipeMethodLinkService recipeMethodLinkService;
 
+    @Autowired
+    private FavouriteRecipeService favouriteRecipeService;
+
     @GetMapping("/recipes")
     public List<Recipe> getAll() {
         return recipeService.getAllRecipes();
@@ -102,6 +105,15 @@ public class RecipeController {
         return recipe;
     }
 
+    @GetMapping("/recipe/favourite/{id}")
+    public List<Recipe> getFavouriteRecipeByAccountId(@PathVariable int id) {
+        return favouriteRecipeService.getByAccountId(id);
+    }
+
+    @PostMapping("/recipe/favourite")
+    public String favouriteRecipe(@RequestBody FavouriteRecipe favouriteRecipe){
+        return favouriteRecipeService.save(favouriteRecipe);
+    }
 
     @GetMapping("/recipe/{id}")
     public Recipe getRecipeById(@PathVariable int id) {

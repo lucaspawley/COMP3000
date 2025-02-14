@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../environments/environment.development';
 import { Observable, tap } from 'rxjs';
-import { Recipe, RecipeRating } from '../components/types/types';
+import { FavouriteRecipe, Recipe, RecipeRating } from '../components/types/types';
 
 @Injectable({
   providedIn: 'root',
@@ -56,10 +56,34 @@ export class RecipeService {
     });
   }
 
-  rateRecipe(RecipeRating: RecipeRating): Observable<any> {
+  rateRecipe(recipeRating: RecipeRating): Observable<any> {
     return this.http.post(
       `${environment.apiURL}/api/ratings/add`,
-      RecipeRating,
+      recipeRating,
+      {
+        headers: new HttpHeaders().set(
+          'Authorization',
+          `Bearer ${JSON.parse(sessionStorage.getItem('token') as string)}`
+        ),
+      }
+    );
+  }
+
+  getFavouriteRecipes(accountId: number): Observable<any>{
+    return this.http.get(
+      `${environment.apiURL}/api/recipe/favourite/${accountId}`,
+      {
+        headers: new HttpHeaders().set(
+          'Authorization',
+          `Bearer ${JSON.parse(sessionStorage.getItem('token') as string)}`
+        ),
+      }
+    );
+  }
+
+  favouriteRecipe(favouriteRecipe: FavouriteRecipe): Observable<any> {
+    return this.http.post(
+      `${environment.apiURL}/api/recipe/favourite`, favouriteRecipe,
       {
         headers: new HttpHeaders().set(
           'Authorization',
