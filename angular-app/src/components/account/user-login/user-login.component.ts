@@ -111,7 +111,6 @@ export class UserLoginComponent implements OnInit {
       )
       .subscribe({
         next: (response: string) => {
-          console.log(response);
           if (response !== undefined) {
             this.accountService.currentToken = response;
             sessionStorage.setItem('token', JSON.stringify(response));
@@ -228,7 +227,6 @@ export class UserLoginComponent implements OnInit {
       });
 
       this.accountService.signUp(newUser).subscribe((response) => {
-        console.log(response);
         this.signUpForm.addControl('confirmPassword', new FormControl(''));
         this.changeMode();
       });

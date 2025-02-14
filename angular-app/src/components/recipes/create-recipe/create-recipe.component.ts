@@ -181,7 +181,6 @@ export class CreateRecipeComponent implements OnInit {
 
   onFileUpload(event: any) {
     this.recipeImage = event.target.files[0];
-    console.log(this.recipeImage);
   }
 
   saveRecipe() {
