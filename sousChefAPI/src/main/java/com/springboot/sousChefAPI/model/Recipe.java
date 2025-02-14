@@ -17,7 +17,7 @@ public class Recipe {
     private String recipe_name;
 
     @Column
-    private Integer recipe_rating;
+    private Double recipe_rating;
 
     @Column
     private Integer recipe_serves;
@@ -66,11 +66,11 @@ public class Recipe {
         this.recipe_name = recipe_name;
     }
 
-    public Integer getRecipe_rating() {
+    public Double getRecipe_rating() {
         return recipe_rating;
     }
 
-    public void setRecipe_rating(Integer recipe_rating) {
+    public void setRecipe_rating(Double recipe_rating) {
         this.recipe_rating = recipe_rating;
     }
 

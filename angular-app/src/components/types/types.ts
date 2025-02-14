@@ -54,6 +54,13 @@ export class Recipe {
     imageBase64?: string;
 }
 
+export class RecipeRating {
+    rating_id?: number;
+    recipeId?: number;
+    accountId?: number;
+    recipeRating?: number;
+}
+
 export class Ingredient {
     ingredientName?: string;
     ingredient_id?: number;
