@@ -1,1 +1,19 @@
-<p>assistant-page works!</p>
+<p-card [formGroup]="promptFormGroup">
+  <div class="chat-container">
+    @for (message of messages; track $index) { @if (message.sender == 'user') {
+    <div class="message user" [innerHTML]="message.message"></div>
+    }@else if (message.sender == 'bot') {
+    <div class="message bot" [innerHTML]="message.message"></div>
+    } }
+  </div>
+
+  <p-input-group>
+    <input pInputText placeholder="Send a Message..." formControlName="prompt" />
+    <p-inputgroup-addon>
+      <p-button
+        icon="fa-solid fa-paper-plane"
+        (click)="textOnlyDemo()"
+      ></p-button
+    ></p-inputgroup-addon>
+  </p-input-group>
+</p-card>
