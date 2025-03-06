@@ -2,7 +2,11 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../environments/environment.development';
 import { Observable, tap } from 'rxjs';
-import { FavouriteRecipe, Recipe, RecipeRating } from '../components/types/types';
+import {
+  FavouriteRecipe,
+  Recipe,
+  RecipeRating,
+} from '../components/types/types';
 
 @Injectable({
   providedIn: 'root',
@@ -40,13 +44,13 @@ export class RecipeService {
     );
   }
 
-  createRecipe(recipe: Recipe, file: File): Observable<any> {
+  createRecipe(recipe: Recipe, file: File | undefined): Observable<any> {
     const formData = new FormData();
     formData.append(
       'recipe',
       new Blob([JSON.stringify(recipe)], { type: 'application/json' })
     );
-    formData.append('image', file);
+    if (file) formData.append('image', file);
 
     return this.http.post(`${environment.apiURL}/api/recipe`, formData, {
       headers: new HttpHeaders().set(
@@ -69,7 +73,7 @@ export class RecipeService {
     );
   }
 
-  getFavouriteRecipes(accountId: number): Observable<any>{
+  getFavouriteRecipes(accountId: number): Observable<any> {
     return this.http.get(
       `${environment.apiURL}/api/recipe/favourite/${accountId}`,
       {
@@ -83,7 +87,8 @@ export class RecipeService {
 
   favouriteRecipe(favouriteRecipe: FavouriteRecipe): Observable<any> {
     return this.http.post(
-      `${environment.apiURL}/api/recipe/favourite`, favouriteRecipe,
+      `${environment.apiURL}/api/recipe/favourite`,
+      favouriteRecipe,
       {
         headers: new HttpHeaders().set(
           'Authorization',
