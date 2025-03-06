@@ -1,14 +1,23 @@
 <p-card [formGroup]="promptFormGroup">
+  <h2 class="my-1">AI Assistant</h2>
   <div class="chat-container">
     @for (message of messages; track $index) { @if (message.sender == 'user') {
     <div class="message user" [innerHTML]="message.message"></div>
     }@else if (message.sender == 'bot') {
     <div class="message bot" [innerHTML]="message.message"></div>
-    } }
+    } } @if (messageLoading) {
+    <div class="message bot">
+      <i class="fa-solid fa-ellipsis fa-2xl"></i>
+    </div>
+    }
   </div>
 
   <p-input-group class="mt-2">
-    <input pInputText placeholder="Send a Message..." formControlName="prompt" />
+    <input
+      pInputText
+      placeholder="Send a Message..."
+      formControlName="prompt"
+    />
     <p-inputgroup-addon>
       <p-button
         icon="fa-solid fa-paper-plane"

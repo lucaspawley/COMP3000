@@ -39,6 +39,7 @@ export class AssistantPageComponent implements OnInit {
   userDislikes: Array<string> = [];
 
   recipeJSON: JSON | undefined;
+  messageLoading: boolean = false;
 
   format: any;
 
@@ -73,6 +74,8 @@ export class AssistantPageComponent implements OnInit {
   }
 
   async sendMessage() {
+    this.messageLoading = true;
+    
     this.messages.push({
       sender: 'user',
       message: this.promptFormGroup.get('prompt')!.value,
@@ -98,6 +101,7 @@ export class AssistantPageComponent implements OnInit {
               sender: 'bot',
               message: `I've added ${res.recipe_name} to your recipes`,
             });
+            this.messageLoading = false;
           });
       }
     } else {
@@ -172,7 +176,7 @@ export class AssistantPageComponent implements OnInit {
       } else {
         this.format = formatResponse;
       }
-
+      this.messageLoading = false;
       this.messages.push({ sender: 'bot', message: this.format });
       this.history.push('you said: ' + result.response.text());
 
