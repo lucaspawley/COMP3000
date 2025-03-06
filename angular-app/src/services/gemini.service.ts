@@ -1,6 +1,10 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../environments/environment.development';
-import { GoogleGenerativeAI, HarmBlockThreshold, HarmCategory } from '@google/generative-ai'
+import {
+  GoogleGenerativeAI,
+  HarmBlockThreshold,
+  HarmCategory,
+} from '@google/generative-ai';
 
 @Injectable({
   providedIn: 'root',
@@ -9,9 +13,7 @@ export class GeminiService {
   history: Array<string> = [];
 
   initializeModel() {
-    const googleGenerativeAI = new GoogleGenerativeAI(
-      environment.aiApiURL
-    );
+    const googleGenerativeAI = new GoogleGenerativeAI(environment.aiApiURL);
     const generationConfig = {
       safetySettings: [
         {
@@ -22,11 +24,11 @@ export class GeminiService {
       temperature: 0.9,
       top_p: 1,
       top_k: 32,
-      maxOutputTokens: 100, // limit output
+      maxOutputTokens: 100,
     };
 
     return googleGenerativeAI.getGenerativeModel({
-      model: 'gemini-1.5-flash',
+      model: 'gemini-1.5-pro',
       ...generationConfig,
     });
   }

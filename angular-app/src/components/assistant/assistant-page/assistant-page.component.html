@@ -7,12 +7,12 @@
     } }
   </div>
 
-  <p-input-group>
+  <p-input-group class="mt-2">
     <input pInputText placeholder="Send a Message..." formControlName="prompt" />
     <p-inputgroup-addon>
       <p-button
         icon="fa-solid fa-paper-plane"
-        (click)="textOnlyDemo()"
+        (click)="sendMessage()"
       ></p-button
     ></p-inputgroup-addon>
   </p-input-group>
