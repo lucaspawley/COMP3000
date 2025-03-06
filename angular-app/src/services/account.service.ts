@@ -9,7 +9,7 @@ import { Account } from '../components/types/types';
 })
 export class AccountService {
   currentToken: string | undefined;
-  currentAccountId: number | undefined;
+  currentAccount: Account | undefined;
 
   constructor(private http: HttpClient) {}
 
@@ -36,8 +36,7 @@ export class AccountService {
   }
 
   getUserByUsername(username: string): Observable<any> {
-    return this.http
-    .get(`${environment.apiURL}/api/account/${username}`, {
+    return this.http.get(`${environment.apiURL}/api/account/${username}`, {
       headers: new HttpHeaders().set(
         'Authorization',
         `Bearer ${JSON.parse(sessionStorage.getItem('token') as string)}`
