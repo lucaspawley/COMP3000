@@ -33,7 +33,6 @@ export class MyRecipesComponent {
   constructor(
     private router: Router,
     private recipeService: RecipeService,
-    private accountService: AccountService,
     private sanitizer: DomSanitizer
   ) {}
 
@@ -65,10 +64,12 @@ export class MyRecipesComponent {
       });
   }
 
-  sanitizeImage(base64: string): SafeUrl {
-    return this.sanitizer.bypassSecurityTrustUrl(
-      `data:image/jpeg;base64,${base64}`
-    );
+  sanitizeImage(base64: string): SafeUrl | null {
+    if (base64 != null) {
+      return this.sanitizer.bypassSecurityTrustUrl(
+        `data:image/jpeg;base64,${base64}`
+      );
+    } else return null;
   }
 
   goToRecipe(recipeId: number | undefined) {
