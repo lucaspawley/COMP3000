@@ -49,7 +49,7 @@ public class RecipeController {
     @PostMapping(value = "/recipe", consumes = {"multipart/form-data"})
     @Transactional
     public Recipe save(@RequestPart("recipe") Recipe recipe,
-                       @RequestPart("image") MultipartFile file) {
+                       @RequestPart(value = "image", required = false) MultipartFile file) {
 
         List<Allergy> allergies = recipe.getAllergies();
         for (Allergy allergy : allergies) {

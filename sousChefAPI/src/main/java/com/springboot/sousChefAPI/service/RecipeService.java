@@ -30,7 +30,9 @@ public class RecipeService {
 
     public Recipe saveRecipe(Recipe recipe, MultipartFile file) {
         try {
-            recipe.setImageData(file.getBytes());
+            if(file != null) {
+                recipe.setImageData(file.getBytes());
+            }
             return recipeRepository.save(recipe);
         } catch (IOException e) {
             throw new RuntimeException("Failed to process image file", e);

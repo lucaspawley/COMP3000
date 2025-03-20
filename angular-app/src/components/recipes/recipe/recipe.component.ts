@@ -40,7 +40,6 @@ export class RecipeComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private recipeService: RecipeService,
-    private accountService: AccountService,
     private sanitizer: DomSanitizer,
     private fb: FormBuilder
   ) {}
@@ -49,10 +48,12 @@ export class RecipeComponent implements OnInit {
     this.getRecipe();
   }
 
-  sanitizeImage(base64: string): SafeUrl {
-    return this.sanitizer.bypassSecurityTrustUrl(
-      `data:image/jpeg;base64,${base64}`
-    );
+  sanitizeImage(base64: string): SafeUrl | null {
+    if (base64 != null) {
+      return this.sanitizer.bypassSecurityTrustUrl(
+        `data:image/jpeg;base64,${base64}`
+      );
+    } else return null;
   }
 
   getRecipe() {

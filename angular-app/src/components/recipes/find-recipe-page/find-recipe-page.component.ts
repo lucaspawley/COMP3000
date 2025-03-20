@@ -45,8 +45,12 @@ export class FindRecipePageComponent implements OnInit {
     });
   }
 
-  sanitizeImage(base64: string): SafeUrl {
-    return this.sanitizer.bypassSecurityTrustUrl(`data:image/jpeg;base64,${base64}`);
+  sanitizeImage(base64: string): SafeUrl | null {
+    if (base64 != null) {
+      return this.sanitizer.bypassSecurityTrustUrl(
+        `data:image/jpeg;base64,${base64}`
+      );
+    } else return null;
   }
 
 
