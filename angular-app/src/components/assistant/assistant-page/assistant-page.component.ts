@@ -75,7 +75,7 @@ export class AssistantPageComponent implements OnInit {
 
   async sendMessage() {
     this.messageLoading = true;
-    
+
     this.messages.push({
       sender: 'user',
       message: this.promptFormGroup.get('prompt')!.value,
@@ -92,16 +92,31 @@ export class AssistantPageComponent implements OnInit {
 
       if (this.recipeJSON) {
         let newRecipe: Recipe = this.recipeJSON as unknown as Recipe;
-        newRecipe.accountId = this.accountService.currentAccount?.accountId;
         console.log(newRecipe);
-        this.recipeService
-          .createRecipe(newRecipe, undefined)
-          .subscribe((res) => {
-            this.messages.push({
-              sender: 'bot',
-              message: `I've added ${res.recipe_name} to your recipes`,
+        newRecipe.accountId = this.accountService.currentAccount?.accountId;
+
+        const placeholderImagePath = 'assets/images/placeholder.jpg';
+        let recipeImage;
+
+        fetch(placeholderImagePath)
+          .then((response) => response.blob())
+          .then((blob) => {
+            recipeImage = new File([blob], 'placeholder.jpg', {
+              type: 'image/jpeg',
             });
-            this.messageLoading = false;
+
+            this.recipeService
+              .createRecipe(newRecipe, recipeImage)
+              .subscribe((res) => {
+                this.messages.push({
+                  sender: 'bot',
+                  message: `I've added ${res.recipe_name} to your recipes`,
+                });
+                this.messageLoading = false;
+              });
+          })
+          .catch((error) => {
+            console.error('Error loading placeholder image:', error);
           });
       }
     } else {
@@ -118,6 +133,7 @@ export class AssistantPageComponent implements OnInit {
       Do not use markdown for the recipe name, use **
       Also create a JSON response for the recipe with this schema
       make sure that the recipe_ingredient_amount and recipe_ingredient_measurement is not null
+      method steps must fit in a VARCHAR(255)
       
       recipe_id: null;
       recipe_name: string;
@@ -125,7 +141,7 @@ export class AssistantPageComponent implements OnInit {
       recipe_serves: number;
       recipe_prep_time: number;
       recipe_cook_time: number;
-      allergies?: [{ allergyId: null; allergyNam?: string }];
+      allergies?: [{ allergyId: null; allergyName?: string }];
       ingredients?: [{
         recipe_ingredient_id: null;
         recipe_ingredient_amount: number;
