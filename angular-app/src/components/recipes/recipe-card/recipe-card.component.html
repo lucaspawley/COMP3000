@@ -1,0 +1,35 @@
+<div class="flex flex-wrap">
+  @for (recipe of recipes; track $index) {
+  <div class="pr-2 mt-2">
+    <p-card [style]="{ width: '300px', height: '360px' }">
+      <div class="p-card-body recipe-card">
+        <div class="p-card-title">{{ recipe.recipe_name }}</div>
+        <div class="p-card-subtitle">
+          <i class="fa-solid fa-user fa-sm"></i> {{ recipe.recipe_serves }} |
+          <i class="fa-solid fa-fire fa-sm"></i> {{ recipe.recipe_cook_time }} |
+          <i class="fa-solid fa-utensils fa-sm"></i>
+          {{ recipe.recipe_prep_time }} | <i class="fa-solid fa-star fa-sm"></i>
+          {{ recipe.recipe_rating }}
+        </div>
+
+        @if(recipe?.imageSafeUrl){
+        <img [src]="recipe?.imageSafeUrl" class="image" alt="Recipe Image" />
+        }
+
+        <div class="p-card-footer">
+          <div class="flex justify-content-end">
+            <div class="flex align-items-center">
+              <p-button
+                [rounded]="true"
+                icon="fa-solid fa-arrow-right"
+                size="small"
+                (onClick)="goToRecipe(recipe.recipe_id)"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </p-card>
+  </div>
+  }
+</div>

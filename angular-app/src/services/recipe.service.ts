@@ -73,6 +73,30 @@ export class RecipeService {
     );
   }
 
+  getTopRecipes(): Observable<any> {
+    return this.http.get(
+      `${environment.apiURL}/api/recipe/top`,
+      {
+        headers: new HttpHeaders().set(
+          'Authorization',
+          `Bearer ${JSON.parse(sessionStorage.getItem('token') as string)}`
+        ),
+      }
+    );
+  }
+
+  getRandomRecipes(): Observable<any> {
+    return this.http.get(
+      `${environment.apiURL}/api/random`,
+      {
+        headers: new HttpHeaders().set(
+          'Authorization',
+          `Bearer ${JSON.parse(sessionStorage.getItem('token') as string)}`
+        ),
+      }
+    );
+  }
+
   getFavouriteRecipes(accountId: number): Observable<any> {
     return this.http.get(
       `${environment.apiURL}/api/recipe/favourite/${accountId}`,
