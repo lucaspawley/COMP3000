@@ -10,6 +10,7 @@ import { CommonModule } from '@angular/common';
 import { RecipeService } from '../../../services/recipe.service';
 import { Recipe } from '../../types/types';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+import { RecipeCardComponent } from '../recipe-card/recipe-card.component';
 
 @Component({
   selector: 'app-find-recipe-page',
@@ -21,12 +22,13 @@ import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
     ImageModule,
     ButtonModule,
     CommonModule,
+    RecipeCardComponent,
   ],
   templateUrl: './find-recipe-page.component.html',
   styleUrl: './find-recipe-page.component.scss',
 })
 export class FindRecipePageComponent implements OnInit {
-  recipes: Array<Recipe> | undefined;
+  recipes: Array<Recipe> = [];
 
   constructor(
     private router: Router,

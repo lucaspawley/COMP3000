@@ -112,6 +112,16 @@ public class RecipeController {
         return favouriteRecipeService.getByAccountId(id);
     }
 
+    @GetMapping("/recipe/top")
+    public List<Recipe> getTop10Recipes() {
+        return recipeService.getTop10Recipes();
+    }
+
+    @GetMapping("/random")
+    public List<Recipe> getRandomRecipes() {
+        return recipeService.getRandomRecipes();
+    }
+
     @PostMapping("/recipe/favourite")
     public ResponseEntity<Map<String, String>> favouriteRecipe(@RequestBody FavouriteRecipe favouriteRecipe){
         favouriteRecipeService.save(favouriteRecipe);

@@ -1,1 +1,144 @@
-<p>home-page works!</p>
+<p-carousel
+  [value]="highRatedRecipes"
+  [numVisible]="4"
+  [numScroll]="3"
+  [circular]="false"
+  [responsiveOptions]="responsiveOptions"
+>
+  <ng-template let-highRatedRecipe #item>
+    <div class="mr-2">
+      <p-card class="flex">
+        <div class="relative mx-auto p-card-body recipe-card">
+          <div>
+            @if(highRatedRecipe?.imageSafeUrl){
+            <div class="flex justify-content-center">
+              <img
+                [src]="highRatedRecipe?.imageSafeUrl"
+                alt="Recipe Image"
+                width="400"
+                height="300"
+              />
+            </div>
+            }
+          </div>
+        </div>
+        <div class="p-card-title mt-2">{{ highRatedRecipe.recipe_name }}</div>
+        <div class="p-card-subtitle">
+          <i class="fa-solid fa-user fa-sm"></i>
+          {{ highRatedRecipe.recipe_serves }} |
+          <i class="fa-solid fa-fire fa-sm"></i>
+          {{ highRatedRecipe.recipe_cook_time }} |
+          <i class="fa-solid fa-utensils fa-sm"></i>
+          {{ highRatedRecipe.recipe_prep_time }} |
+          <i class="fa-solid fa-star fa-sm"></i>
+          {{ highRatedRecipe.recipe_rating }}
+        </div>
+        <div class="flex justify-between justify-content-end">
+          <span>
+            <p-button
+              icon="fa-solid fa-heart"
+              severity="secondary"
+              [outlined]="true"
+            />
+            <p-button icon="fa-solid fa-arrow-right" styleClass="ml-2" />
+          </span></div
+      ></p-card>
+    </div>
+  </ng-template>
+</p-carousel>
+
+<p-carousel
+  [value]="highRatedRecipes"
+  [numVisible]="5"
+  [numScroll]="2"
+  [circular]="false"
+  [responsiveOptions]="responsiveOptionsSmall"
+>
+  <ng-template let-highRatedRecipe #item>
+    <div class="mr-2">
+      <p-card>
+        <div class="relative mx-auto p-card-body highest-rating-card">
+          <div>
+            @if(highRatedRecipe?.imageSafeUrl){
+            <div class="flex justify-content-center">
+              <img
+                [src]="highRatedRecipe?.imageSafeUrl"
+                alt="Recipe Image"
+                class="image"
+              />
+            </div>
+            }
+          </div>
+        </div>
+        <div class="p-card-title mt-2 flex flex-wrap">{{ highRatedRecipe.recipe_name }}</div>
+        <div class="p-card-subtitle">
+          <i class="fa-solid fa-user fa-sm"></i>
+          {{ highRatedRecipe.recipe_serves }} |
+          <i class="fa-solid fa-fire fa-sm"></i>
+          {{ highRatedRecipe.recipe_cook_time }} |
+          <i class="fa-solid fa-utensils fa-sm"></i>
+          {{ highRatedRecipe.recipe_prep_time }} |
+          <i class="fa-solid fa-star fa-sm"></i>
+          {{ highRatedRecipe.recipe_rating }}
+        </div>
+        <div class="flex justify-between justify-content-end">
+          <span>
+            <p-button
+              icon="fa-solid fa-heart"
+              severity="secondary"
+              [outlined]="true"
+            />
+            <p-button icon="fa-solid fa-arrow-right" styleClass="ml-2" />
+          </span></div
+      ></p-card>
+    </div>
+  </ng-template>
+</p-carousel>
+
+<p-carousel
+  [value]="recommendRecipes"
+  [numVisible]="5"
+  [numScroll]="2"
+  [circular]="false"
+  [responsiveOptions]="responsiveOptionsSmall"
+>
+  <ng-template let-recommendRecipe #item>
+    <div class="mr-2">
+      <p-card>
+        <div class="relative mx-auto p-card-body highest-rating-card">
+          <div>
+            @if(recommendRecipe?.imageSafeUrl){
+            <div class="flex justify-content-center">
+              <img
+                [src]="recommendRecipe?.imageSafeUrl"
+                alt="Recipe Image"
+                class="image"
+              />
+            </div>
+            }
+          </div>
+        </div>
+        <div class="p-card-title mt-2 flex flex-wrap">{{ recommendRecipe.recipe_name }}</div>
+        <div class="p-card-subtitle">
+          <i class="fa-solid fa-user fa-sm"></i>
+          {{ recommendRecipe.recipe_serves }} |
+          <i class="fa-solid fa-fire fa-sm"></i>
+          {{ recommendRecipe.recipe_cook_time }} |
+          <i class="fa-solid fa-utensils fa-sm"></i>
+          {{ recommendRecipe.recipe_prep_time }} |
+          <i class="fa-solid fa-star fa-sm"></i>
+          {{ recommendRecipe.recipe_rating }}
+        </div>
+        <div class="flex justify-between justify-content-end">
+          <span>
+            <p-button
+              icon="fa-solid fa-heart"
+              severity="secondary"
+              [outlined]="true"
+            />
+            <p-button icon="fa-solid fa-arrow-right" styleClass="ml-2" />
+          </span></div
+      ></p-card>
+    </div>
+  </ng-template>
+</p-carousel>

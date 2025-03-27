@@ -181,15 +181,39 @@ export class CreateRecipeComponent implements OnInit {
 
   onFileUpload(event: any) {
     this.recipeImage = event.target.files[0];
+    console.log(this.recipeImage);
   }
 
   saveRecipe() {
-    const newRecipe: Recipe = this.recipeCreationForm.value;
+    if (!this.recipeImage) {
+      const placeholderImagePath = 'assets/images/placeholder.jpg';
 
-    this.recipeService
-      .createRecipe(newRecipe, this.recipeImage)
-      .subscribe(() => {
-        this.router.navigate(['my-recipes']);
-      });
+      fetch(placeholderImagePath)
+        .then((response) => response.blob())
+        .then((blob) => {
+          this.recipeImage = new File([blob], 'placeholder.jpg', {
+            type: 'image/jpeg',
+          });
+
+          const newRecipe: Recipe = this.recipeCreationForm.value;
+          console.log(this.recipeImage);
+          this.recipeService
+            .createRecipe(newRecipe, this.recipeImage)
+            .subscribe(() => {
+              this.router.navigate(['my-recipes']);
+            });
+        })
+        .catch((error) => {
+          console.error('Error loading placeholder image:', error);
+        });
+    } else {
+      const newRecipe: Recipe = this.recipeCreationForm.value;
+
+      this.recipeService
+        .createRecipe(newRecipe, this.recipeImage)
+        .subscribe(() => {
+          this.router.navigate(['my-recipes']);
+        });
+    }
   }
 }

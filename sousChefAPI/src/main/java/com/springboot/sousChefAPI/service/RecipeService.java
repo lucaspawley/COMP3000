@@ -39,6 +39,14 @@ public class RecipeService {
         }
     }
 
+    public List<Recipe> getTop10Recipes(){
+        return recipeRepository.findTop10ByRating();
+    }
+
+    public List<Recipe> getRandomRecipes() {
+        return recipeRepository.findRandomRecipes();
+    }
+
     public void deleteRecipe(int id) {
         recipeRepository.deleteById(id);
     }

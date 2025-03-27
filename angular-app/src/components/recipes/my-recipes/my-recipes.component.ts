@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
 import { RecipeService } from '../../../services/recipe.service';
 import { AccountService } from '../../../services/account.service';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+import { RecipeCardComponent } from '../recipe-card/recipe-card.component';
 
 @Component({
   selector: 'app-my-recipes',
@@ -22,13 +23,14 @@ import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
     ImageModule,
     ButtonModule,
     CommonModule,
+    RecipeCardComponent,
   ],
   templateUrl: './my-recipes.component.html',
   styleUrl: './my-recipes.component.scss',
 })
 export class MyRecipesComponent {
-  recipes: Array<Recipe> | undefined;
-  favouriteRecipes: Array<Recipe> | undefined;
+  recipes: Array<Recipe> = [];
+  favouriteRecipes: Array<Recipe> = [];
 
   constructor(
     private router: Router,
@@ -70,10 +72,6 @@ export class MyRecipesComponent {
         `data:image/jpeg;base64,${base64}`
       );
     } else return null;
-  }
-
-  goToRecipe(recipeId: number | undefined) {
-    this.router.navigate([recipeId]);
   }
 
   goToCreateRecipe() {
