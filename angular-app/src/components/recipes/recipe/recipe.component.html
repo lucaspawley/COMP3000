@@ -39,27 +39,39 @@
       {{ recipe?.recipe_prep_time }} minutes | {{ recipe?.recipe_rating }}
       <i class="fa-solid fa-star"></i>
     </ng-template>
+    <div class="flex justify-content-between">
+      <div>
+        <h3 class="mb-1">Allergies</h3>
+        @if(recipe?.allergies == []){ @for (allergy of recipe?.allergies; track
+        $index) {
+        <p-chip
+          class="mr-1"
+          [style]="{ background: '#8DB38B', color: 'white' }"
+          [label]="allergy.allergyName"
+        />
+        }}@else {No Allergies}
 
-    <h3 class="mb-1">Allergies</h3>
-    @if(recipe?.allergies == []){ @for (allergy of recipe?.allergies; track
-    $index) {
-    <p-chip
-      class="mr-1"
-      [style]="{ background: '#8DB38B', color: 'white' }"
-      [label]="allergy.allergyName"
-    />
-    }}@else {No Allergies}
+        <h3 class="mb-2">Ingredient</h3>
 
-    <h3 class="mb-2">Ingredient</h3>
-
-    @for (ingredient of recipe?.ingredients; track $index) {
-    <p class="mb-1 mt-1">
-      {{ ingredient.recipe_ingredient_amount
-      }}{{ ingredient.recipe_ingredient_measurement }}
-      {{ ingredient.recipe_ingredient_name }}
-    </p>
-    }
-
+        @for (ingredient of recipe?.ingredients; track $index) {
+        <p class="mb-1 mt-1">
+          {{ ingredient.recipe_ingredient_amount
+          }}{{ ingredient.recipe_ingredient_measurement }}
+          {{ ingredient.recipe_ingredient_name }}
+        </p>
+        }
+      </div>
+      <div class="mr-3">
+        @if(recipe?.imageSafeUrl){
+        <img
+          [src]="recipe?.imageSafeUrl"
+          alt="Recipe Image"
+          width="300"
+          height="300"
+        />
+        }
+      </div>
+    </div>
     <h3 class="mb-2">Method</h3>
     <div class="flex flex-wrap">
       @for (method of recipe?.methods; track $index) {
@@ -70,21 +82,19 @@
         </p-card>
       </div>
       }
-    </div>
-    <div>
-      @if(recipe?.imageSafeUrl){
-      <img [src]="recipe?.imageSafeUrl" alt="Recipe Image" width="300" />
-      }
     </div></p-card
   >
 </div>
 
 <p-dialog header="Rate Recipe" [visible]="dialogVisible">
-  <div class="flex justify-content-center pb-4 mx-2" [formGroup]="ratingFormGroup">
+  <div
+    class="flex justify-content-center pb-4 mx-2"
+    [formGroup]="ratingFormGroup"
+  >
     <p-rating formControlName="recipeRating" />
   </div>
   <div class="flex justify-content-end gap-2">
     <p-button label="Cancel" severity="secondary" (onClick)="showDialog()" />
     <p-button label="Save" (onClick)="rateRecipe()" />
-</div>
+  </div>
 </p-dialog>

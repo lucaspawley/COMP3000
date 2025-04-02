@@ -43,11 +43,7 @@ input {
   border: 1px solid #ccc;
 }
 
-button {
-  background: #007bff;
-  color: white;
-  border: none;
-  padding: 8px 12px;
-  border-radius: 5px;
-  cursor: pointer;
+.image {
+  width: 300px !important;
+  height: 300px !important;
 }

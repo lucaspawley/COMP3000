@@ -5,12 +5,15 @@ import {
   HarmBlockThreshold,
   HarmCategory,
 } from '@google/generative-ai';
+import { GoogleGenAI } from '@google/genai';
 
 @Injectable({
   providedIn: 'root',
 })
 export class GeminiService {
   history: Array<string> = [];
+  googleGenerativeAI = new GoogleGenerativeAI(environment.aiApiURL);
+  image: string | undefined;
 
   initializeModel() {
     const googleGenerativeAI = new GoogleGenerativeAI(environment.aiApiURL);
@@ -31,5 +34,36 @@ export class GeminiService {
       model: 'gemini-1.5-pro',
       ...generationConfig,
     });
+  }
+
+  async generateImage(prompt: string): Promise<void> {
+    const ai = new GoogleGenAI({ apiKey: environment.aiApiURL });
+
+    try {
+      const response = await ai.models.generateContent({
+        model: 'gemini-2.0-flash-exp-image-generation',
+        contents: prompt,
+        config: {
+          responseModalities: ['Text', 'Image'],
+        },
+      });
+
+      if (!response.candidates || response.candidates.length === 0) {
+        throw new Error('No candidates returned from the model.');
+      }
+      if (response.candidates[0].content?.parts)
+        for (const part of response.candidates[0].content.parts) {
+          if ('text' in part) {
+            console.log(part.text);
+          } else if ('inlineData' in part && part.inlineData) {
+            if (part.inlineData.data) {
+              const imageData: string = part.inlineData.data;
+              this.image = imageData;
+            }
+          }
+        }
+    } catch (error) {
+      console.error('Error generating content:', error);
+    }
   }
 }

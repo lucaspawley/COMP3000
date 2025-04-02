@@ -3,9 +3,13 @@
   <div class="chat-container">
     @for (message of messages; track $index) { @if (message.sender == 'user') {
     <div class="message user" [innerHTML]="message.message"></div>
-    }@else if (message.sender == 'bot') {
+    }@else if (message.sender == 'bot') { @if(message.type == 'text'){
     <div class="message bot" [innerHTML]="message.message"></div>
-    } } @if (messageLoading) {
+    }@else if (message.type == 'image') {@if(imageSafeUrl){
+    <div class="message bot">
+      <img [src]="imageSafeUrl" class="image" alt="Recipe Image" />
+    </div>
+    }} } } @if (messageLoading) {
     <div class="message bot">
       <i class="fa-solid fa-ellipsis fa-2xl"></i>
     </div>
