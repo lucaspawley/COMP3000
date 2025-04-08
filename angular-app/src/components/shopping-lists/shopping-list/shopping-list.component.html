@@ -1,0 +1,100 @@
+<div [formGroup]="shoppingListFormGroup">
+  <div class="mb-3">
+    <p-card>
+      <div class="flex align-items-center">
+        @if(!editMode){
+        <h2 class="my-1">{{ shoppingList?.list_name }}</h2>
+        <div class="my-1 ml-2">
+          <p-button
+            [rounded]="true"
+            icon="fa-solid fa-pen"
+            label="Edit"
+            (onClick)="changeMode()"
+          />
+        </div>
+        <div class="my-1 ml-2">
+          <p-button
+            [rounded]="true"
+            icon="fa-solid fa-floppy-disk"
+            label="Save"
+            (onClick)="saveList()"
+          />
+        </div>
+        }@else {
+        <input type="text" pInputText formControlName="list_name" />
+        <div class="my-1 ml-2">
+          <p-button
+            [rounded]="true"
+            icon="fa-solid fa-floppy-disk"
+            label="Save"
+            (onClick)="saveList()"
+          />
+        </div>
+        <div class="my-1 ml-2">
+          <p-button
+            [rounded]="true"
+            icon="fa-solid fa-xmark"
+            label="Cancel"
+            (onClick)="changeMode()"
+          />
+        </div>
+        <div class="my-1 ml-2">
+          <p-button
+            [rounded]="true"
+            icon="fa-solid fa-trash"
+            label="Delete"
+            (onClick)="deleteList()"
+          />
+        </div>
+        }
+      </div></p-card
+    >
+  </div>
+  <p-card>
+    @if(!editMode){ @for (item of itemFormArray.controls; track $index) {
+    <div formArrayName="items">
+      <div [formGroupName]="$index">
+        <div class="flex">
+          <div>
+            <p-toggle-switch formControlName="brought" />
+          </div>
+          <div class="text-xl ml-1">
+            {{ item.get("item")?.value }}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    }
+    <div class="flex">
+      <div [formGroup]="itemFormGroup">
+        <input pInputText formControlName="item" />
+      </div>
+      <div class="ml-1">
+        <p-button
+          (onClick)="addToArray()"
+          size="small"
+          [rounded]="true"
+          icon="fa-solid fa-check"
+        ></p-button>
+      </div>
+    </div>
+    } @else { @for (item of itemFormArray.controls; track $index) {
+    <div formArrayName="items">
+      <div [formGroupName]="$index">
+        <div class="flex">
+          <input type="text" pInputText formControlName="item" />
+          <p-button
+            (onClick)="deleteItem(item.value, $index)"
+            class="ml-1"
+            size="small"
+            [rounded]="true"
+            icon="fa-solid fa-trash"
+          ></p-button>
+        </div>
+      </div>
+    </div>
+
+    } }</p-card
+  >
+</div>

@@ -14,6 +14,6 @@ public interface RecipeRepository extends JpaRepository<Recipe, Integer> {
     @Query("SELECT r FROM Recipe r ORDER BY r.recipe_rating DESC LIMIT 10")
     List<Recipe> findTop10ByRating();
 
-    @Query(value = "SELECT * FROM recipes ORDER BY RAND() LIMIT 12", nativeQuery = true)
+    @Query(value = "SELECT * FROM tbl_recipe ORDER BY RAND() LIMIT 12", nativeQuery = true)
     List<Recipe> findRandomRecipes();
 }

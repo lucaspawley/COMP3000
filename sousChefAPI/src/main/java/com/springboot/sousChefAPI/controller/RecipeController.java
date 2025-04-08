@@ -85,7 +85,7 @@ public class RecipeController {
 
         for (RecipeIngredient ingredient : ingredients) {
             RecipeIngredientLink linkExists = recipeIngredientlinkService.linkExists(recipeId, ingredient.getRecipe_ingredient_id());
-            if (ingredient.getRecipe_ingredient_id() != null) {
+            if (linkExists != null) {
                 recipeIngredientlinkService.saveRecipeIngredientLink(recipeId, ingredient.getRecipe_ingredient_id());
             }
         }

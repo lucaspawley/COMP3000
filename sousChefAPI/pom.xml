@@ -111,6 +111,8 @@
 						<class>com.springboot.sousChefAPI.model.RecipeRating</class>
 						<class>com.springboot.sousChefAPI.model.RecipeIngredient</class>
 						<class>com.springboot.sousChefAPI.model.FavouriteRecipe</class>
+						<class>com.springboot.sousChefAPI.model.Item</class>
+						<class>com.springboot.sousChefAPI.model.ShoppingList</class>
 					</classes>
 					<outputFile>target/types.ts</outputFile>
 					<outputKind>module</outputKind>
