@@ -94,6 +94,19 @@ export class RecipeIngredient {
     recipe_ingredient_name?: string;
 }
 
+export class Item {
+    itemId?: number;
+    item?: string;
+    brought?: boolean;
+}
+
+export class ShoppingList {
+    shoppingListId?: number;
+    list_name?: string;
+    accountID?: number;
+    items?: Item[];
+}
+
 export interface GrantedAuthority extends Serializable {
     authority?: string;
 }
