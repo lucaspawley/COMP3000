@@ -56,10 +56,10 @@ public class ShoppingListController {
         return shoppingListService.getShoppingList(id);
     }
 
-    @DeleteMapping("/item/delete/{itemId}/{listId}")
-    public void deleteItem(@PathVariable Integer itemId, @PathVariable Integer listId) {
-        itemLinkService.deleteLink(itemId, listId);
-        itemService.deleteItem(itemId);
+    @PostMapping("/item/delete/{listId}")
+    public void deleteItem(@PathVariable Integer listId, @RequestBody Item item) {
+        itemLinkService.deleteLink(item.getItemId(), listId);
+        itemService.deleteItem(item.getItemId());
     }
 
     @PostMapping("/item/add/{listId}")
@@ -69,10 +69,11 @@ public class ShoppingListController {
         return shoppingListService.getShoppingList(listId);
     }
 
-    @DeleteMapping("/delete")
+    @PostMapping("/delete")
     public void deleteList(@RequestBody ShoppingList shoppingList) {
         for (Item item : shoppingList.getItems()) {
             itemLinkService.deleteLink(item.getItemId(), shoppingList.getShoppingListId());
+            itemService.deleteItem(item.getItemId());
         }
 
         shoppingListService.deleteShoppingList(shoppingList.getShoppingListId());
