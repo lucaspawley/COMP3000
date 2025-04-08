@@ -29,21 +29,16 @@ public class ShoppingListController {
         List<Item> items = shoppingList.getItems();
         for (Item item : items) {
             if (item.getItem() != null) {
-                Item findItem = itemService.findbyItem(item.getItem());
-                if (findItem == null) {
-                    itemService.saveItem(item);
-                } else {
-                    item.setItemId(findItem.getItemId());
-                }
+                itemService.saveItem(item);
             }
         }
 
         shoppingListService.saveList(shoppingList);
         Integer shoppingListId = shoppingList.getShoppingListId();
 
-        for(Item item : items){
+        for (Item item : items) {
             ItemLink linkExists = itemLinkService.linkExist(item.getItemId(), shoppingListId);
-            if (linkExists != null){
+            if (linkExists != null) {
                 itemLinkService.saveItemLink(item.getItemId(), shoppingListId);
             }
         }
@@ -61,11 +56,17 @@ public class ShoppingListController {
         return shoppingListService.getShoppingList(id);
     }
 
-    @DeleteMapping("/item/delete")
-    public void deleteItem(@RequestParam List<Integer> ids, @RequestParam Integer shoppingListId){
-        for (Integer id : ids){
-            itemLinkService.deleteLink(id, shoppingListId);
-        }
+    @DeleteMapping("/item/delete/{itemId}/{listId}")
+    public void deleteItem(@PathVariable Integer itemId, @PathVariable Integer listId) {
+        itemLinkService.deleteLink(itemId, listId);
+        itemService.deleteItem(itemId);
+    }
+
+    @PostMapping("/item/add/{listId}")
+    public ShoppingList saveItem(@PathVariable Integer listId, @RequestBody Item item) {
+        Item newItem = itemService.saveItem(item);
+        itemLinkService.saveItemLink(newItem.getItemId(), listId);
+        return shoppingListService.getShoppingList(listId);
     }
 
     @DeleteMapping("/delete")
