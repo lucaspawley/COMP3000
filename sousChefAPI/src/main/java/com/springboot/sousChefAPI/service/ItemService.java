@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ItemService {
@@ -18,5 +19,7 @@ public class ItemService {
         return itemRepository.save(item);
     }
 
-    public Item findbyItem(String item) {return itemRepository.findByItem(item);}
+    public void deleteItem(Integer id) {
+        itemRepository.deleteById(id);
+    }
 }
