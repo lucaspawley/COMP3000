@@ -112,6 +112,10 @@ export class HomePageComponent implements OnInit {
     ];
   }
 
+  goToRecipe(recipeId: number | undefined) {
+    this.router.navigate(['recipe', recipeId]);
+  }
+
   sanitizeImage(base64: string): SafeUrl | null {
     if (base64 != null) {
       return this.sanitizer.bypassSecurityTrustUrl(

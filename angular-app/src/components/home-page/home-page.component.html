@@ -40,14 +40,18 @@
               severity="secondary"
               [outlined]="true"
             />
-            <p-button icon="fa-solid fa-arrow-right" styleClass="ml-2" />
+            <p-button
+              icon="fa-solid fa-arrow-right"
+              (onClick)="goToRecipe(highRatedRecipe.recipe_id)"
+              styleClass="ml-2"
+            />
           </span></div
       ></p-card>
     </div>
   </ng-template>
 </p-carousel>
 
-<p-carousel
+<!-- <p-carousel
   [value]="highRatedRecipes"
   [numVisible]="5"
   [numScroll]="2"
@@ -70,7 +74,9 @@
             }
           </div>
         </div>
-        <div class="p-card-title mt-2 flex flex-wrap">{{ highRatedRecipe.recipe_name }}</div>
+        <div class="p-card-title mt-2 flex flex-wrap">
+          {{ highRatedRecipe.recipe_name }}
+        </div>
         <div class="p-card-subtitle">
           <i class="fa-solid fa-user fa-sm"></i>
           {{ highRatedRecipe.recipe_serves }} |
@@ -88,12 +94,16 @@
               severity="secondary"
               [outlined]="true"
             />
-            <p-button icon="fa-solid fa-arrow-right" styleClass="ml-2" />
+            <p-button
+              icon="fa-solid fa-arrow-right"
+              (onClick)="goToRecipe(highRatedRecipe.recipe_id)"
+              styleClass="ml-2"
+            />
           </span></div
       ></p-card>
     </div>
   </ng-template>
-</p-carousel>
+</p-carousel> -->
 
 <p-carousel
   [value]="recommendRecipes"
@@ -118,7 +128,9 @@
             }
           </div>
         </div>
-        <div class="p-card-title mt-2 flex flex-wrap">{{ recommendRecipe.recipe_name }}</div>
+        <div class="p-card-title mt-2 flex flex-wrap">
+          {{ recommendRecipe.recipe_name }}
+        </div>
         <div class="p-card-subtitle">
           <i class="fa-solid fa-user fa-sm"></i>
           {{ recommendRecipe.recipe_serves }} |
@@ -136,7 +148,11 @@
               severity="secondary"
               [outlined]="true"
             />
-            <p-button icon="fa-solid fa-arrow-right" styleClass="ml-2" />
+            <p-button
+              icon="fa-solid fa-arrow-right"
+              (onClick)="goToRecipe(recommendRecipe.recipe_id)"
+              styleClass="ml-2"
+            />
           </span></div
       ></p-card>
     </div>
