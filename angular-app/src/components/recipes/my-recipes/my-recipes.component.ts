@@ -9,7 +9,6 @@ import { InputTextModule } from 'primeng/inputtext';
 import { Recipe } from '../../types/types';
 import { Router } from '@angular/router';
 import { RecipeService } from '../../../services/recipe.service';
-import { AccountService } from '../../../services/account.service';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { RecipeCardComponent } from '../recipe-card/recipe-card.component';
 

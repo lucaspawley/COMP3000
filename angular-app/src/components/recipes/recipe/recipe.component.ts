@@ -58,7 +58,7 @@ export class RecipeComponent implements OnInit {
 
   getRecipe() {
     let recipeId = '';
-    this.route.url.subscribe((url) => (recipeId = url[0].path));
+    this.route.url.subscribe((url) => (recipeId = url[1].path));
 
     this.recipeService.getRecipe(recipeId).subscribe((result) => {
       this.recipe = {

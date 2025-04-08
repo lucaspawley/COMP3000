@@ -1,0 +1,23 @@
+<div class="flex flex-wrap">
+    @for (list of shoppingLists; track $index) {
+    <div class="pr-2 mt-2">
+      <p-card [style]="{ width: '300px', height: '120px' }">
+        <div class="p-card-body list-card">
+          <div class="p-card-title">{{ list.list_name }}</div>  
+          <div class="p-card-footer">
+            <div class="flex justify-content-end">
+              <div class="flex align-items-center">
+                <p-button
+                  [rounded]="true"
+                  icon="fa-solid fa-arrow-right"
+                  size="small"
+                  (onClick)="goToList(list.shoppingListId)"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </p-card>
+    </div>
+    }
+  </div>

@@ -27,6 +27,6 @@ export class RecipeCardComponent {
   }
 
   goToRecipe(recipeId: number | undefined) {
-    this.router.navigate([recipeId]);
+    this.router.navigate(['recipe', recipeId]);
   }
 }
