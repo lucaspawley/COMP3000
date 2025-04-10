@@ -117,11 +117,22 @@ export class RecipeService {
   }
 
   deleteIngredient(ingredientId: number, recipeId: number) {
-    console.log(ingredientId);
-    console.log(recipeId);
     return this.http.post(
       `${environment.apiURL}/api/ingredient/delete/${ingredientId}`,
       recipeId,
+      {
+        headers: new HttpHeaders().set(
+          'Authorization',
+          `Bearer ${JSON.parse(sessionStorage.getItem('token') as string)}`
+        ),
+      }
+    );
+  }
+
+  deleteRecipe(recipe: Recipe) {
+    return this.http.post(
+      `${environment.apiURL}/api/recipe/delete`,
+      recipe,
       {
         headers: new HttpHeaders().set(
           'Authorization',

@@ -41,6 +41,9 @@ public class RecipeController {
     @Autowired
     private FavouriteRecipeService favouriteRecipeService;
 
+    @Autowired
+    private RecipeIngredientLinkService recipeIngredientLinkService;
+
     @GetMapping("/recipes")
     public List<Recipe> getAll() {
         return recipeService.getAllRecipes();
@@ -105,6 +108,15 @@ public class RecipeController {
         }
 
         return recipe;
+    }
+
+    @PostMapping("/recipe/delete")
+    public void deleteRecipe(@RequestBody Recipe recipe) {
+        for (RecipeIngredient ingredient : recipe.getIngredients()) {
+            recipeIngredientLinkService.deleteLink(ingredient.getRecipe_ingredient_id(), recipe.getRecipe_id());
+        }
+
+        recipeService.deleteRecipe(recipe.getRecipe_id());
     }
 
     @GetMapping("/recipe/favourite/{id}")
