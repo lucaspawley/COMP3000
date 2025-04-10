@@ -74,27 +74,21 @@ export class RecipeService {
   }
 
   getTopRecipes(): Observable<any> {
-    return this.http.get(
-      `${environment.apiURL}/api/recipe/top`,
-      {
-        headers: new HttpHeaders().set(
-          'Authorization',
-          `Bearer ${JSON.parse(sessionStorage.getItem('token') as string)}`
-        ),
-      }
-    );
+    return this.http.get(`${environment.apiURL}/api/recipe/top`, {
+      headers: new HttpHeaders().set(
+        'Authorization',
+        `Bearer ${JSON.parse(sessionStorage.getItem('token') as string)}`
+      ),
+    });
   }
 
   getRandomRecipes(): Observable<any> {
-    return this.http.get(
-      `${environment.apiURL}/api/random`,
-      {
-        headers: new HttpHeaders().set(
-          'Authorization',
-          `Bearer ${JSON.parse(sessionStorage.getItem('token') as string)}`
-        ),
-      }
-    );
+    return this.http.get(`${environment.apiURL}/api/random`, {
+      headers: new HttpHeaders().set(
+        'Authorization',
+        `Bearer ${JSON.parse(sessionStorage.getItem('token') as string)}`
+      ),
+    });
   }
 
   getFavouriteRecipes(accountId: number): Observable<any> {
@@ -113,6 +107,21 @@ export class RecipeService {
     return this.http.post(
       `${environment.apiURL}/api/recipe/favourite`,
       favouriteRecipe,
+      {
+        headers: new HttpHeaders().set(
+          'Authorization',
+          `Bearer ${JSON.parse(sessionStorage.getItem('token') as string)}`
+        ),
+      }
+    );
+  }
+
+  deleteIngredient(ingredientId: number, recipeId: number) {
+    console.log(ingredientId);
+    console.log(recipeId);
+    return this.http.post(
+      `${environment.apiURL}/api/ingredient/delete/${ingredientId}`,
+      recipeId,
       {
         headers: new HttpHeaders().set(
           'Authorization',
