@@ -112,4 +112,10 @@ export class RecipeComponent implements OnInit {
       console.log(res);
     });
   }
+
+  deleteRecipe() {
+    this.recipeService
+      .deleteRecipe(this.recipe!)
+      .subscribe(() => this.router.navigate(['my-recipes']));
+  }
 }
