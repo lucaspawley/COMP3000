@@ -22,4 +22,5 @@ export const routes: Routes = [
   { path: 'shopping-lists', component: ShoppingListsPageComponent },
   { path: 'list/:listId', component: ShoppingListComponent },
   { path: 'recipe/:recipeId', component: RecipeComponent, pathMatch: 'full' },
+  { path: 'recipe/:recipeId/edit', component: CreateRecipeComponent, pathMatch: 'full' },
 ];

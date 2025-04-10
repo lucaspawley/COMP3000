@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CardModule } from 'primeng/card';
 import { ImageModule } from 'primeng/image';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { RecipeService } from '../../../services/recipe.service';
 import { FavouriteRecipe, Recipe } from '../../types/types';
 import { ChipModule } from 'primeng/chip';
@@ -35,16 +35,20 @@ export class RecipeComponent implements OnInit {
   recipe: Recipe | undefined;
   dialogVisible: boolean = false;
 
+  accountId!: number | undefined;
+
   ratingFormGroup!: FormGroup;
 
   constructor(
     private route: ActivatedRoute,
     private recipeService: RecipeService,
     private sanitizer: DomSanitizer,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
+    this.accountId = JSON.parse(sessionStorage.getItem('accountId') as string);
     this.getRecipe();
   }
 
@@ -92,6 +96,10 @@ export class RecipeComponent implements OnInit {
   }
 
   addToList() {}
+
+  editRecipe() {
+    this.router.navigate(['recipe', this.recipe!.recipe_id, 'edit']);
+  }
 
   favouriteRecipe() {
     let newFav: FavouriteRecipe = {
