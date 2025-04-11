@@ -150,7 +150,7 @@ export class AssistantPageComponent implements OnInit {
       }
     } else if (message.includes('image')) {
       this.promptFormGroup.get('prompt')?.reset();
-      
+
       let newRecipe: Recipe = this.recipeJSON as unknown as Recipe;
       if (newRecipe.recipe_name)
         await this.geminiService.generateImage(newRecipe.recipe_name);
@@ -179,10 +179,12 @@ export class AssistantPageComponent implements OnInit {
                     }, who has dietary preference of ${
         this.userAllergies
       } and does not like ${this.userDislikes}.
+                    Users may mention ingredients they would like to be included, make sure to find an appropriate recipe.
                     Do not mention the users allergies, dietary preference, or disliked ingredients.
                     Do not use markdown for the recipe name, use **.
                     Make sure method is on a different line than the ingredients and that each method is split into text
                     Also, create a JSON response for the recipe with this schema.
+                    If a recipe contains Milk, Eggs, Peanuts, Tree nuts (almonds, walnuts, cashews, etc.), Soy, Wheat, Fish, Shellfish, Sesame add it to the allergies in the JSON
                     Make sure that the recipe_ingredient_amount and recipe_ingredient_measurement are not null.
                     Method steps must fit in a VARCHAR(255).
 

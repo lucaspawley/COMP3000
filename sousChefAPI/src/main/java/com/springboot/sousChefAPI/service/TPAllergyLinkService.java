@@ -3,6 +3,7 @@ package com.springboot.sousChefAPI.service;
 import com.springboot.sousChefAPI.model.TasteProfileAllergyLink;
 import com.springboot.sousChefAPI.model.TasteProfileAllergyLinkId;
 import com.springboot.sousChefAPI.repository.TPAllergyLinkRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +24,12 @@ public class TPAllergyLinkService {
         return tpAllergyLinkRepository.save(link);
     }
 
-    public void deleteTPAllergyLink(TasteProfileAllergyLinkId id) {
-        tpAllergyLinkRepository.deleteById(id);
+    @Transactional
+    public void deleteLink(int allergyId, int tasteProfileId) {
+        TasteProfileAllergyLinkId compositeId = new TasteProfileAllergyLinkId();
+        compositeId.setAllergyId(allergyId);
+        compositeId.setTasteProfileId(tasteProfileId);
+
+        tpAllergyLinkRepository.deleteById(compositeId);
     }
 }

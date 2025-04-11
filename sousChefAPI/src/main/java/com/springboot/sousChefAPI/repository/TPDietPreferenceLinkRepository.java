@@ -7,4 +7,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface TPDietPreferenceLinkRepository extends JpaRepository<TasteProfileDietPreferenceLink, TasteProfileDietPreferenceLinkId> {
+    void deleteById(TasteProfileDietPreferenceLinkId id);
 }

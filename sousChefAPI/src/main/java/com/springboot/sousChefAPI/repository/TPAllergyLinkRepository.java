@@ -7,4 +7,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface TPAllergyLinkRepository extends JpaRepository<TasteProfileAllergyLink, TasteProfileAllergyLinkId> {
+    void deleteById(TasteProfileAllergyLinkId id);
 }
