@@ -13,7 +13,7 @@ public class TPIngredientLinkService {
     @Autowired
     private TPIngredientLinkRepository tpIngredientLinkRepository;
 
-    public TasteProfileIngredientLink saveTPAllergyLink(Integer tasteProfileId, Integer ingredientId){
+    public TasteProfileIngredientLink saveTPingredientLink(Integer tasteProfileId, Integer ingredientId){
         TasteProfileIngredientLinkId compositeId= new TasteProfileIngredientLinkId();
         compositeId.setTasteProfileId(tasteProfileId);
         compositeId.setIngredientId(ingredientId);

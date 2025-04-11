@@ -1,5 +1,7 @@
 package com.springboot.sousChefAPI.service;
 
+import com.springboot.sousChefAPI.model.RecipeIngredientLink;
+import com.springboot.sousChefAPI.model.RecipeIngredientLinkId;
 import com.springboot.sousChefAPI.model.TasteProfileAllergyLink;
 import com.springboot.sousChefAPI.model.TasteProfileAllergyLinkId;
 import com.springboot.sousChefAPI.repository.TPAllergyLinkRepository;
@@ -22,6 +24,14 @@ public class TPAllergyLinkService {
         link.setId(compositeId);
 
         return tpAllergyLinkRepository.save(link);
+    }
+
+    public TasteProfileAllergyLink linkExists(int allergyId, int tasteProfileId){
+        TasteProfileAllergyLinkId compositeId = new TasteProfileAllergyLinkId();
+        compositeId.setAllergyId(allergyId);
+        compositeId.setTasteProfileId(tasteProfileId);
+
+        return tpAllergyLinkRepository.findById(compositeId);
     }
 
     @Transactional

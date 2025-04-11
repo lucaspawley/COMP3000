@@ -2,6 +2,7 @@ package com.springboot.sousChefAPI.controller;
 
 import com.springboot.sousChefAPI.model.Allergy;
 import com.springboot.sousChefAPI.service.AllergyService;
+import com.springboot.sousChefAPI.service.TPAllergyLinkService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,15 +17,20 @@ public class AllergyController {
     @Autowired
     private AllergyService allergyService;
 
+    @Autowired
+    private TPAllergyLinkService allergyLinkService;
+
     @GetMapping("/allergy")
     public List<Allergy> get() {
         return allergyService.getAllAllergies();
     }
 
-    @PostMapping("/allergy")
-    public Allergy save(@RequestBody Allergy allergyObj) {
-        allergyService.saveAllergy(allergyObj);
-        return allergyObj;
+    @PostMapping("/allergy/{tasteProfileId}")
+    public Allergy save(@RequestBody Allergy allergyObj, @PathVariable int tasteProfileId) {
+        Allergy newAllergy = allergyService.saveAllergy(allergyObj);
+        allergyLinkService.saveTPAllergyLink(allergyObj.getAllergyId(), tasteProfileId);
+
+        return newAllergy;
     }
 
     @GetMapping("/allergy/{id}")
@@ -34,16 +40,8 @@ public class AllergyController {
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND)).getBody();
     }
 
-    @DeleteMapping("/allergy/{id}")
-    public ResponseEntity<Object> delete(@PathVariable int id) {
-        allergyService.deleteAllergy(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
-
-    @PutMapping("/allergy")
-    public Allergy update(@PathVariable int id, @RequestBody Allergy allergy) {
-        allergy.setAllergyId(id);
-        Allergy updatedAllergy = allergyService.saveAllergy(allergy);
-        return new ResponseEntity<>(updatedAllergy, HttpStatus.OK).getBody();
+    @PostMapping("/allergy/delete/{tasteProfileId}")
+    public void delete(@RequestBody Allergy allergy, @PathVariable int tasteProfileId) {
+        allergyLinkService.deleteLink(allergy.getAllergyId(), tasteProfileId);
     }
 }

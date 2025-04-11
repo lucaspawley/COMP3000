@@ -3,6 +3,7 @@ package com.springboot.sousChefAPI.controller;
 import com.springboot.sousChefAPI.model.Ingredient;
 import com.springboot.sousChefAPI.service.IngredientService;
 import com.springboot.sousChefAPI.service.RecipeIngredientLinkService;
+import com.springboot.sousChefAPI.service.TPIngredientLinkService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,6 +18,9 @@ public class IngredientController {
     @Autowired
     private RecipeIngredientLinkService recipeIngredientLinkService;
 
+    @Autowired
+    private TPIngredientLinkService ingredientLinkService;
+
     @GetMapping("/ingredients")
     public List<Ingredient> getAll() {
         return ingredientService.getAllIngredients();
@@ -28,7 +32,12 @@ public class IngredientController {
         return ingredient;
     }
 
-    @PostMapping("/ingredient/delete/{ingredientId}")
+    @PostMapping("/ingredient/delete/{tasteProfileId}")
+    public void deleteIngredient(@RequestBody Ingredient ingredient, @PathVariable int tasteProfileId) {
+        ingredientLinkService.deleteLink(ingredient.getIngredient_id(), tasteProfileId);
+    }
+
+    @PostMapping("/recipeIngredient/delete/{ingredientId}")
     public void deleteIngredient(@PathVariable Integer ingredientId, @RequestBody Integer recipeId) {
         recipeIngredientLinkService.deleteLink(ingredientId, recipeId);
     }

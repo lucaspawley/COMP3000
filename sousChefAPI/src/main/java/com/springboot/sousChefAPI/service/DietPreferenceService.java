@@ -28,10 +28,6 @@ public class DietPreferenceService {
         return dietPreferenceRepository.save(dietPreference);
     }
 
-    public void deleteDietPreference(int id) {
-        dietPreferenceRepository.deleteById(id);
-    }
-
     public DietPreference findByDietPreferenceName(String dietPreferenceName) {
         return dietPreferenceRepository.findByDietPreferenceName(dietPreferenceName);
     }

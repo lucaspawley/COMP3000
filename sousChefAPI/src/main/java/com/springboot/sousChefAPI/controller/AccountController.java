@@ -45,7 +45,7 @@ public class AccountController {
         }
 
         for (Ingredient ingredient : tasteProfile.getIngredients()) {
-            tpAllergyLinkService.saveTPAllergyLink(tasteProfile.getTasteProfileId(), ingredient.getIngredient_id());
+            tpIngredientLinkService.saveTPingredientLink(tasteProfile.getTasteProfileId(), ingredient.getIngredient_id());
         }
 
         for (DietPreference dietPreference : tasteProfile.getDietPreferences()) {
