@@ -8,6 +8,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { ShoppingListCardComponent } from '../shopping-list-card/shopping-list-card.component';
 import { ShoppingListService } from '../../../services/shopping-list.service';
 import { ShoppingList } from '../../types/types';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-shopping-lists-page',
@@ -26,7 +27,10 @@ import { ShoppingList } from '../../types/types';
 export class ShoppingListsPageComponent implements OnInit {
   shoppingListArray: Array<ShoppingList> = [];
 
-  constructor(private shoppingListService: ShoppingListService) {}
+  constructor(
+    private shoppingListService: ShoppingListService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.shoppingListService
@@ -38,5 +42,7 @@ export class ShoppingListsPageComponent implements OnInit {
       });
   }
 
-  goToCreateList() {}
+  goToCreateList() {
+    this.router.navigate(['list']);
+  }
 }

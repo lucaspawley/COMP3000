@@ -49,7 +49,14 @@ export class ShoppingListComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.route.url.subscribe((url) => (this.shoppingListId = url[1].path));
+    this.route.url.subscribe((url) => {
+      console.log(url);
+      if (url[1] != undefined) {
+        this.shoppingListId = url[1].path;
+      } else this.editMode = true;
+    });
+
+    console.log(this.editMode);
 
     this.itemFormGroup = this.fb.group({
       item: '',
@@ -60,11 +67,11 @@ export class ShoppingListComponent implements OnInit {
     this.shoppingListFormGroup = this.fb.group({
       shoppingListId: null,
       list_name: '',
-      accountID: this.accountService.currentAccount?.accountId,
+      accountID: JSON.parse(sessionStorage.getItem('accountId') as string),
       items: this.itemFormArray,
     });
 
-    this.getList();
+    if (!this.editMode) this.getList();
   }
 
   getList() {

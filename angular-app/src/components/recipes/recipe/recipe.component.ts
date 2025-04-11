@@ -3,19 +3,14 @@ import { CardModule } from 'primeng/card';
 import { ImageModule } from 'primeng/image';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RecipeService } from '../../../services/recipe.service';
-import { FavouriteRecipe, Recipe } from '../../types/types';
+import { FavouriteRecipe, Recipe, ShoppingList } from '../../types/types';
 import { ChipModule } from 'primeng/chip';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { RatingModule } from 'primeng/rating';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  ReactiveFormsModule,
-} from '@angular/forms';
-import { AccountService } from '../../../services/account.service';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { ShoppingListService } from '../../../services/shopping-list.service';
 
 @Component({
   selector: 'app-recipe',
@@ -34,6 +29,9 @@ import { AccountService } from '../../../services/account.service';
 export class RecipeComponent implements OnInit {
   recipe: Recipe | undefined;
   dialogVisible: boolean = false;
+  listVisible: boolean = false;
+
+  availableLists: Array<ShoppingList> = [];
 
   accountId!: number | undefined;
 
@@ -44,7 +42,8 @@ export class RecipeComponent implements OnInit {
     private recipeService: RecipeService,
     private sanitizer: DomSanitizer,
     private fb: FormBuilder,
-    private router: Router
+    private router: Router,
+    private listService: ShoppingListService
   ) {}
 
   ngOnInit(): void {
@@ -111,6 +110,18 @@ export class RecipeComponent implements OnInit {
     this.recipeService.favouriteRecipe(newFav).subscribe((res) => {
       console.log(res);
     });
+  }
+
+  showAddToList() {
+    this.listVisible = !this.listVisible;
+
+    if (this.listVisible) {
+      this.listService
+        .getShoppingList(this.accountId!.toString())
+        .subscribe((result) => {
+          this.availableLists = result;
+        });
+    }
   }
 
   deleteRecipe() {
