@@ -122,7 +122,10 @@
 <p-dialog header="Add Items to List" [visible]="listVisible">
   <div>
     @for (list of availableLists; track $index) {
-    <div class="flex">{{ list.list_name }} <p-button label="Add Items" /></div>
+    <div class="flex justify-content-between mb-2">
+      <div>{{ list.list_name }}</div>
+      <p-button label="Add Items" size="small" [rounded]="true" (onClick)="addToList(list.shoppingListId!)" />
+    </div>
     }
   </div>
   <div class="flex justify-content-end gap-2">

@@ -3,7 +3,13 @@ import { CardModule } from 'primeng/card';
 import { ImageModule } from 'primeng/image';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RecipeService } from '../../../services/recipe.service';
-import { FavouriteRecipe, Recipe, ShoppingList } from '../../types/types';
+import {
+  FavouriteRecipe,
+  Item,
+  Recipe,
+  RecipeIngredient,
+  ShoppingList,
+} from '../../types/types';
 import { ChipModule } from 'primeng/chip';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
@@ -94,7 +100,25 @@ export class RecipeComponent implements OnInit {
     this.dialogVisible = !this.dialogVisible;
   }
 
-  addToList() {}
+  addToList(shoppingListId: number) {
+    this.recipe?.ingredients?.forEach((ingredient: RecipeIngredient) => {
+      const item =
+        ingredient.recipe_ingredient_amount +
+        ingredient.recipe_ingredient_measurement! +
+        ' ' +
+        ingredient.recipe_ingredient_name;
+      const ingredientItem: Item = {
+        itemId: undefined,
+        item: item,
+        brought: false,
+      };
+
+      this.listService.addItem(shoppingListId, ingredientItem).subscribe(() => {
+        console.log('ingredient Added');
+      });
+    });
+    this.listVisible = false;
+  }
 
   editRecipe() {
     this.router.navigate(['recipe', this.recipe!.recipe_id, 'edit']);
@@ -117,7 +141,7 @@ export class RecipeComponent implements OnInit {
 
     if (this.listVisible) {
       this.listService
-        .getShoppingList(this.accountId!.toString())
+        .getShoppingLists(this.accountId!.toString())
         .subscribe((result) => {
           this.availableLists = result;
         });
