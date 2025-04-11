@@ -8,4 +8,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface RecipeIngredientLinkRepository extends JpaRepository<RecipeIngredientLink, Integer> {
     RecipeIngredientLink findById(RecipeIngredientLinkId id);
+
+    void deleteById(RecipeIngredientLinkId id);
 }

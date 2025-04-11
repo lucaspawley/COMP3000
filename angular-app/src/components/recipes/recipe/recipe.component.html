@@ -1,6 +1,24 @@
 <div class="mb-2">
   <p-card>
     <div class="flex">
+      @if (accountId == recipe?.accountId) {
+      <div class="mr-1">
+        <p-button
+          [rounded]="true"
+          icon="fa-solid fa-pencil"
+          label="Edit"
+          (onClick)="editRecipe()"
+        />
+      </div>
+      <div class="mr-1">
+        <p-button
+          [rounded]="true"
+          icon="fa-solid fa-trash"
+          label="Delete"
+          (onClick)="deleteRecipe()"
+        />
+      </div>
+      }
       <div class="mr-1">
         <p-button
           [rounded]="true"
@@ -9,6 +27,7 @@
           (onClick)="addToList()"
         />
       </div>
+      @if (accountId != recipe?.accountId) {
       <div class="mr-1">
         <p-button
           [rounded]="true"
@@ -17,6 +36,7 @@
           (onClick)="favouriteRecipe()"
         />
       </div>
+      }
       <div>
         <p-button
           [rounded]="true"

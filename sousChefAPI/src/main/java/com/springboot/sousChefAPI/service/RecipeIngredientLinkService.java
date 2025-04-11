@@ -3,6 +3,7 @@ package com.springboot.sousChefAPI.service;
 import com.springboot.sousChefAPI.model.RecipeIngredientLink;
 import com.springboot.sousChefAPI.model.RecipeIngredientLinkId;
 import com.springboot.sousChefAPI.repository.RecipeIngredientLinkRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,5 +29,14 @@ public class RecipeIngredientLinkService {
         compositeId.setIngredientId(ingredientId);
 
         return repository.findById(compositeId);
+    }
+
+    @Transactional
+    public void deleteLink(int ingredientId, int recipeId) {
+        RecipeIngredientLinkId compositeId = new RecipeIngredientLinkId();
+        compositeId.setIngredientId(ingredientId);
+        compositeId.setRecipeId(recipeId);
+
+        repository.deleteById(compositeId);
     }
 }

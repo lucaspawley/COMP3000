@@ -18,10 +18,11 @@ import { CdkDrag, CdkDragHandle, CdkDropList } from '@angular/cdk/drag-drop';
 import { TextareaModule } from 'primeng/textarea';
 import { FormControlPipe } from '../../../pipes/form-control.pipe';
 import { ChipModule } from 'primeng/chip';
-import { Recipe } from '../../types/types';
-import { Router } from '@angular/router';
+import { Ingredient, Recipe } from '../../types/types';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AccountService } from '../../../services/account.service';
 import { FileUploadModule } from 'primeng/fileupload';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-create-recipe',
@@ -49,6 +50,9 @@ export class CreateRecipeComponent implements OnInit {
   recipeCreationForm!: FormGroup;
   recipeImage!: File;
 
+  recipe: Recipe | undefined;
+  recipeId: string | undefined;
+
   allergyFormArray!: FormArray;
   allergyFormControl!: FormControl;
 
@@ -60,14 +64,25 @@ export class CreateRecipeComponent implements OnInit {
 
   methodSteps: number = 2;
 
+  editMode: boolean = false;
+
   constructor(
     private fb: FormBuilder,
     private recipeService: RecipeService,
     private router: Router,
-    private accountService: AccountService
+    private route: ActivatedRoute,
+    private sanitizer: DomSanitizer
   ) {}
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
+    this.route.url.subscribe((url) => {
+      if (url[2]?.path == 'edit') {
+        this.editMode = true;
+      }
+
+      this.recipeId = url[1]?.path;
+    });
+
     this.allergyFormArray = this.fb.array([]);
     this.allergyFormControl = this.fb.control('');
 
@@ -80,13 +95,15 @@ export class CreateRecipeComponent implements OnInit {
     });
 
     this.methodFormArray = this.fb.array([]);
-    this.methodFormArray.push(
-      this.fb.group({
-        methodId: null,
-        method_step: 1,
-        method_description: '',
-      })
-    );
+
+    if (!this.editMode)
+      this.methodFormArray.push(
+        this.fb.group({
+          methodId: null,
+          method_step: 1,
+          method_description: '',
+        })
+      );
 
     this.methodFormGroup = this.fb.group({
       methodId: null,
@@ -105,6 +122,84 @@ export class CreateRecipeComponent implements OnInit {
       methods: this.methodFormArray,
       accountId: JSON.parse(sessionStorage.getItem('accountId') as string),
     });
+
+    if (this.editMode) {
+      await this.recipeService.getRecipe(this.recipeId!).subscribe((result) => {
+        this.recipe = {
+          ...result,
+          imageSafeUrl: this.sanitizeImage(result.imageBase64),
+        };
+
+        this.recipeCreationForm = this.fb.group({
+          recipe_id: this.recipe?.recipe_id,
+          recipe_name: this.recipe?.recipe_name,
+          recipe_cook_time: this.recipe?.recipe_cook_time,
+          recipe_prep_time: this.recipe?.recipe_prep_time,
+          recipe_serves: this.recipe?.recipe_serves,
+          recipe_rating: this.recipe?.recipe_rating,
+          imageBase64: this.recipe?.imageBase64,
+          imageData: this.recipe?.imageData,
+          allergies: this.allergyFormArray,
+          ingredients: this.recipeIngredientsFormArray,
+          methods: this.methodFormArray,
+          accountId: JSON.parse(sessionStorage.getItem('accountId') as string),
+        });
+
+        this.recipe?.ingredients?.forEach((ingredient) => {
+          this.recipeIngredientsFormArray.push(
+            this.fb.group({
+              recipe_ingredient_id: ingredient.recipe_ingredient_id,
+              recipe_ingredient_name: ingredient.recipe_ingredient_name,
+              recipe_ingredient_amount: ingredient.recipe_ingredient_amount,
+              recipe_ingredient_measurement:
+                ingredient.recipe_ingredient_measurement,
+            })
+          );
+        });
+
+        this.recipe?.methods?.forEach((method) => {
+          this.methodFormArray.push(
+            this.fb.group({
+              methodId: method.methodId,
+              method_step: method.method_step,
+              method_description: method.method_description,
+            })
+          );
+        });
+
+        this.recipe?.allergies?.forEach((allergy) => {
+          this.allergyFormArray.push(
+            this.fb.group({
+              allergyId: allergy.allergyId,
+              allergyName: allergy.allergyName,
+            })
+          );
+        });
+      });
+    }
+  }
+
+  deleteIngredient(ingredient: any, index: number) {
+    if (this.editMode) {
+      this.recipeService
+        .deleteIngredient(
+          ingredient.recipe_ingredient_id!,
+          this.recipe!.recipe_id!
+        )
+        .subscribe(() => {
+          this.recipeIngredientsFormArray.removeAt(index);
+        });
+    } else {
+      this.recipeIngredientsFormArray.removeAt(index);
+    }
+  }
+
+  sanitizeImage(base64: string): SafeUrl | undefined {
+    if (base64 != null) {
+      return this.sanitizer.bypassSecurityTrustUrl(
+        `data:image/jpeg;base64,${base64}`
+      );
+    } else return undefined;
   }
 
   addToArray() {
@@ -181,34 +276,59 @@ export class CreateRecipeComponent implements OnInit {
 
   onFileUpload(event: any) {
     this.recipeImage = event.target.files[0];
-    console.log(this.recipeImage);
+
+    const fileInput = event.target as HTMLInputElement;
+    let base64Image;
+
+    if (fileInput.files && fileInput.files[0]) {
+      const file = fileInput.files[0];
+      const reader = new FileReader();
+
+      reader.onload = () => {
+        base64Image = reader.result as string;
+        if (this.recipe) {
+          this.recipe.imageSafeUrl = base64Image;
+          this.recipe.imageBase64 = base64Image;
+        }
+      };
+
+      reader.readAsDataURL(file);
+    }
   }
 
   saveRecipe() {
     if (!this.recipeImage) {
-      const placeholderImagePath = 'assets/images/placeholder.jpg';
-
-      fetch(placeholderImagePath)
-        .then((response) => response.blob())
-        .then((blob) => {
-          this.recipeImage = new File([blob], 'placeholder.jpg', {
-            type: 'image/jpeg',
+      if (
+        this.recipe?.imageSafeUrl != undefined ||
+        this.recipe?.imageBase64 != undefined
+      ) {
+        const newRecipe: Recipe = this.recipeCreationForm.value;
+        this.recipeService
+          .createRecipe(newRecipe, this.recipeImage)
+          .subscribe(() => {
+            this.router.navigate(['my-recipes']);
           });
-
-          const newRecipe: Recipe = this.recipeCreationForm.value;
-          console.log(this.recipeImage);
-          this.recipeService
-            .createRecipe(newRecipe, this.recipeImage)
-            .subscribe(() => {
-              this.router.navigate(['my-recipes']);
+      } else {
+        const placeholderImagePath = 'assets/images/placeholder.jpg';
+        fetch(placeholderImagePath)
+          .then((response) => response.blob())
+          .then((blob) => {
+            this.recipeImage = new File([blob], 'placeholder.jpg', {
+              type: 'image/jpeg',
             });
-        })
-        .catch((error) => {
-          console.error('Error loading placeholder image:', error);
-        });
+            const newRecipe: Recipe = this.recipeCreationForm.value;
+            this.recipeService
+              .createRecipe(newRecipe, this.recipeImage)
+              .subscribe(() => {
+                this.router.navigate(['my-recipes']);
+              });
+          })
+          .catch((error) => {
+            console.error('Error loading placeholder image:', error);
+          });
+      }
     } else {
       const newRecipe: Recipe = this.recipeCreationForm.value;
-
       this.recipeService
         .createRecipe(newRecipe, this.recipeImage)
         .subscribe(() => {
