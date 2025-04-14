@@ -25,7 +25,7 @@ public class AllergyController {
         return allergyService.getAllAllergies();
     }
 
-    @PostMapping("/allergy/{tasteProfileId}")
+    @PostMapping("/allergy/add/{tasteProfileId}")
     public Allergy save(@RequestBody Allergy allergyObj, @PathVariable int tasteProfileId) {
         Allergy newAllergy = allergyService.saveAllergy(allergyObj);
         allergyLinkService.saveTPAllergyLink(allergyObj.getAllergyId(), tasteProfileId);

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -23,7 +24,9 @@ public class AllergyService {
     }
 
     public Allergy saveAllergy(Allergy allergy) {
-        return allergyRepository.save(allergy);
+        Allergy allergyExists = allergyRepository.findByAllergyName(allergy.getAllergyName());
+
+        return Objects.requireNonNullElseGet(allergyExists, () -> allergyRepository.save(allergy));
     }
 
     public Allergy findByAllergyName(String allergyName) {

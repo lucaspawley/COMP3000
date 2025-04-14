@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -18,7 +19,10 @@ public class IngredientService {
     }
 
     public Ingredient saveIngredient(Ingredient ingredient){
-        return ingredientRepository.save(ingredient);
+
+        Ingredient ingredientExists = ingredientRepository.findByIngredientName(ingredient.getIngredientName());
+
+        return Objects.requireNonNullElseGet(ingredientExists, () -> ingredientRepository.save(ingredient));
     }
 
     public Ingredient findByName(String ingredientName){

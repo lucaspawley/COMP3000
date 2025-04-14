@@ -26,10 +26,12 @@ public class IngredientController {
         return ingredientService.getAllIngredients();
     }
 
-    @PostMapping("/ingredient")
-    public Ingredient save(@RequestBody Ingredient ingredient) {
-        ingredientService.saveIngredient(ingredient);
-        return ingredient;
+    @PostMapping("/ingredient/add/{tasteProfileId}")
+    public Ingredient save(@RequestBody Ingredient ingredient, @PathVariable int tasteProfileId) {
+        Ingredient newIngredient= ingredientService.saveIngredient(ingredient);
+        ingredientLinkService.saveTPingredientLink(newIngredient.getIngredient_id(), tasteProfileId);
+
+        return newIngredient;
     }
 
     @PostMapping("/ingredient/delete/{tasteProfileId}")
