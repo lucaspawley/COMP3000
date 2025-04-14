@@ -2,14 +2,23 @@
   <h2 class="my-1">AI Assistant</h2>
   <div class="chat-container">
     @for (message of messages; track $index) { @if (message.sender == 'user') {
-    <div class="message user" [innerHTML]="message.message"></div>
+      @if(message.type == 'text'){
+    <div class="message user" [innerHTML]="message.message"></div>}
+    @else if (message.type == 'image') {
+      <div class="message user">
+        <img [src]="userImage64Base" class="image" alt="User Image" />
+      </div>
+    }
     }@else if (message.sender == 'bot') { @if(message.type == 'text'){
     <div class="message bot" [innerHTML]="message.message"></div>
     }@else if (message.type == 'image') {@if(imageSafeUrl){
     <div class="message bot">
       <img [src]="imageSafeUrl" class="image" alt="Recipe Image" />
     </div>
-    }} } } @if (messageLoading) {
+    }} } } 
+    
+    
+    @if (messageLoading) {
     <div class="message bot">
       <i class="fa-solid fa-ellipsis fa-2xl"></i>
     </div>
@@ -24,9 +33,24 @@
     />
     <p-inputgroup-addon>
       <p-button
+        icon="fa-solid fa-plus"
+        (click)="showDialog()"
+      ></p-button
+    >
+      <p-button
         icon="fa-solid fa-paper-plane"
         (click)="sendMessage()"
       ></p-button
     ></p-inputgroup-addon>
   </p-input-group>
 </p-card>
+
+<p-dialog header="Upload Image" [modal]="true" [visible]="dialogVisible" position="top">
+  <div class="flex justify-content-center mb-2">
+    <input type="file" (change)="onFileUpload($event)" />
+  </div>
+  <div class="flex justify-content-end gap-2">
+    <p-button label="Cancel" severity="secondary" (onClick)="showDialog()" />
+    <p-button label="Send Image" (onClick)="sendImage()" />
+  </div>
+</p-dialog>

@@ -19,21 +19,21 @@
           </p-inputGroup>
         </div>
         <div class="flex">
-          <p-inputgroup class="small-text mr-2">
+          <p-inputgroup class="mr-2">
             <p-inputgroup-addon>
               <i class="fa-solid fa-user"></i>
             </p-inputgroup-addon>
             <input pInputText type="number" formControlName="recipe_serves"
           /></p-inputgroup>
 
-          <p-inputgroup class="small-text mr-2">
+          <p-inputgroup class="mr-2">
             <p-inputgroup-addon>
               <i class="fa-solid fa-fire"></i>
             </p-inputgroup-addon>
             <input pInputText type="number" formControlName="recipe_cook_time"
           /></p-inputgroup>
 
-          <p-inputgroup class="small-text mr-2">
+          <p-inputgroup class="mr-2">
             <p-inputgroup-addon>
               <i class="fa-solid fa-utensils"></i>
             </p-inputgroup-addon>
@@ -59,16 +59,22 @@
             />
           </p-inputgroup-addon>
         </p-inputgroup>
-        <div class="flex flex-wrap">
-          @for (allergy of allergyFormArray.value; track $index) {
-          <p-chip
-            (onRemove)="removeAllergy($index)"
-            class="mb-1 ml-1"
-            [label]="allergy.allergyName"
-            [removable]="true"
-          />
-          }
+        @for (allergy of allergyFormArray.value; track $index) {
+        <div class="flex justify-content-between align-items-center">
+          <div>
+            {{ allergy }}
+          </div>
+          <div>
+            <p-button
+              icon="fa-solid fa-trash"
+              size="small"
+              (onClick)="removeAllergy($index)"
+            />
+          </div>
         </div>
+        @if($index < allergyFormArray.length - 1){
+        <hr />
+        } }
       </div>
 
       <h3>Ingredients</h3>
@@ -76,10 +82,7 @@
       @if (recipeIngredientsFormArray.value !== []) { @for (ingredient of
       recipeIngredientsFormArray.controls; track $index) {
       <div formArrayName="ingredients">
-        <div
-          [formGroupName]="$index"
-          class="flex flex-column mt-2 pr-8"
-        >
+        <div [formGroupName]="$index" class="flex flex-column mt-2 pr-8">
           <div class="flex align-items-center justify-content-start mb-2">
             <div>
               <label for="recipe_ingredient_amount">Amount</label>

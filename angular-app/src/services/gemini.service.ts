@@ -5,7 +5,12 @@ import {
   HarmBlockThreshold,
   HarmCategory,
 } from '@google/generative-ai';
-import { GoogleGenAI } from '@google/genai';
+import {
+  createPartFromBase64,
+  createUserContent,
+  GenerateContentResponse,
+  GoogleGenAI,
+} from '@google/genai';
 
 @Injectable({
   providedIn: 'root',
@@ -31,9 +36,27 @@ export class GeminiService {
     };
 
     return googleGenerativeAI.getGenerativeModel({
-      model: 'gemini-1.5-pro',
+      model: 'gemini-2.0-flash',
       ...generationConfig,
     });
+  }
+
+  async sendImage(base64Image: any, prompt: string): Promise<GenerateContentResponse> {
+    const ai = new GoogleGenAI({ apiKey: environment.aiApiURL });
+
+      base64Image = base64Image.split(',')[1];
+
+      const response = await ai.models.generateContent({
+        model: 'gemini-2.0-flash',
+        contents: [
+          createUserContent([
+            prompt,
+            createPartFromBase64(base64Image, 'image/png'),
+          ]),
+        ],
+      });
+
+      return response;
   }
 
   async generateImage(prompt: string): Promise<void> {
