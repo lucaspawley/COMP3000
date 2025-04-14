@@ -40,20 +40,23 @@ public class RecipeRatingService {
         List<Double> ratings = recipeRatingRepository.findAllByRecipeId(recipeId)
                 .stream()
                 .map(RecipeRating::getRecipeRating)
-                .map(Double::valueOf) // Convert Integer to Double
+                .map(Double::valueOf)
                 .collect(Collectors.toList());
 
         double meanRating = calculateMean(ratings);
 
+        double roundedMeanRating = Math.round(meanRating * 100.0) / 100.0;
+
         Optional<Recipe> recipeOptional = recipeRepository.findById(recipeId);
         if (recipeOptional.isPresent()) {
             Recipe recipe = recipeOptional.get();
-            recipe.setRecipe_rating(meanRating);
+            recipe.setRecipe_rating(roundedMeanRating);
             recipeRepository.save(recipe);
         }
 
         return recipeOptional;
     }
+
 
     private double calculateMean(List<Double> ratings) {
         if (ratings.isEmpty()) {
