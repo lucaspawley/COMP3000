@@ -26,7 +26,7 @@ public class DietPreferenceController {
     @PostMapping("/dietPreference/add/{tasteProfileId}")
     public DietPreference save(@RequestBody DietPreference dietPreferenceObj, @PathVariable int tasteProfileId) {
         DietPreference newDietPref = dietPreferenceService.saveDietPreference(dietPreferenceObj);
-        dietPreferenceLinkService.saveTPDietPreferenceLink(newDietPref.getDietPreferenceId(), tasteProfileId);
+        dietPreferenceLinkService.saveTPDietPreferenceLink(tasteProfileId, newDietPref.getDietPreferenceId());
 
         return newDietPref;
     }

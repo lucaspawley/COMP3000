@@ -29,7 +29,7 @@ public class IngredientController {
     @PostMapping("/ingredient/add/{tasteProfileId}")
     public Ingredient save(@RequestBody Ingredient ingredient, @PathVariable int tasteProfileId) {
         Ingredient newIngredient= ingredientService.saveIngredient(ingredient);
-        ingredientLinkService.saveTPingredientLink(newIngredient.getIngredient_id(), tasteProfileId);
+        ingredientLinkService.saveTPingredientLink(tasteProfileId, newIngredient.getIngredient_id());
 
         return newIngredient;
     }
