@@ -62,7 +62,7 @@
     <div class="flex justify-content-between">
       <div>
         <h3 class="mb-1">Allergies</h3>
-        @if(recipe?.allergies != []){ @for (allergy of recipe?.allergies; track
+        @if(recipe?.allergies!.length != 0){ @for (allergy of recipe?.allergies; track
         $index) {
         <p-chip
           class="mr-1"
