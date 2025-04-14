@@ -174,16 +174,22 @@
                 />
               </p-inputgroup-addon>
             </p-inputgroup>
-            <div class="flex flex-wrap">
               @for (allergy of allergyFormArray.value; track $index) {
-              <p-chip
-                (onRemove)="removeAllergy($index)"
-                class="mb-1 ml-1"
-                [label]="allergy"
-                [removable]="true"
-              />
-              }
-            </div>
+                <div class="flex justify-content-between align-items-center">
+                  <div>
+                    {{ allergy }}
+                  </div>
+                  <div>
+                    <p-button
+                      icon="fa-solid fa-trash"
+                      size="small"
+                      (onClick)="removeAllergy($index)"
+                    />
+                  </div>
+                </div>
+                @if($index < allergyFormArray.length - 1){
+                <hr />
+                } }
             <div class="flex pt-2 justify-content-between">
               <p-button (onClick)="activateCallback(1)"
                 ><i class="fa-solid fa-arrow-left"></i> Back</p-button
@@ -210,16 +216,22 @@
                 />
               </p-inputgroup-addon>
             </p-inputgroup>
-            <div class="flex flex-wrap">
-              @for (dietPref of dietPreferenceFormArray.value; track $index) {
-              <p-chip
-                (onRemove)="removeDietPref($index)"
-                class="mb-1 ml-1"
-                [label]="dietPref"
-                [removable]="true"
-              />
-              }
-            </div>
+            @for (dietPref of dietPreferenceFormArray.value; track $index) {
+              <div class="flex justify-content-between align-items-center">
+                <div>
+                  {{ dietPref }}
+                </div>
+                <div>
+                  <p-button
+                    icon="fa-solid fa-trash"
+                    size="small"
+                    (onClick)="removeDietPref($index)"
+                  />
+                </div>
+              </div>
+              @if($index < dietPreferenceFormArray.length - 1){
+              <hr />
+              } }
             <div class="flex pt-2 justify-content-between">
               <p-button (onClick)="activateCallback(2)"
                 ><i class="fa-solid fa-arrow-left"></i> Back</p-button
@@ -246,16 +258,22 @@
                 />
               </p-inputgroup-addon>
             </p-inputgroup>
-            <div class="flex flex-wrap">
-              @for (ingredient of ingredientsFormArray.value; track $index) {
-              <p-chip
-                (onRemove)="removeIngredient($index)"
-                class="mb-1 ml-1"
-                [label]="ingredient"
-                [removable]="true"
-              />
-              }
-            </div>
+            @for (ingredient of ingredientsFormArray.value; track $index) {
+              <div class="flex justify-content-between align-items-center">
+                <div>
+                  {{ ingredient }}
+                </div>
+                <div>
+                  <p-button
+                    icon="fa-solid fa-trash"
+                    size="small"
+                    (onClick)="removeIngredient($index)"
+                  />
+                </div>
+              </div>
+              @if($index < ingredientsFormArray!.length - 1){
+              <hr />
+              } }
             <div class="flex pt-2 justify-content-between">
               <p-button (onClick)="activateCallback(3)"
                 ><i class="fa-solid fa-arrow-left"></i> Back</p-button
