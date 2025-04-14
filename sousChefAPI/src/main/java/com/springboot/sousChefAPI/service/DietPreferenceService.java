@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -25,11 +26,10 @@ public class DietPreferenceService {
     }
 
     public DietPreference saveDietPreference(DietPreference dietPreference) {
-        return dietPreferenceRepository.save(dietPreference);
-    }
 
-    public void deleteDietPreference(int id) {
-        dietPreferenceRepository.deleteById(id);
+        DietPreference dietPreferenceExists = dietPreferenceRepository.findByDietPreferenceName(dietPreference.getDietPreferenceName());
+
+        return Objects.requireNonNullElseGet(dietPreferenceExists, () -> dietPreferenceRepository.save(dietPreference));
     }
 
     public DietPreference findByDietPreferenceName(String dietPreferenceName) {

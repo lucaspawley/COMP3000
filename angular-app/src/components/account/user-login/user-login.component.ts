@@ -19,7 +19,6 @@ import {
 import { Router } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { StepperModule } from 'primeng/stepper';
-import { ChipModule } from 'primeng/chip';
 import { Account } from '../../types/types';
 import { HttpErrorResponse } from '@angular/common/http';
 
@@ -35,7 +34,6 @@ import { HttpErrorResponse } from '@angular/common/http';
     ReactiveFormsModule,
     ButtonModule,
     StepperModule,
-    ChipModule,
   ],
   templateUrl: './user-login.component.html',
   styleUrl: './user-login.component.scss',

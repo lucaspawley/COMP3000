@@ -118,7 +118,7 @@ export class RecipeService {
 
   deleteIngredient(ingredientId: number, recipeId: number) {
     return this.http.post(
-      `${environment.apiURL}/api/ingredient/delete/${ingredientId}`,
+      `${environment.apiURL}/api/recipeIngredient/delete/${ingredientId}`,
       recipeId,
       {
         headers: new HttpHeaders().set(

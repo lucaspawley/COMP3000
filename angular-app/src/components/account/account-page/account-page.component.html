@@ -1,1 +1,107 @@
-<p>account-page works!</p>
+<div class="flex justify-content-between">
+  <div class="flex-grow-1">
+    <p-card>
+      <h3 class="mt-0">Allergies</h3>
+      <p-inputgroup class="mb-2">
+        <input
+          pInputText
+          placeholder="Allergy"
+          [formControl]="allergyFormControl"
+        />
+        <p-inputgroup-addon>
+          <p-button
+            icon="fa-solid fa-plus"
+            severity="secondary"
+            (onClick)="addAllergy()"
+          />
+        </p-inputgroup-addon>
+      </p-inputgroup>
+      @for (allergy of allergies; track $index) {
+      <div class="flex justify-content-between align-items-center">
+        <div>
+          {{ allergy.allergyName }}
+        </div>
+        <div>
+          <p-button
+            icon="fa-solid fa-trash"
+            size="small"
+            (onClick)="removeAllergy(allergy)"
+          />
+        </div>
+      </div>
+      @if($index < allergies!.length - 1){
+      <hr />
+      } }
+    </p-card>
+  </div>
+  <div class="flex-grow-1 ml-1 mr-1">
+    <p-card>
+      <h3 class="mt-0">Dietary Preferences</h3>
+      <p-inputgroup class="mb-2">
+        <input
+          pInputText
+          placeholder="Dietary Preference"
+          [formControl]="dietPrefFormControl"
+        />
+        <p-inputgroup-addon>
+          <p-button
+            icon="fa-solid fa-plus"
+            severity="secondary"
+            (onClick)="addDietPref()"
+          />
+        </p-inputgroup-addon>
+      </p-inputgroup>
+      @for (dietPref of dietPreferences; track $index) {
+      <div class="flex justify-content-between align-items-center">
+        <div>
+          {{ dietPref.dietPreferenceName }}
+        </div>
+        <div>
+          <p-button
+            icon="fa-solid fa-trash"
+            size="small"
+            (onClick)="removeDietPref(dietPref)"
+          />
+        </div>
+      </div>
+      @if($index < dietPreferences!.length - 1){
+      <hr />
+      } }
+    </p-card>
+  </div>
+  <div class="flex-grow-1">
+    <p-card>
+      <h3 class="mt-0">Disliked Ingredients</h3>
+      <p-inputgroup class="mb-2">
+        <input
+          pInputText
+          placeholder="Disliked Ingredient"
+          [formControl]="dislikedIngredientFormControl"
+        />
+        <p-inputgroup-addon>
+          <p-button
+            icon="fa-solid fa-plus"
+            severity="secondary"
+            (onClick)="addIngredient()"
+          />
+        </p-inputgroup-addon>
+      </p-inputgroup>
+      @for (ingredient of dislikedIngredients; track $index) {
+      <div class="flex justify-content-between align-items-center">
+        <div>
+          {{ ingredient.ingredientName }}
+        </div>
+        <div>
+          <p-button
+            icon="fa-solid fa-trash"
+            size="small"
+            (onClick)="removeIngredient(ingredient)"
+          />
+        </div>
+      </div>
+      @if($index < dislikedIngredients!.length - 1){
+      <hr />
+      } }
+    </p-card>
+  </div>
+</div>
