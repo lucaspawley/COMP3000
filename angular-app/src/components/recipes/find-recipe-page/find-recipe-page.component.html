@@ -1,10 +1,16 @@
 <div class="flex w-6">
-  <p-inputGroup class="mb-2">
-    <p-inputGroupAddon>
-      <i class="fa-solid fa-magnifying-glass"></i>
-    </p-inputGroupAddon>
-    <input pInputText placeholder="Search..." />
-  </p-inputGroup>
+  <p-auto-complete
+    class="auto"
+    [style]="{ width: '100%' }"
+    [inputStyle]="{ width: '100%' }"
+    placeholder="Search Recipes..."
+    [suggestions]="recipes"
+    [formControl]="recipeFormControl"
+    field="recipe_name"
+    (completeMethod)="searchRecipe($event)"
+    (onSelect)="onSelect($event)"
+    (onClear)="onClear()"
+  />
 </div>
 
 <app-recipe-card [recipes]="recipes"></app-recipe-card>

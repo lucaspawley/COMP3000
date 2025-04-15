@@ -44,7 +44,6 @@ export class ShoppingListComponent implements OnInit {
     private route: ActivatedRoute,
     private listService: ShoppingListService,
     private fb: FormBuilder,
-    private accountService: AccountService,
     private router: Router
   ) {}
 
