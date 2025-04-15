@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../environments/environment.development';
 import { Observable, tap } from 'rxjs';
@@ -15,7 +15,7 @@ export class RecipeService {
   constructor(private http: HttpClient) {}
 
   getAllRecipes(): Observable<any> {
-    return this.http.get(`${environment.apiURL}/api/recipes`, {
+    return this.http.get(`${environment.apiURL}/api/recipe/getAll`, {
       headers: new HttpHeaders().set(
         'Authorization',
         `Bearer ${JSON.parse(sessionStorage.getItem('token') as string)}`
@@ -83,7 +83,7 @@ export class RecipeService {
   }
 
   getRandomRecipes(): Observable<any> {
-    return this.http.get(`${environment.apiURL}/api/random`, {
+    return this.http.get(`${environment.apiURL}/api/recipe/random`, {
       headers: new HttpHeaders().set(
         'Authorization',
         `Bearer ${JSON.parse(sessionStorage.getItem('token') as string)}`
@@ -93,7 +93,7 @@ export class RecipeService {
 
   getFavouriteRecipes(accountId: number): Observable<any> {
     return this.http.get(
-      `${environment.apiURL}/api/recipe/favourite/${accountId}`,
+      `${environment.apiURL}/api/recipe/favourite/recipe/${accountId}`,
       {
         headers: new HttpHeaders().set(
           'Authorization',
@@ -104,15 +104,12 @@ export class RecipeService {
   }
 
   getFavourites(accountId: number): Observable<any> {
-    return this.http.get(
-      `${environment.apiURL}/api/favourite/${accountId}`,
-      {
-        headers: new HttpHeaders().set(
-          'Authorization',
-          `Bearer ${JSON.parse(sessionStorage.getItem('token') as string)}`
-        ),
-      }
-    );
+    return this.http.get(`${environment.apiURL}/api/favourite/${accountId}`, {
+      headers: new HttpHeaders().set(
+        'Authorization',
+        `Bearer ${JSON.parse(sessionStorage.getItem('token') as string)}`
+      ),
+    });
   }
 
   favouriteRecipe(favouriteRecipe: FavouriteRecipe): Observable<any> {
@@ -155,10 +152,20 @@ export class RecipeService {
   }
 
   deleteRecipe(recipe: Recipe) {
-    return this.http.post(
-      `${environment.apiURL}/api/recipe/delete`,
-      recipe,
+    return this.http.post(`${environment.apiURL}/api/recipe/delete`, recipe, {
+      headers: new HttpHeaders().set(
+        'Authorization',
+        `Bearer ${JSON.parse(sessionStorage.getItem('token') as string)}`
+      ),
+    });
+  }
+
+  searchRecipes(recipeName: string): Observable<any> {
+    const params = new HttpParams().set('recipeName', recipeName);
+    return this.http.get<Array<Recipe>>(
+      `${environment.apiURL}/api/recipe/search`,
       {
+        params,
         headers: new HttpHeaders().set(
           'Authorization',
           `Bearer ${JSON.parse(sessionStorage.getItem('token') as string)}`

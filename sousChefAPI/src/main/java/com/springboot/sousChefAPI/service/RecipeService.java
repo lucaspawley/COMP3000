@@ -50,4 +50,8 @@ public class RecipeService {
     public void deleteRecipe(int id) {
         recipeRepository.deleteById(id);
     }
+
+    public List<Recipe> searchRecipe(String recipeName) {
+        return recipeRepository.searchRecipe(recipeName);
+    }
 }
