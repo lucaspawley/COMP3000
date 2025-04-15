@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../environments/environment.development';
 import { Observable } from 'rxjs';
@@ -96,6 +96,36 @@ export class TasteProfileService {
           'Authorization',
           `Bearer ${JSON.parse(sessionStorage.getItem('token') as string)}`
         ),
+      }
+    );
+  }
+
+  searchAllergies(allergyName: string): Observable<Array<Allergy>> {
+    const params = new HttpParams().set('allergyName', allergyName);
+    return this.http.get<Array<Allergy>>(
+      `${environment.apiURL}/api/allergy/search`,
+      {
+        params,
+      }
+    );
+  }
+
+  searchDietPreference(dietPreferenceName: string): Observable<Array<DietPreference>> {
+    const params = new HttpParams().set('dietPreferenceName', dietPreferenceName);
+    return this.http.get<Array<DietPreference>>(
+      `${environment.apiURL}/api/dietPreference/search`,
+      {
+        params,
+      }
+    );
+  }
+
+  searchIngredient(ingredientName: string): Observable<Array<Ingredient>> {
+    const params = new HttpParams().set('ingredientName', ingredientName);
+    return this.http.get<Array<Ingredient>>(
+      `${environment.apiURL}/api/ingredient/search`,
+      {
+        params,
       }
     );
   }

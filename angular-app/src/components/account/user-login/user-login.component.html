@@ -160,36 +160,42 @@
         </p-step-panel>
         <p-step-panel [value]="2">
           <ng-template #content let-activateCallback="activateCallback">
-            <p-inputgroup class="mb-2">
-              <input
-                pInputText
+            <div class="flex mb-2">
+              <p-auto-complete
+                class="auto"
+                [style]="{ width: '100%' }"
+                [inputStyle]="{ width: '100%' }"
                 placeholder="Allergy"
+                [suggestions]="allergySuggestions"
                 [formControl]="allergyFormControl"
+                field="allergyName"
+                (completeMethod)="searchAllergy($event)"
               />
-              <p-inputgroup-addon>
+
+              <p-button
+                icon="fa-solid fa-plus"
+                class="ml-2"
+                severity="secondary"
+                (onClick)="addAllergy(allergyFormControl.value)"
+              />
+            </div>
+
+            @for (allergy of allergyFormArray.value; track $index) {
+            <div class="flex justify-content-between align-items-center">
+              <div>
+                {{ allergy }}
+              </div>
+              <div>
                 <p-button
-                  icon="fa-solid fa-plus"
-                  severity="secondary"
-                  (onClick)="addAllergy(allergyFormControl.value)"
+                  icon="fa-solid fa-trash"
+                  size="small"
+                  (onClick)="removeAllergy($index)"
                 />
-              </p-inputgroup-addon>
-            </p-inputgroup>
-              @for (allergy of allergyFormArray.value; track $index) {
-                <div class="flex justify-content-between align-items-center">
-                  <div>
-                    {{ allergy }}
-                  </div>
-                  <div>
-                    <p-button
-                      icon="fa-solid fa-trash"
-                      size="small"
-                      (onClick)="removeAllergy($index)"
-                    />
-                  </div>
-                </div>
-                @if($index < allergyFormArray.length - 1){
-                <hr />
-                } }
+              </div>
+            </div>
+            @if($index < allergyFormArray.length - 1){
+            <hr />
+            } }
             <div class="flex pt-2 justify-content-between">
               <p-button (onClick)="activateCallback(1)"
                 ><i class="fa-solid fa-arrow-left"></i> Back</p-button
@@ -202,36 +208,41 @@
         </p-step-panel>
         <p-step-panel [value]="3">
           <ng-template #content let-activateCallback="activateCallback">
-            <p-inputgroup class="mb-2">
-              <input
-                pInputText
-                placeholder="Dietary Preference"
+            <div class="flex mb-2">
+              <p-auto-complete
+                class="auto"
+                [style]="{ width: '100%' }"
+                [inputStyle]="{ width: '100%' }"
+                placeholder="Diet Preference"
+                [suggestions]="dietPreferenceSuggestions"
                 [formControl]="dietPreferenceFormControl"
+                field="dietPreferenceName"
+                (completeMethod)="searchDietPref($event)"
               />
-              <p-inputgroup-addon>
-                <p-button
-                  icon="fa-solid fa-plus"
-                  severity="secondary"
-                  (onClick)="addDietPref(dietPreferenceFormControl.value)"
-                />
-              </p-inputgroup-addon>
-            </p-inputgroup>
+
+              <p-button
+                icon="fa-solid fa-plus"
+                class="ml-2"
+                severity="secondary"
+                (onClick)="addDietPref(dietPreferenceFormControl.value)"
+              />
+            </div>
             @for (dietPref of dietPreferenceFormArray.value; track $index) {
-              <div class="flex justify-content-between align-items-center">
-                <div>
-                  {{ dietPref }}
-                </div>
-                <div>
-                  <p-button
-                    icon="fa-solid fa-trash"
-                    size="small"
-                    (onClick)="removeDietPref($index)"
-                  />
-                </div>
+            <div class="flex justify-content-between align-items-center">
+              <div>
+                {{ dietPref }}
               </div>
-              @if($index < dietPreferenceFormArray.length - 1){
-              <hr />
-              } }
+              <div>
+                <p-button
+                  icon="fa-solid fa-trash"
+                  size="small"
+                  (onClick)="removeDietPref($index)"
+                />
+              </div>
+            </div>
+            @if($index < dietPreferenceFormArray.length - 1){
+            <hr />
+            } }
             <div class="flex pt-2 justify-content-between">
               <p-button (onClick)="activateCallback(2)"
                 ><i class="fa-solid fa-arrow-left"></i> Back</p-button
@@ -244,36 +255,41 @@
         </p-step-panel>
         <p-step-panel [value]="4">
           <ng-template #content let-activateCallback="activateCallback">
-            <p-inputgroup class="mb-2">
-              <input
-                pInputText
+            <div class="flex mb-2">
+              <p-auto-complete
+                class="auto"
+                [style]="{ width: '100%' }"
+                [inputStyle]="{ width: '100%' }"
                 placeholder="Disliked Ingredient"
+                [suggestions]="ingredientsSuggestions"
                 [formControl]="ingredientsFormControl"
+                field="ingredientName"
+                (completeMethod)="searchIngredient($event)"
               />
-              <p-inputgroup-addon>
-                <p-button
-                  icon="fa-solid fa-plus"
-                  severity="secondary"
-                  (onClick)="addIngredient(ingredientsFormControl.value)"
-                />
-              </p-inputgroup-addon>
-            </p-inputgroup>
+
+              <p-button
+                icon="fa-solid fa-plus"
+                class="ml-2"
+                severity="secondary"
+                (onClick)="addIngredient(ingredientsFormControl.value)"
+              />
+            </div>
             @for (ingredient of ingredientsFormArray.value; track $index) {
-              <div class="flex justify-content-between align-items-center">
-                <div>
-                  {{ ingredient }}
-                </div>
-                <div>
-                  <p-button
-                    icon="fa-solid fa-trash"
-                    size="small"
-                    (onClick)="removeIngredient($index)"
-                  />
-                </div>
+            <div class="flex justify-content-between align-items-center">
+              <div>
+                {{ ingredient }}
               </div>
-              @if($index < ingredientsFormArray!.length - 1){
-              <hr />
-              } }
+              <div>
+                <p-button
+                  icon="fa-solid fa-trash"
+                  size="small"
+                  (onClick)="removeIngredient($index)"
+                />
+              </div>
+            </div>
+            @if($index < ingredientsFormArray!.length - 1){
+            <hr />
+            } }
             <div class="flex pt-2 justify-content-between">
               <p-button (onClick)="activateCallback(3)"
                 ><i class="fa-solid fa-arrow-left"></i> Back</p-button
