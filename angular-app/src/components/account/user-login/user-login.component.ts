@@ -170,8 +170,13 @@ export class UserLoginComponent implements OnInit {
   }
 
   addAllergy(allergy: Allergy) {
-    let newAllergy = new FormControl(allergy.allergyName);
     if (allergy) {
+      let newAllergy;
+      if (allergy.allergyName) {
+        newAllergy = new FormControl(allergy.allergyName);
+      } else {
+        newAllergy = new FormControl(allergy);
+      }
       this.allergyFormArray.push(newAllergy);
       this.allergyFormControl.reset();
     }
@@ -195,9 +200,16 @@ export class UserLoginComponent implements OnInit {
   }
 
   addDietPref(dietPref: DietPreference) {
-    let newDietPref = new FormControl(dietPref.dietPreferenceName);
     if (dietPref) {
-      this.dietPreferenceFormArray.push(newDietPref);
+      let newDietPreference;
+
+      if (dietPref.dietPreferenceName) {
+        newDietPreference = new FormControl(dietPref.dietPreferenceName);
+      } else {
+        newDietPreference = new FormControl(dietPref);
+      }
+
+      this.dietPreferenceFormArray.push(newDietPreference);
       this.dietPreferenceFormControl.reset();
     }
   }
@@ -219,8 +231,15 @@ export class UserLoginComponent implements OnInit {
   }
 
   addIngredient(ingredient: Ingredient) {
-    let newIngredient = new FormControl(ingredient.ingredientName);
     if (ingredient) {
+      let newIngredient;
+
+      if (ingredient.ingredientName) {
+        newIngredient = new FormControl(ingredient.ingredientName);
+      } else {
+        newIngredient = new FormControl(ingredient);
+      }
+
       this.ingredientsFormArray.push(newIngredient);
       this.ingredientsFormControl.reset();
     }
