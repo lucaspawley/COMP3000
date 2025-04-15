@@ -4,7 +4,7 @@ import { AccountService } from '../../services/account.service';
 import { CarouselModule } from 'primeng/carousel';
 import { RecipeService } from '../../services/recipe.service';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-import { Recipe } from '../types/types';
+import { FavouriteRecipe, Recipe } from '../types/types';
 import { ImageModule } from 'primeng/image';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
@@ -114,6 +114,18 @@ export class HomePageComponent implements OnInit {
 
   goToRecipe(recipeId: number | undefined) {
     this.router.navigate(['recipe', recipeId]);
+  }
+
+  favouriteRecipe(recipeId: number | undefined) {
+    let newFav: FavouriteRecipe = {
+      favourite_id: undefined,
+      recipeId: recipeId,
+      accountId: JSON.parse(sessionStorage.getItem('accountId') as string),
+    };
+
+    this.recipeService.favouriteRecipe(newFav).subscribe((res) => {
+      console.log(res);
+    });
   }
 
   sanitizeImage(base64: string): SafeUrl | null {

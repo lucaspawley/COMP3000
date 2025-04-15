@@ -121,6 +121,11 @@ public class RecipeController {
 
     @GetMapping("/recipe/favourite/{id}")
     public List<Recipe> getFavouriteRecipeByAccountId(@PathVariable int id) {
+        return favouriteRecipeService.getRecipeByAccountId(id);
+    }
+
+    @GetMapping("/favourite/{id}")
+    public List<FavouriteRecipe> getFavouritesByAccountId(@PathVariable int id) {
         return favouriteRecipeService.getByAccountId(id);
     }
 
@@ -140,6 +145,15 @@ public class RecipeController {
 
         Map<String, String> response = new HashMap<>();
         response.put("message", "Recipe added to favourites!");
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/recipe/favourite/delete")
+    public ResponseEntity<Map<String, String>> deleteFavouriteRecipe(@RequestBody FavouriteRecipe favouriteRecipe){
+        favouriteRecipeService.delete(favouriteRecipe);
+
+        Map<String, String> response = new HashMap<>();
+        response.put("message", "Recipe removed from favourites!");
         return ResponseEntity.ok(response);
     }
 

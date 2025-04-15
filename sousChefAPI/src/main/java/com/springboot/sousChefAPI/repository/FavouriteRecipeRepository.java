@@ -11,5 +11,7 @@ import java.util.List;
 @Repository
 public interface FavouriteRecipeRepository extends JpaRepository<FavouriteRecipe, Integer> {
     @Query("SELECT r FROM Recipe r JOIN FavouriteRecipe fr ON r.id = fr.recipeId WHERE fr.accountId = :accountId")
-    List<Recipe> findByAccountId(Integer accountId);
+    List<Recipe> findRecipeByAccountId(Integer accountId);
+
+    List<FavouriteRecipe> findByAccountId(Integer accountId);
 }

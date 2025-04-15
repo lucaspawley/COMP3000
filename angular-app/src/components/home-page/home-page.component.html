@@ -39,6 +39,7 @@
               icon="fa-solid fa-heart"
               severity="secondary"
               [outlined]="true"
+              (onClick)="favouriteRecipe(highRatedRecipe.recipe_id)"
             />
             <p-button
               icon="fa-solid fa-arrow-right"
@@ -147,6 +148,7 @@
               icon="fa-solid fa-heart"
               severity="secondary"
               [outlined]="true"
+              (onClick)="favouriteRecipe(recommendRecipe.recipe_id)"
             />
             <p-button
               icon="fa-solid fa-arrow-right"

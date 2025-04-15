@@ -14,15 +14,19 @@ public class FavouriteRecipeService {
     @Autowired
     private FavouriteRecipeRepository favouriteRecipeRepository;
 
-    public List<Recipe> getByAccountId(Integer accountId) {
+    public List<Recipe> getRecipeByAccountId(Integer accountId) {
+        return favouriteRecipeRepository.findRecipeByAccountId(accountId);
+    }
+
+    public List<FavouriteRecipe> getByAccountId(Integer accountId) {
         return favouriteRecipeRepository.findByAccountId(accountId);
     }
 
-    ;
-
-    public String save(FavouriteRecipe favouriteRecipe) {
+    public void save(FavouriteRecipe favouriteRecipe) {
         favouriteRecipeRepository.save(favouriteRecipe);
+    }
 
-        return "Recipe add to favourites!";
+    public void delete(FavouriteRecipe recipe) {
+        favouriteRecipeRepository.delete(recipe);
     }
 }

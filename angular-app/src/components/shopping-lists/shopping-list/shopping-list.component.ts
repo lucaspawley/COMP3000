@@ -50,13 +50,10 @@ export class ShoppingListComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.url.subscribe((url) => {
-      console.log(url);
       if (url[1] != undefined) {
         this.shoppingListId = url[1].path;
       } else this.editMode = true;
     });
-
-    console.log(this.editMode);
 
     this.itemFormGroup = this.fb.group({
       item: '',
