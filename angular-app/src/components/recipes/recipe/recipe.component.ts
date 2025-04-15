@@ -37,6 +37,9 @@ export class RecipeComponent implements OnInit {
   dialogVisible: boolean = false;
   listVisible: boolean = false;
 
+  recipeFavourited: boolean = false;
+  recipeFavourite: FavouriteRecipe | undefined;
+
   availableLists: Array<ShoppingList> = [];
 
   accountId!: number | undefined;
@@ -74,12 +77,30 @@ export class RecipeComponent implements OnInit {
         ...result,
         imageSafeUrl: this.sanitizeImage(result.imageBase64),
       };
+
+      this.recipeService
+        .getFavourites(this.accountId!)
+        .subscribe((result: Array<FavouriteRecipe>) => {
+          result.forEach((favRecipe) => {
+            if (favRecipe.recipeId == this.recipe!.recipe_id) {
+              this.recipeFavourited = true;
+              this.recipeFavourite = favRecipe;
+            }
+          });
+        });
     });
 
     this.ratingFormGroup = this.fb.group({
       recipeId: recipeId,
       accountId: JSON.parse(sessionStorage.getItem('accountId') as string),
       recipeRating: 0,
+    });
+  }
+
+  deleteFavourite() {
+    this.recipeService.deleteFavRecipe(this.recipeFavourite!).subscribe(() => {
+      this.recipeFavourite = undefined;
+      this.recipeFavourited = false;
     });
   }
 

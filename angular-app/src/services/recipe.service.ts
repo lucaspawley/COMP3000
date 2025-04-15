@@ -103,10 +103,35 @@ export class RecipeService {
     );
   }
 
+  getFavourites(accountId: number): Observable<any> {
+    return this.http.get(
+      `${environment.apiURL}/api/favourite/${accountId}`,
+      {
+        headers: new HttpHeaders().set(
+          'Authorization',
+          `Bearer ${JSON.parse(sessionStorage.getItem('token') as string)}`
+        ),
+      }
+    );
+  }
+
   favouriteRecipe(favouriteRecipe: FavouriteRecipe): Observable<any> {
     return this.http.post(
       `${environment.apiURL}/api/recipe/favourite`,
       favouriteRecipe,
+      {
+        headers: new HttpHeaders().set(
+          'Authorization',
+          `Bearer ${JSON.parse(sessionStorage.getItem('token') as string)}`
+        ),
+      }
+    );
+  }
+
+  deleteFavRecipe(recipe: FavouriteRecipe): Observable<any> {
+    return this.http.post(
+      `${environment.apiURL}/api/recipe/favourite/delete`,
+      recipe,
       {
         headers: new HttpHeaders().set(
           'Authorization',

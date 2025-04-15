@@ -27,7 +27,7 @@
           (onClick)="showAddToList()"
         />
       </div>
-      @if (accountId != recipe?.accountId) {
+      @if (accountId != recipe?.accountId) { @if (!recipeFavourited) {
       <div class="mr-1">
         <p-button
           [rounded]="true"
@@ -36,7 +36,16 @@
           (onClick)="favouriteRecipe()"
         />
       </div>
-      }
+      }@else {
+      <div class="mr-1">
+        <p-button
+          [rounded]="true"
+          icon="fa-solid fa-heart"
+          label="Unfavourite Recipe"
+          (onClick)="deleteFavourite()"
+        />
+      </div>
+      } }
       <div>
         <p-button
           [rounded]="true"
@@ -62,8 +71,8 @@
     <div class="flex justify-content-between">
       <div>
         <h3 class="mb-1">Allergies</h3>
-        @if(recipe?.allergies!.length != 0){ @for (allergy of recipe?.allergies; track
-        $index) {
+        @if(recipe?.allergies!.length != 0){ @for (allergy of recipe?.allergies;
+        track $index) {
         <p-chip
           class="mr-1"
           [style]="{ background: '#8DB38B', color: 'white' }"
@@ -124,7 +133,12 @@
     @for (list of availableLists; track $index) {
     <div class="flex justify-content-between mb-2">
       <div>{{ list.list_name }}</div>
-      <p-button label="Add Items" size="small" [rounded]="true" (onClick)="addToList(list.shoppingListId!)" />
+      <p-button
+        label="Add Items"
+        size="small"
+        [rounded]="true"
+        (onClick)="addToList(list.shoppingListId!)"
+      />
     </div>
     }
   </div>
