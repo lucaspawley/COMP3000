@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/dietPreference")
 public class DietPreferenceController {
 
     @Autowired
@@ -18,12 +18,12 @@ public class DietPreferenceController {
     @Autowired
     private TPDietPreferenceLinkService dietPreferenceLinkService;
 
-    @GetMapping("/dietPreference")
+    @GetMapping("/")
     public List<DietPreference> get() {
         return dietPreferenceService.getAllDietPreference();
     }
 
-    @PostMapping("/dietPreference/add/{tasteProfileId}")
+    @PostMapping("/add/{tasteProfileId}")
     public DietPreference save(@RequestBody DietPreference dietPreferenceObj, @PathVariable int tasteProfileId) {
         DietPreference newDietPref = dietPreferenceService.saveDietPreference(dietPreferenceObj);
         dietPreferenceLinkService.saveTPDietPreferenceLink(tasteProfileId, newDietPref.getDietPreferenceId());
@@ -31,8 +31,13 @@ public class DietPreferenceController {
         return newDietPref;
     }
 
-    @PostMapping("/dietPreference/delete/{tasteProfileId}")
+    @PostMapping("/delete/{tasteProfileId}")
     public void delete(@RequestBody DietPreference dietPreferenceObj, @PathVariable int tasteProfileId) {
         dietPreferenceLinkService.deleteLink(dietPreferenceObj.getDietPreferenceId(), tasteProfileId);
+    }
+
+    @GetMapping("/search")
+    public List<DietPreference> searchDietPreference(@RequestParam String dietPreferenceName) {
+        return dietPreferenceService.searchDietPreference(dietPreferenceName);
     }
 }

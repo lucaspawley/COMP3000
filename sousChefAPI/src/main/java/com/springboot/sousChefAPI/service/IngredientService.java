@@ -32,4 +32,8 @@ public class IngredientService {
     public void deleteIngredient(int id){
         ingredientRepository.deleteById(id);
     }
+
+    public List<Ingredient> searchIngredient(String ingredientName) {
+        return ingredientRepository.searchIngredient(ingredientName);
+    }
 }

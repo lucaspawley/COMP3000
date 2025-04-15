@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/allergy")
 public class AllergyController {
 
     @Autowired
@@ -20,12 +20,12 @@ public class AllergyController {
     @Autowired
     private TPAllergyLinkService allergyLinkService;
 
-    @GetMapping("/allergy")
+    @GetMapping("/")
     public List<Allergy> get() {
         return allergyService.getAllAllergies();
     }
 
-    @PostMapping("/allergy/add/{tasteProfileId}")
+    @PostMapping("/add/{tasteProfileId}")
     public Allergy save(@RequestBody Allergy allergyObj, @PathVariable int tasteProfileId) {
         Allergy newAllergy = allergyService.saveAllergy(allergyObj);
         allergyLinkService.saveTPAllergyLink(tasteProfileId, allergyObj.getAllergyId());
@@ -33,15 +33,20 @@ public class AllergyController {
         return newAllergy;
     }
 
-    @GetMapping("/allergy/{id}")
+    @GetMapping("/{id}")
     public Allergy get(@PathVariable int id) {
         return allergyService.getAllergyById(id)
                 .map(account -> new ResponseEntity<>(account, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND)).getBody();
     }
 
-    @PostMapping("/allergy/delete/{tasteProfileId}")
+    @PostMapping("/delete/{tasteProfileId}")
     public void delete(@RequestBody Allergy allergy, @PathVariable int tasteProfileId) {
         allergyLinkService.deleteLink(allergy.getAllergyId(), tasteProfileId);
+    }
+
+    @GetMapping("/search")
+    public List<Allergy> searchAllergy(@RequestParam String allergyName) {
+        return allergyService.searchAllergy(allergyName);
     }
 }

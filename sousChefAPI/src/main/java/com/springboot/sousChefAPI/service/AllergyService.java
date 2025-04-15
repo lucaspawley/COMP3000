@@ -36,4 +36,8 @@ public class AllergyService {
     public void deleteAllergy(int id) {
         allergyRepository.deleteById(id);
     }
+
+    public List<Allergy> searchAllergy(String allergyName) {
+        return allergyRepository.searchAllergy(allergyName);
+    }
 }

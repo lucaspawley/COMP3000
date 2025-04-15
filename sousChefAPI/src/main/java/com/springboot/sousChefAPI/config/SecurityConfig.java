@@ -40,8 +40,12 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.cors(httpSecurityCorsConfigurer -> httpSecurityCorsConfigurer.configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues()))
-                .authorizeHttpRequests(request -> request.requestMatchers(HttpMethod.POST, "api/account/create").permitAll()
+                .authorizeHttpRequests(request -> request
+                        .requestMatchers(HttpMethod.POST, "api/account/create").permitAll()
                         .requestMatchers(HttpMethod.POST, "api/account/login").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/allergy/search").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/dietPreference/search").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/ingredient/search").permitAll()
                         .anyRequest().authenticated()).csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy((SessionCreationPolicy.STATELESS))).addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class).build();
     }
