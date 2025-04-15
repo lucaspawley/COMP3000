@@ -8,7 +8,7 @@ import { ButtonModule } from 'primeng/button';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { AccountService } from '../../../services/account.service';
 import { RecipeService } from '../../../services/recipe.service';
-import { Recipe } from '../../types/types';
+import { Account, Recipe } from '../../types/types';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { DialogModule } from 'primeng/dialog';
 
@@ -27,7 +27,7 @@ class Message {
     InputGroupModule,
     InputGroupAddonModule,
     ButtonModule,
-    DialogModule
+    DialogModule,
   ],
   templateUrl: './assistant-page.component.html',
   styleUrl: './assistant-page.component.scss',
@@ -37,6 +37,8 @@ export class AssistantPageComponent implements OnInit {
   response: string = '';
   messages: Array<Message> = [];
   history: Array<string> = [];
+
+  currentAccount!: Account;
 
   userAllergies: Array<string> = [];
   userDietPref: Array<string> = [];
@@ -65,89 +67,99 @@ export class AssistantPageComponent implements OnInit {
     private sanitizer: DomSanitizer
   ) {}
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.promptFormGroup = this.fb.group({ prompt: '', response: '' });
 
-    this.messages.push({
-      sender: 'bot',
-      type: 'text',
-      message: `Hi ${this.accountService.currentAccount?.username}, I'm your AI sous chef! What kind of recipe would you like?`,
-    });
-    console.log(this.messages);
+    this.accountService
+      .getUserByAccountId(
+        JSON.parse(sessionStorage.getItem('accountId') as string)
+      )
+      .subscribe((result) => {
+        this.currentAccount = result;
 
-    this.accountService.currentAccount?.tasteProfile?.allergies?.forEach(
-      (allergy) => this.userAllergies.push(allergy.allergyName!)
-    );
+        this.messages.push({
+          sender: 'bot',
+          type: 'text',
+          message: `Hi ${this.currentAccount?.username}, I'm your AI sous chef! What kind of recipe would you like?`,
+        });
 
-    this.accountService.currentAccount?.tasteProfile?.dietPreferences?.forEach(
-      (dietPref) => this.userAllergies.push(dietPref.dietPreferenceName!)
-    );
+        this.currentAccount?.tasteProfile?.allergies?.forEach((allergy) =>
+          this.userAllergies.push(allergy.allergyName!)
+        );
 
-    this.accountService.currentAccount?.tasteProfile?.ingredients?.forEach(
-      (ingredient) => this.userAllergies.push(ingredient.ingredientName!)
-    );
+        this.currentAccount?.tasteProfile?.dietPreferences?.forEach(
+          (dietPref) => this.userAllergies.push(dietPref.dietPreferenceName!)
+        );
 
-    this.prompt = `You are an expert chef that wants to get people more into cooking by suggesting recipes that people can cook at home, you can change previous recipes you suggested, you will give the recipe in the format of:
-                    recipe name, cook time, preparation time, amount of people it serves, then a list of Ingredients that are in the measurements of grams, kilograms or milliliters except for items such as onions
-                    then the method for the recipe, the user asking for the recipe is allergic to ${
-                      this.userAllergies
-                    }, who has dietary preference of ${
-      this.userAllergies
-    } and does not like ${this.userDislikes}.
-                    Users may mention ingredients they would like to be included, make sure to find an appropriate recipe.
-                    Do not mention the users allergies, dietary preference, or disliked ingredients.
-                    Do not use markdown for the recipe name, use **.
-                    Make sure method is on a different line than the ingredients and that each method is split into text
-                    If a recipe contains Milk, Eggs, Peanuts, Tree nuts (almonds, walnuts, cashews, etc.), Soy, Wheat, Fish, Shellfish, Sesame add it to the allergies in the JSON
-                    Method steps must fit in a VARCHAR(255).
-                    Do not mention the JSON response
-                    Also, create a JSON response using this JSON schema:
-                    Recipe = {
-                    "recipe_id": null; // to be filled later
-                    "recipe_name": string;
-                    "recipe_rating": 0
-                    "recipe_serves": number;
-                    "recipe_prep_time": number; // in minutes
-                    "recipe_cook_time": number; // in minutes
-                    "accountId": ${
-                      this.accountService.currentAccount?.accountId
-                    }
-                    "allergies": [
-                      {
-                        "allergyId": null; // to be filled later
-                        "allergyName": string;
-                      }
-                    ];
-                    "ingredients": [
-                     {
-                        "recipe_ingredient_id": null; // to be filled later
-                        "recipe_ingredient_amount": number;
-                        "recipe_ingredient_measurement": string; //cannot be null if empty make " "
-                        "recipe_ingredient_name": string;
-                      }
-                    ];
-                    "methods": [
-                      {
-                        methodId: null; // to be filled later
-                        method_step: number;
-                        method_description: string;
-                      }
-                    ];
-                  }
-
-                  Do not add line breaks to the JSON.
-                  Only recipe_id, allergyId, recipe_ingredient_id and methodId can be null, everything else must have data
-
-                  This is what the user has asked for "${
-                    this.promptFormGroup.get('prompt')!.value
-                  }"
-                  These are the previous messages sent between you and the user ${
-                    this.history
-                  }`;
+        this.currentAccount?.tasteProfile?.ingredients?.forEach((ingredient) =>
+          this.userAllergies.push(ingredient.ingredientName!)
+        );
+      });
   }
 
   async sendMessage() {
     this.messageLoading = true;
+
+    this.prompt = `You are an expert chef that wants to get people more into cooking by suggesting recipes that people can cook at home, you can change previous recipes you suggested, you will give the recipe in the format of:
+                        recipe name, then cook time with "Cook time", preparation time with "Preparation Time", amount of people it serves with "Serves", then a list of Ingredients that are in the measurements of grams, kilograms or milliliters except for items such as onions
+                        then the method for the recipe, the user asking for the recipe is allergic to ${
+                          this.userAllergies
+                        }, who has dietary preference of ${
+      this.userAllergies
+    } and does not like ${this.userDislikes}.
+                        Users may mention ingredients they would like to be included, make sure to find an appropriate recipe.
+                        Users may ask for specific recipes make sure to create one that includes their diet preferences, allergies and disliked ingredients
+                        Do not mention the users allergies, dietary preference, or disliked ingredients.
+                        Do not mention the formatting
+                        Do not use markdown for the recipe name, use **.
+                        Make sure each method has a step number
+                        Make sure method is on a different line than the ingredients and that each method is split into text
+                        If a recipe contains Milk, Eggs, Peanuts, Tree nuts (almonds, walnuts, cashews, etc.), Soy, Wheat, Fish, Shellfish, Sesame add it to the allergies in the JSON
+                        Method steps must fit in a VARCHAR(255).
+                        Do not mention the JSON response
+                        Also, create a JSON response using this JSON schema:
+                        Recipe = {
+                        "recipe_id": null; // to be filled later
+                        "recipe_name": string;
+                        "recipe_rating": 0
+                        "recipe_serves": number;
+                        "recipe_prep_time": number; // in minutes
+                        "recipe_cook_time": number; // in minutes
+                        "accountId": ${JSON.parse(
+                          sessionStorage.getItem('accountId') as string
+                        )}
+                        "allergies": [
+                          {
+                            "allergyId": null; // to be filled later
+                            "allergyName": string;
+                          }
+                        ];
+                        "ingredients": [
+                         {
+                            "recipe_ingredient_id": null; // to be filled later
+                            "recipe_ingredient_amount": number;
+                            "recipe_ingredient_measurement": string; //cannot be null if empty make " "
+                            "recipe_ingredient_name": string;
+                          }
+                        ];
+                        "methods": [
+                          {
+                            methodId: null; // to be filled later
+                            method_step: number;
+                            method_description: string;
+                          }
+                        ];
+                      }
+    
+                      Do not add line breaks to the JSON.
+                      Only recipe_id, allergyId, recipe_ingredient_id and methodId can be null, everything else must have data
+    
+                      This is what the user has asked for "${
+                        this.promptFormGroup.get('prompt')!.value
+                      }"
+                      These are the previous messages sent between you and the user ${
+                        this.history
+                      }`;
 
     this.messages.push({
       sender: 'user',
@@ -165,7 +177,9 @@ export class AssistantPageComponent implements OnInit {
 
       if (this.recipeJSON) {
         let newRecipe: Recipe = this.recipeJSON as unknown as Recipe;
-        newRecipe.accountId = this.accountService.currentAccount?.accountId;
+        newRecipe.accountId = JSON.parse(
+          sessionStorage.getItem('accountId') as string
+        );
 
         if (!this.imageSafeUrl) {
           const placeholderImagePath = 'assets/images/placeholder.jpg';
@@ -283,11 +297,73 @@ export class AssistantPageComponent implements OnInit {
   }
 
   async sendImage() {
+    this.prompt = `You are an expert chef that wants to get people more into cooking by suggesting recipes that people can cook at home, you can change previous recipes you suggested, you will give the recipe in the format of:
+                        recipe name, then cook time with "Cook time", preparation time with "Preparation Time", amount of people it serves with "Serves", then a list of Ingredients that are in the measurements of grams, kilograms or milliliters except for items such as onions
+                        then the method for the recipe, the user asking for the recipe is allergic to ${
+                          this.userAllergies
+                        }, who has dietary preference of ${
+      this.userAllergies
+    } and does not like ${this.userDislikes}.
+                        Users may mention ingredients they would like to be included, make sure to find an appropriate recipe.
+                        Users may ask for specific recipes make sure to create one that includes their diet preferences, allergies and disliked ingredients
+                        Do not mention the users allergies, dietary preference, or disliked ingredients.
+                        Do not mention the formatting
+                        Do not use markdown for the recipe name, use **.
+                        Make sure each method has a step number
+                        Make sure method is on a different line than the ingredients and that each method is split into text
+                        If a recipe contains Milk, Eggs, Peanuts, Tree nuts (almonds, walnuts, cashews, etc.), Soy, Wheat, Fish, Shellfish, Sesame add it to the allergies in the JSON
+                        Method steps must fit in a VARCHAR(255).
+                        Do not mention the JSON response
+                        Also, create a JSON response using this JSON schema:
+                        Recipe = {
+                        "recipe_id": null; // to be filled later
+                        "recipe_name": string;
+                        "recipe_rating": 0
+                        "recipe_serves": number;
+                        "recipe_prep_time": number; // in minutes
+                        "recipe_cook_time": number; // in minutes
+                        "accountId": ${JSON.parse(
+                          sessionStorage.getItem('accountId') as string
+                        )}
+                        "allergies": [
+                          {
+                            "allergyId": null; // to be filled later
+                            "allergyName": string;
+                          }
+                        ];
+                        "ingredients": [
+                         {
+                            "recipe_ingredient_id": null; // to be filled later
+                            "recipe_ingredient_amount": number;
+                            "recipe_ingredient_measurement": string; //cannot be null if empty make " "
+                            "recipe_ingredient_name": string;
+                          }
+                        ];
+                        "methods": [
+                          {
+                            methodId: null; // to be filled later
+                            method_step: number;
+                            method_description: string;
+                          }
+                        ];
+                      }
+    
+                      Do not add line breaks to the JSON.
+                      Only recipe_id, allergyId, recipe_ingredient_id and methodId can be null, everything else must have data
+    
+                      This is what the user has asked for "${
+                        this.promptFormGroup.get('prompt')!.value
+                      }"
+                      These are the previous messages sent between you and the user ${
+                        this.history
+                      }`;
+
     this.messages.push({
       sender: 'user',
       type: 'image',
       message: 'image',
     });
+    this.dialogVisible = false;
     this.messageLoading = true;
     await this.geminiService
       .sendImage(this.userImage64Base, this.prompt)
