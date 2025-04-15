@@ -15,7 +15,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/recipe")
 public class RecipeController {
     @Autowired
     private RecipeService recipeService;
@@ -44,12 +44,12 @@ public class RecipeController {
     @Autowired
     private RecipeIngredientLinkService recipeIngredientLinkService;
 
-    @GetMapping("/recipes")
+    @GetMapping("/getAll")
     public List<Recipe> getAll() {
         return recipeService.getAllRecipes();
     }
 
-    @PostMapping(value = "/recipe", consumes = {"multipart/form-data"})
+    @PostMapping(consumes = {"multipart/form-data"})
     @Transactional
     public Recipe save(@RequestPart("recipe") Recipe recipe,
                        @RequestPart(value = "image", required = false) MultipartFile file) {
@@ -110,7 +110,7 @@ public class RecipeController {
         return recipe;
     }
 
-    @PostMapping("/recipe/delete")
+    @PostMapping("/delete")
     public void deleteRecipe(@RequestBody Recipe recipe) {
         for (RecipeIngredient ingredient : recipe.getIngredients()) {
             recipeIngredientLinkService.deleteLink(ingredient.getRecipe_ingredient_id(), recipe.getRecipe_id());
@@ -119,7 +119,7 @@ public class RecipeController {
         recipeService.deleteRecipe(recipe.getRecipe_id());
     }
 
-    @GetMapping("/recipe/favourite/{id}")
+    @GetMapping("/favourite/recipe/{id}")
     public List<Recipe> getFavouriteRecipeByAccountId(@PathVariable int id) {
         return favouriteRecipeService.getRecipeByAccountId(id);
     }
@@ -129,7 +129,7 @@ public class RecipeController {
         return favouriteRecipeService.getByAccountId(id);
     }
 
-    @GetMapping("/recipe/top")
+    @GetMapping("/top")
     public List<Recipe> getTop10Recipes() {
         return recipeService.getTop10Recipes();
     }
@@ -139,7 +139,7 @@ public class RecipeController {
         return recipeService.getRandomRecipes();
     }
 
-    @PostMapping("/recipe/favourite")
+    @PostMapping("/favourite")
     public ResponseEntity<Map<String, String>> favouriteRecipe(@RequestBody FavouriteRecipe favouriteRecipe){
         favouriteRecipeService.save(favouriteRecipe);
 
@@ -148,7 +148,7 @@ public class RecipeController {
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping("/recipe/favourite/delete")
+    @PostMapping("/favourite/delete")
     public ResponseEntity<Map<String, String>> deleteFavouriteRecipe(@RequestBody FavouriteRecipe favouriteRecipe){
         favouriteRecipeService.delete(favouriteRecipe);
 
@@ -157,15 +157,20 @@ public class RecipeController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/recipe/{id}")
+    @GetMapping("/{id}")
     public Recipe getRecipeById(@PathVariable int id) {
         return recipeService.getRecipeById(id)
                 .map(recipe -> new ResponseEntity<>(recipe, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND)).getBody();
     }
 
-    @GetMapping("/recipe/account/{accountID}")
+    @GetMapping("/account/{accountID}")
     public List<Recipe> getByAccountId(@PathVariable int accountID) {
         return recipeService.findByAccountId(accountID);
+    }
+
+    @GetMapping("/search")
+    public List<Recipe> searchRecipe(@RequestParam String recipeName) {
+        return recipeService.searchRecipe(recipeName);
     }
 }
