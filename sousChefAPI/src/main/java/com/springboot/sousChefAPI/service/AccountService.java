@@ -57,11 +57,10 @@ public class AccountService implements UserDetailsService {
             throw new UsernameNotFoundException("User not found");
         }
         return account;
-//        return org.springframework.security.core.userdetails.User
-//                .withUsername(account.getUsername())
-//                .password(account.getPassword())
-//                .roles("USER")
-//                .build();
+    }
+
+    public Account findByAccountId(int accountId) {
+        return accountRepository.findByAccountId(accountId);
     }
 
     public String checkLogin(String username, String rawPassword) throws Exception {

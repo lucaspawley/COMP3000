@@ -35,4 +35,8 @@ public class DietPreferenceService {
     public DietPreference findByDietPreferenceName(String dietPreferenceName) {
         return dietPreferenceRepository.findByDietPreferenceName(dietPreferenceName);
     }
+
+    public List<DietPreference> searchDietPreference(String dietPreferenceName) {
+        return dietPreferenceRepository.searchDietPreference(dietPreferenceName);
+    }
 }

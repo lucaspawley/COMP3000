@@ -39,6 +39,11 @@ public class IngredientController {
         ingredientLinkService.deleteLink(ingredient.getIngredient_id(), tasteProfileId);
     }
 
+    @GetMapping("/ingredient/search")
+    public List<Ingredient> searchIngredient(@RequestParam String ingredientName) {
+        return ingredientService.searchIngredient(ingredientName);
+    }
+
     @PostMapping("/recipeIngredient/delete/{ingredientId}")
     public void deleteIngredient(@PathVariable Integer ingredientId, @RequestBody Integer recipeId) {
         recipeIngredientLinkService.deleteLink(ingredientId, recipeId);

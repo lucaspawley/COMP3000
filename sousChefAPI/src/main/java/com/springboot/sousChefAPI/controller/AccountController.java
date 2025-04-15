@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/account")
 public class AccountController {
 
     @Autowired
@@ -28,12 +28,7 @@ public class AccountController {
     @Autowired
     private TPDietPreferenceLinkService tpDietPreferenceLinkService;
 
-    @GetMapping("/account")
-    public List<Account> get() {
-        return accountService.getAllAccounts();
-    }
-
-    @PostMapping("/account/create")
+    @PostMapping("/create")
     public Account save(@RequestBody Account accountObj) {
         TasteProfile tasteProfile = accountObj.getTasteProfile();
 
@@ -56,33 +51,30 @@ public class AccountController {
         return accountObj;
     }
 
-//    @GetMapping("/account/{id}")
-//    public Account get(@PathVariable int id) {
-//        return accountService.getAccountById(id)
-//                .map(account -> new ResponseEntity<>(account, HttpStatus.OK))
-//                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND)).getBody();
-//
-//    }
+    @GetMapping("/get/{id}")
+    public Account get(@PathVariable int id) {
+        return accountService.findByAccountId(id);
+    }
 
-    @GetMapping("/account/{username}")
+    @GetMapping("/{username}")
     public Account getByUsername(@PathVariable String username) {
         return accountService.loadUserByUsername(username);
     }
 
-    @DeleteMapping("/account/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Account> delete(@PathVariable int id) {
         accountService.deleteAccount(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @PutMapping("/account")
+    @PutMapping("/")
     public Account update(@PathVariable int id, @RequestBody Account account) {
         account.setAccountId(id);
         Account updatedAccount = accountService.saveAccount(account);
         return new ResponseEntity<>(updatedAccount, HttpStatus.OK).getBody();
     }
 
-    @PostMapping("/account/login")
+    @PostMapping("/login")
     public String login(@RequestParam String username, @RequestParam String password) throws Exception {
         return accountService.checkLogin(username, password);
     }

@@ -7,16 +7,17 @@ import {
   Allergy,
   DietPreference,
   Ingredient,
+  TasteProfile,
 } from '../../types/types';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { InputTextModule } from 'primeng/inputtext';
-import {
-  FormBuilder,
-  FormControl,
-  ReactiveFormsModule,
-} from '@angular/forms';
+import { FormBuilder, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { TasteProfileService } from '../../../services/taste-profile.service';
+import {
+  AutoCompleteCompleteEvent,
+  AutoCompleteModule,
+} from 'primeng/autocomplete';
 
 @Component({
   selector: 'app-account-page',
@@ -27,16 +28,23 @@ import { TasteProfileService } from '../../../services/taste-profile.service';
     InputGroupAddonModule,
     InputTextModule,
     ReactiveFormsModule,
+    AutoCompleteModule,
   ],
   templateUrl: './account-page.component.html',
   styleUrl: './account-page.component.scss',
 })
 export class AccountPageComponent implements OnInit {
   currentAccount!: Account;
+  tasteProfile!: TasteProfile;
 
   dietPrefFormControl!: FormControl;
+  dietPreferenceSuggestions: Array<DietPreference> = [];
+
   allergyFormControl!: FormControl;
+  allergySuggestions: Array<Allergy> = [];
+
   dislikedIngredientFormControl!: FormControl;
+  ingredientsSuggestions: Array<Ingredient> = [];
 
   dietPreferences: Array<DietPreference> | undefined;
   allergies: Array<Allergy> | undefined;
@@ -51,29 +59,39 @@ export class AccountPageComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.currentAccount = this.accountService.currentAccount!;
-
     this.dietPrefFormControl = this.fb.control('');
     this.allergyFormControl = this.fb.control('');
     this.dislikedIngredientFormControl = this.fb.control('');
 
-    this.dietPreferences =
-      this.accountService.currentAccount?.tasteProfile?.dietPreferences;
-    this.allergies =
-      this.accountService.currentAccount?.tasteProfile?.allergies;
-    this.dislikedIngredients =
-      this.accountService.currentAccount?.tasteProfile?.ingredients;
+    this.accountService
+      .getUserByAccountId(
+        JSON.parse(sessionStorage.getItem('accountId') as string)
+      )
+      .subscribe((result) => {
+        this.currentAccount = result;
 
-    this.tasteProfileId =
-      this.accountService.currentAccount?.tasteProfile?.tasteProfileId?.toString();
+        this.dietPreferences =
+          this.currentAccount?.tasteProfile?.dietPreferences;
+        this.allergies = this.currentAccount?.tasteProfile?.allergies;
+        this.dislikedIngredients =
+          this.currentAccount?.tasteProfile?.ingredients;
+
+        this.tasteProfileId =
+          this.currentAccount?.tasteProfile?.tasteProfileId?.toString();
+      });
   }
 
-  addDietPref() {
-    if (this.dietPrefFormControl.value != undefined) {
-      const newDietPreference: DietPreference = {
-        dietPreferenceId: undefined,
-        dietPreferenceName: this.dietPrefFormControl.value,
-      };
+  addDietPref(dietPref: DietPreference) {
+    if (dietPref) {
+      let newDietPreference: DietPreference;
+      if (dietPref.dietPreferenceName) {
+        newDietPreference = dietPref;
+      } else {
+        newDietPreference = {
+          dietPreferenceId: undefined,
+          dietPreferenceName: this.dietPrefFormControl.value,
+        };
+      }
 
       this.tasteProfileService
         .addDietPreference(newDietPreference, this.tasteProfileId!)
@@ -84,12 +102,17 @@ export class AccountPageComponent implements OnInit {
     }
   }
 
-  addAllergy() {
-    if (this.allergyFormControl.value != undefined) {
-      const newAllergy: Allergy = {
-        allergyId: undefined,
-        allergyName: this.allergyFormControl.value,
-      };
+  addAllergy(allergy: Allergy) {
+    if (allergy) {
+      let newAllergy: Allergy;
+      if (allergy.allergyName) {
+        newAllergy = allergy;
+      } else {
+        newAllergy = {
+          allergyId: undefined,
+          allergyName: this.allergyFormControl.value,
+        };
+      }
 
       this.tasteProfileService
         .addAllergy(newAllergy, this.tasteProfileId!)
@@ -100,12 +123,17 @@ export class AccountPageComponent implements OnInit {
     }
   }
 
-  addIngredient() {
-    if (this.dislikedIngredientFormControl.value != undefined) {
-      const newIngredient: Ingredient = {
-        ingredient_id: undefined,
-        ingredientName: this.dislikedIngredientFormControl.value,
-      };
+  addIngredient(ingredient: Ingredient) {
+    if (ingredient) {
+      let newIngredient: Ingredient;
+      if (ingredient.ingredientName) {
+        newIngredient = ingredient;
+      } else {
+        newIngredient = {
+          ingredient_id: undefined,
+          ingredientName: this.dislikedIngredientFormControl.value,
+        };
+      }
 
       this.tasteProfileService
         .addDislikedIngredient(newIngredient, this.tasteProfileId!)
@@ -138,7 +166,46 @@ export class AccountPageComponent implements OnInit {
     this.tasteProfileService
       .removeDislikedIngredient(ingredient, this.tasteProfileId!)
       .subscribe(() => {
-        this.dislikedIngredients = this.dislikedIngredients?.filter((i) => i !== ingredient);
+        this.dislikedIngredients = this.dislikedIngredients?.filter(
+          (i) => i !== ingredient
+        );
+      });
+  }
+
+  searchAllergy(event: AutoCompleteCompleteEvent) {
+    this.tasteProfileService
+      .searchAllergies(event.query)
+      .subscribe((results) => {
+        this.allergySuggestions = results;
+        if (results) {
+          this.allergySuggestions = results;
+        } else {
+          this.allergySuggestions = [];
+        }
+      });
+  }
+
+  searchDietPref(event: AutoCompleteCompleteEvent) {
+    this.tasteProfileService
+      .searchDietPreference(event.query)
+      .subscribe((results) => {
+        if (results) {
+          this.dietPreferenceSuggestions = results;
+        } else {
+          this.dietPreferenceSuggestions = [];
+        }
+      });
+  }
+
+  searchIngredient(event: AutoCompleteCompleteEvent) {
+    this.tasteProfileService
+      .searchIngredient(event.query)
+      .subscribe((results) => {
+        if (results) {
+          this.ingredientsSuggestions = results;
+        } else {
+          this.ingredientsSuggestions = [];
+        }
       });
   }
 }
