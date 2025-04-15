@@ -131,7 +131,7 @@ export class UserLoginComponent implements OnInit {
               .getUserByUsername(this.loginInForm.get('username')?.value)
               .subscribe((res: Account) => {
                 if (res) {
-                  this.accountService.currentAccount = res;
+                  this.accountService.currentAccountId = res.accountId;
                   sessionStorage.setItem(
                     'accountId',
                     JSON.stringify(res.accountId)

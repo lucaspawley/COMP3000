@@ -59,21 +59,26 @@ export class AccountPageComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.currentAccount = this.accountService.currentAccount!;
-
     this.dietPrefFormControl = this.fb.control('');
     this.allergyFormControl = this.fb.control('');
     this.dislikedIngredientFormControl = this.fb.control('');
 
-    this.dietPreferences =
-      this.accountService.currentAccount?.tasteProfile?.dietPreferences;
-    this.allergies =
-      this.accountService.currentAccount?.tasteProfile?.allergies;
-    this.dislikedIngredients =
-      this.accountService.currentAccount?.tasteProfile?.ingredients;
+    this.accountService
+      .getUserByAccountId(
+        JSON.parse(sessionStorage.getItem('accountId') as string)
+      )
+      .subscribe((result) => {
+        this.currentAccount = result;
 
-    this.tasteProfileId =
-      this.accountService.currentAccount?.tasteProfile?.tasteProfileId?.toString();
+        this.dietPreferences =
+          this.currentAccount?.tasteProfile?.dietPreferences;
+        this.allergies = this.currentAccount?.tasteProfile?.allergies;
+        this.dislikedIngredients =
+          this.currentAccount?.tasteProfile?.ingredients;
+
+        this.tasteProfileId =
+          this.currentAccount?.tasteProfile?.tasteProfileId?.toString();
+      });
   }
 
   addDietPref(dietPref: DietPreference) {
